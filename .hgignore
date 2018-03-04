@@ -1,6 +1,7 @@
 syntax: glob
-
 *.iml
 *.vcs
 *.xml
+*.*___jb_old___
+*.pyc
 .idea/.name
