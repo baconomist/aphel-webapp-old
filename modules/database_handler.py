@@ -28,7 +28,7 @@ class DatabaseHandler(object):
             self.raw_data["users"].append(user)
         self.write()
 
-    def remove_user(self, username=""):
+    def remove_user(self, username):
 
         logging.info("Removing user:" + username)
 
@@ -42,6 +42,17 @@ class DatabaseHandler(object):
                 break
             count += 1
 
+    def get_user(self, username):
+
+        logging.info("Getting user:" + username)
+
+        for user in self.get_users():
+            if user.name == username:
+                logging.info("User found:" + username)
+                return user
+
+        logging.info("User not found:" + username)
+
     def write(self):
         logging.info("Writing to database.")
 
@@ -54,7 +65,7 @@ class DatabaseHandler(object):
         for user in self.raw_data["users"]:
             data["users"][count] = jsonpickle.decode(user)
             count += 1
-        return data
+        return data["users"]
 
 databaseHandler = DatabaseHandler()
 
