@@ -4,31 +4,20 @@
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
   <h1>Welcome</h1>
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-  <form action="action_page.php">
-   <div class="imgcontainer">
-     <img src="img_avatar2.png" alt="Avatar" class="avatar">
-   </div>
+  <script type="{{url_for('static', filename='/lib/bower_components/crypto-js/crypto-js.js.js')}}"></script>
 
-   <div class="container">
-     <label for="uname"><b>Username</b></label>
-     <input type="text" placeholder="Enter Username" name="uname" required>
+  <script src="{{url_for('static', filename='scripts/server_bridge.js')}}"></script>
 
-     <label for="psw"><b>Password</b></label>
-     <input type="password" placeholder="Enter Password" name="psw" required>
 
-     <button type="submit">Login</button>
-     <label>
-       <input type="checkbox" checked="checked" name="remember"> Remember me
-     </label>
-   </div>
 
-   <div class="container" style="background-color:#f1f1f1">
-     <button type="button" class="cancelbtn">Cancel</button>
-     <span class="psw">Forgot <a href="#">password?</a></span>
-   </div>
- </form> 
+  <script>
+  server_bridge = new ServerBridge();
+  server_bridge.sendToServer({"hi":1})
+  server_bridge.getFromServer({"hi":1})
 
-  <script src="scripts/login.js"></script>
+
+  </script>
 
 </html>

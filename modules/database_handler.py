@@ -4,7 +4,7 @@ import logging
 
 class DatabaseHandler(object):
 
-    databaseLocation = "../data/database.json"
+    databaseLocation = "./data/database.json"
 
     def __init__(self):
         try:
