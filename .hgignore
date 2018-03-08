@@ -5,3 +5,4 @@ syntax: glob
 *.*___jb_old___
 *.pyc
 .idea/.name
+server.log
