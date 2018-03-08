@@ -1,10 +1,11 @@
 import json, jsonpickle
 from modules.user import User
 import logging
+import copy
 
 class DatabaseHandler(object):
 
-    databaseLocation = "./data/database.json"
+    databaseLocation = "../data/database.json"
 
     def __init__(self):
         try:
@@ -21,11 +22,18 @@ class DatabaseHandler(object):
         logging.info("Database Loaded.")
 
     def store_user(self, user):
-        logging.info("Storing user:" + str(user.name))
+        logging.info("Storing user:" + user.name)
 
-        user = jsonpickle.encode(user)
-        if user not in self.raw_data["users"]:
-            self.raw_data["users"].append(user)
+        if self.get_user(user.name) != None:
+            count = 0
+            print(self.raw_data)
+            for u in self.raw_data["users"]:
+                if jsonpickle.decode(u).name == user.name:
+                    self.raw_data["users"][count] = jsonpickle.encode(user)
+                count += 1
+        else:
+            self.raw_data["users"].append(jsonpickle.encode(user))
+
         self.write()
 
     def remove_user(self, username):
@@ -60,13 +68,13 @@ class DatabaseHandler(object):
         json.dump(self.raw_data, file, sort_keys=True, indent=4)
 
     def get_users(self):
-        data = self.raw_data
+        data = copy.deepcopy(self.raw_data)
         count = 0
         for user in self.raw_data["users"]:
             data["users"][count] = jsonpickle.decode(user)
             count += 1
         return data["users"]
 
-databaseHandler = DatabaseHandler()
 
-
+dataBase = DatabaseHandler()
+dataBase.store_user(User("bsob", "hsi"))
