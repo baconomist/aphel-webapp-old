@@ -1,14 +1,17 @@
-class RequestHandler(object):
-    def __init__(self):
-        self.actions = {"/login": self.login, "/isUserAdmin": self.is_user_admin,
-                        "/isUserAuthForPost": self.is_user_auth_for_post}
+from modules.database_handler import DatabaseHandler
+from modules.user import User
 
-    def handle_request(self, request, url_ext):
-        self.actions[url_ext](request)
+class RequestHandler(object):
 
     def login(self, request):
-        assert b'The request method for login was not "POST"!', request.method == "POST"
+        assert request.method == "POST", b'The request method for login() was not "POST"!'
 
+
+    def sign_up(self, request):
+        assert request.method == "POST", b'The request method for sign_up() was not "POST"!'
+        database = DatabaseHandler.get_instance()
+        data = request.form.getlist("login[]")
+        database.store_user(User(data[0], data[1]))
 
     def is_user_admin(self, request):
         pass

@@ -3,6 +3,7 @@ import logging
 import json, jsonpickle
 
 from modules.database_handler import DatabaseHandler
+from modules.request_handler import RequestHandler
 from modules.user import User
 
 # Comment out these lines to disable logging
@@ -13,30 +14,28 @@ rootLogger.addHandler(consoleHandler)
 
 app = Flask(__name__)
 
-database_handler = DatabaseHandler()
+request_handler = RequestHandler()
 
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/", methods=["GET"])
 def index():
-    if request.method == "POST":
-
-        try:
-            data = request.form.getlist("user[]")
-            database_handler.store_user(User(data[0], data[1]))
-        except:
-            pass
-        return "Success"
-    elif "all_users" in request.args:
-        return json.dumps(database_handler.raw_data)
-    elif "get_user" in request.args:
-        return jsonpickle.encode(database_handler.get_user(request.args["get_user"]))
-    else:
-        return render_template("index.html")
+    return render_template("index.html")
 
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
+    if request.method == "POST":
+        request_handler.login(request)
+        return "Success"
     return render_template("login.html")
+
+
+@app.route("/sign_up", methods=["GET", "POST"])
+def sign_up():
+    if request.method == "POST":
+        request_handler.sign_up(request)
+        return "Success"
+    return render_template("sign_up.html")
 
 
 if __name__ == "__main__":

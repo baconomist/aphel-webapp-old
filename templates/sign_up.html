@@ -17,7 +17,7 @@
 <script>
     function onLogin(){
         server_bridge = new ServerBridge();
-        server_bridge.sendToServer("/login",
+        server_bridge.sendToServer("/sign_up",
         {"login":[document.getElementById('usr').value,
         document.getElementById('pswd').value]})
     }

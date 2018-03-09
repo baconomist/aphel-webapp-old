@@ -3,9 +3,11 @@ from modules.user import User
 import logging
 import copy
 
-class DatabaseHandler(object):
 
+class DatabaseHandler(object):
     databaseLocation = "./data/database.json"
+
+    _instance = None
 
     def __init__(self):
         try:
@@ -75,5 +77,11 @@ class DatabaseHandler(object):
             count += 1
         return data["users"]
 
-
+    @staticmethod
+    def get_instance():
+        if DatabaseHandler._instance is None:
+            DatabaseHandler._instance = DatabaseHandler()
+            return DatabaseHandler._instance
+        else:
+            return DatabaseHandler._instance
 
