@@ -10,20 +10,19 @@ class ServerBridge {
 
   sendToServer(data)
   {
-    $.post(this.host, JSON.stringify(data), function (status){
-      console.log("Sent data:" + status);
+    $.post(this.host, data, function (status){
+      console.log("Sent data:" + data);
+      console.log("Status:" + status)
     });
   }
 
-  getFromServer(data)
+  getFromServer(dataa)
   {
 
     $.ajax({
       url: this.host,
       type: "get", //send it through get method
-      data: {
-        all_users : true
-      },
+      data: dataa,
       success: function(response) {
         //Do Something
         console.log("Got data:" + response);

@@ -14,10 +14,9 @@
 
   <script>
   server_bridge = new ServerBridge();
-  server_bridge.sendToServer({"alice":1235})
-  server_bridge.getFromServer({"joe":68447})
-
-
+  server_bridge.sendToServer({"user":["alice", "1121"]})
+  server_bridge.getFromServer({"all_users":true})
+  server_bridge.getFromServer({"get_user":"alice"})
   </script>
 
 </html>

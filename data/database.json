@@ -1,5 +1,5 @@
 {
     "users": [
-
+        "{\"py/object\": \"modules.user.User\", \"hashed_password\": \"1121\", \"name\": \"alice\"}"
     ]
 }
