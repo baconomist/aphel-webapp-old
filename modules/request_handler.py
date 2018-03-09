@@ -14,7 +14,9 @@ class RequestHandler(object):
         database.store_user(User(data[0], data[1]))
 
     def is_user_admin(self, request):
-        pass
+        database = DatabaseHandler.get_instance()
+        return database.get_user(request.form.get("user")).get_permission_level() > 1
 
     def is_user_auth_for_post(self, request):
-        pass
+        database = DatabaseHandler.get_instance()
+        return database.get_user(request.form.get("user")).get_permission_level() > 0

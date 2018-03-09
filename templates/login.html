@@ -19,7 +19,7 @@
         server_bridge = new ServerBridge();
         server_bridge.sendToServer("/login",
         {"login":[document.getElementById('usr').value,
-        document.getElementById('pswd').value]})
+        CryptoJS.SHA256(document.getElementById('pswd').value)]})
     }
 </script>
 </html>
