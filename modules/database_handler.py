@@ -2,10 +2,11 @@ import json, jsonpickle
 from modules.user import User
 import logging
 import copy
-
+import os
 
 class DatabaseHandler(object):
-    databaseLocation = "./data/database.json"
+
+    databaseLocation = os.path.join(__file__, "..\\..\\data\\database.json")
 
     _instance = None
 
@@ -20,6 +21,7 @@ class DatabaseHandler(object):
 
         file = open(DatabaseHandler.databaseLocation, "r+")
         self.raw_data = json.load(file)
+        file.close()
 
         logging.info("Database Loaded.")
 
@@ -68,6 +70,7 @@ class DatabaseHandler(object):
 
         file = open(DatabaseHandler.databaseLocation, "w")
         json.dump(self.raw_data, file, sort_keys=True, indent=4)
+        file.close()
 
     def get_users(self):
         data = copy.deepcopy(self.raw_data)
@@ -84,4 +87,3 @@ class DatabaseHandler(object):
             return DatabaseHandler._instance
         else:
             return DatabaseHandler._instance
-
