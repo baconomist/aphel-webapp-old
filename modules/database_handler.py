@@ -26,7 +26,7 @@ class DatabaseHandler(object):
         logging.info("Database Loaded.")
 
     def store_user(self, user):
-        logging.info("Storing user:" + user.name)
+        logging.info("Storing user: " + user.name)
 
         if self.get_user(user.name) != None:
             count = 0
@@ -42,7 +42,7 @@ class DatabaseHandler(object):
 
     def remove_user(self, username):
 
-        logging.info("Removing user:" + username)
+        logging.info("Removing user: " + username)
 
         raw_data = self.raw_data.copy()
 
@@ -56,14 +56,14 @@ class DatabaseHandler(object):
 
     def get_user(self, username):
 
-        logging.info("Getting user:" + username)
+        logging.info("Getting user: " + username)
 
         for user in self.get_users():
             if user.name == username:
-                logging.info("User found:" + username)
+                logging.info("User found: " + username)
                 return user
 
-        logging.info("User not found:" + username)
+        logging.info("User not found: " + username)
 
     def write(self):
         logging.info("Writing to database.")

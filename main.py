@@ -1,13 +1,15 @@
 from flask import Flask, render_template, request, redirect
-import logging
-import json, jsonpickle
 
-from modules.database_handler import DatabaseHandler
 from modules.request_handler import RequestHandler
-from modules.user import User
+
+import os
+import logging
+# Clear server.log
+open(os.path.join(__file__, "..\\server.log"), "w").close()
 
 # Comment out these lines to disable logging
-logging.basicConfig(filename='server.log', level=logging.DEBUG)
+
+logging.basicConfig(filename=os.path.join(__file__, "..\\server.log"), level=logging.DEBUG)
 rootLogger = logging.getLogger()
 consoleHandler = logging.StreamHandler()
 rootLogger.addHandler(consoleHandler)
@@ -25,16 +27,14 @@ def index():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        request_handler.login(request)
-        return "Success"
+        return request_handler.login(request)
     return render_template("login.html")
 
 
-@app.route("/sign_up", methods=["GET", "POST"])
-def sign_up():
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
     if request.method == "POST":
-        request_handler.sign_up(request)
-        return "Success"
+        return request_handler.signup(request)
     return render_template("sign_up.html")
 
 
