@@ -30,7 +30,6 @@ class DatabaseHandler(object):
 
         if self.get_user(user.name) != None:
             count = 0
-            print(self.raw_data)
             for u in self.raw_data["users"]:
                 if jsonpickle.decode(u).name == user.name:
                     self.raw_data["users"][count] = jsonpickle.encode(user)
