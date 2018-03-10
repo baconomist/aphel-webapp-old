@@ -5,13 +5,15 @@ class RequestHandler(object):
 
     def login(self, request):
         assert request.method == "POST", b'The request method for login() was not "POST"!'
+        return "Success"
 
 
-    def sign_up(self, request):
-        assert request.method == "POST", b'The request method for sign_up() was not "POST"!'
+    def signup(self, request):
+        assert request.method == "POST", b'The request method for signup() was not "POST"!'
         database = DatabaseHandler.get_instance()
-        data = request.form.getlist("login[]")
-        database.store_user(User(data[0], data[1]))
+        data = request.form
+        database.store_user(User(data.get("username"), data.get("password")))
+        return "Success"
 
     def is_user_admin(self, request):
         database = DatabaseHandler.get_instance()

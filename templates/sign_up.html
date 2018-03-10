@@ -18,9 +18,9 @@
     console.log(CryptoJS.SHA256("hi").toString())
     function onLogin(){
         server_bridge = new ServerBridge();
-        server_bridge.sendToServer("/sign_up",
-        {"login":[document.getElementById('usr').value,
-        CryptoJS.SHA256(document.getElementById('pswd').value).toString()]})
+        server_bridge.sendToServer("/signup",
+        {"username":document.getElementById('usr').value,
+        "password":CryptoJS.SHA256(document.getElementById('pswd').value).toString()})
     }
 </script>
 </html>
