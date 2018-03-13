@@ -14,16 +14,18 @@ class MainTest(unittest.TestCase):
         response = self.app.get('/')
 
     def test_login(self):
-        pass
+        response = self.login("test_user", self.encrypt_string("test_password"))
+        assert response.data != b'Failed to log in.'
+
 
     def test_signup(self):
         # b in front of string to turn it into a bytes object
-        response = self.sign_up("test_user", self.encrypt_string("test_password"))
+        response = self.signup("test_user", self.encrypt_string("test_password"))
         assert response.data == b'Success'
 
     def test_database(self):
         database = DatabaseHandler.get_instance()
-        database.store_user(User("test_user", "test_password"))
+        database.store_user(User("test_user", self.encrypt_string("test_password")))
         assert database.get_user("test_user") is not None, b"Couldn't retrieve user from database!"
 
         user_names = []
@@ -36,9 +38,14 @@ class MainTest(unittest.TestCase):
             hashlib.sha256(hash_string.encode()).hexdigest()
         return sha_signature
 
-    def sign_up(self, username, password):
-
+    def signup(self, username, password):
         return self.app.post('/signup', data=dict(
+            username=username,
+            password=password
+        ), follow_redirects=True)
+
+    def login(self, username, password):
+        return self.app.post('/login', data=dict(
             username=username,
             password=password
         ), follow_redirects=True)

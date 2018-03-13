@@ -64,6 +64,7 @@ class DatabaseHandler(object):
 
         logging.info("User not found: " + username)
 
+
     def write(self):
         logging.info("Writing to database.")
 

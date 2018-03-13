@@ -6,8 +6,9 @@ class User(object):
 
     '''
     permission level 0 - can only view posted announcements
-    permission level 1 - can post announcements
-    permission level 2 - teacher/admin
+    permission level 1 - student can only post announcements with teacher review
+    permission level 2 - student can post without teacher announcement review
+    permission level 3 - teacher/admin
     '''
 
     def set_permission_level(self, level):
