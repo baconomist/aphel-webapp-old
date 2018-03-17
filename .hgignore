@@ -4,5 +4,7 @@ syntax: glob
 *.xml
 *.*___jb_old___
 *.pyc
+*/build/
 .idea/.name
 server.log
+export_script/export_script.spec
