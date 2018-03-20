@@ -1,0 +1,9 @@
+@media (min-width: 300px) {
+  .login-dark form {
+    width:70%;
+    color:#ffffff;
+    border-radius:100px;
+    padding:40px;
+  }
+}
+
