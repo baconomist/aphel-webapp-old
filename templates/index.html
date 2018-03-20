@@ -1,20 +1,47 @@
-
 <!DOCTYPE html>
 <html>
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-  <h1>Welcome</h1>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-  <script type="{{url_for('static', filename='/lib/bower_components/crypto-js/crypto-js.js.js')}}"></script>
-
-  <script src="{{url_for('static', filename='scripts/server_bridge.js')}}"></script>
-
-  <script>
-  /*server_bridge = new ServerBridge();
-  server_bridge.sendToServer({"user":["alice", "1121"]})
-  server_bridge.getFromServer({"all_users":true})
-  server_bridge.getFromServer({"get_user":"alice"})*/
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   webapp
+  </title>
+  <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
+  <link href="{{ url_for('static', filename='fonts/ionicons.min.css') }}" rel="stylesheet"/>
+  <link href="{{ url_for('static', filename='css/Login-Form-Dark.css') }}" rel="stylesheet"/>
+  <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
+ </head>
+ <body>
+  <div class="login-dark">
+   <form method="post">
+    <h2 class="sr-only">
+     Login Form
+    </h2>
+    <div class="illustration">
+     <i class="icon ion-ios-locked-outline">
+     </i>
+    </div>
+    <div class="form-group">
+     <input class="form-control" name="email" placeholder="Email" type="email"/>
+    </div>
+    <div class="form-group">
+     <input class="form-control" name="password" placeholder="Password" type="password"/>
+    </div>
+    <div class="form-group">
+     <button class="btn btn-primary btn-block" type="submit">
+      Log In
+     </button>
+    </div>
+    <a class="forgot" href="#">
+     Forgot your email or password?
+    </a>
+   </form>
+  </div>
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}">
   </script>
-
+  <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}">
+  </script>
+  <script src="{{ url_for('static', filename='js/test/untitled.js') }}">
+  </script>
+ </body>
 </html>
