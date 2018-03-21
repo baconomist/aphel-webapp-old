@@ -1,5 +1,5 @@
 
-$("#login_button").on( "click", login);
+$("#login_button").on("click", login);
 
 function login()
 {

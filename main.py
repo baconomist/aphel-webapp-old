@@ -35,7 +35,7 @@ def login():
 def signup():
     if request.method == "POST":
         return request_handler.signup(request)
-    return render_template("sign_up.html")
+    return render_template("signup.html")
 
 if __name__ == "__main__":
     app.run("127.0.0.1", 80, debug=True)

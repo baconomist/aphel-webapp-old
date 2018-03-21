@@ -10,6 +10,7 @@ class ServerBridge {
 
   sendToServer(url_ext, data)
   {
+    console.log("Sending data...")
     $.post(this.host + url_ext, data, function (status){
       console.log("Sent data:" + data);
       console.log("Status:" + status)
@@ -18,7 +19,7 @@ class ServerBridge {
 
   getFromServer(url_ext, dataa)
   {
-
+    console.log("Getting data...")
     $.ajax({
       url: this.host + url_ext,
       type: "get", //send it through get method
