@@ -15,10 +15,11 @@ class RequestHandler(object):
 
     def do_login(self, data):
         for user in DatabaseHandler.get_instance().get_users():
-            if user.name == data.get("email") and self.check_password(self.hash_password(data.get("password")), data.get("password")):
+            if user.name == data.get("email") and self.check_password(user.password, data.get("password")):
                 return "Logged in as %s" % user.name
 
-        return "Failed to log in. User may not have signed up."
+        return "Failed to log in. The login credentials may be incorrect " \
+               "\n or the user does not exist."
 
     def signup(self, request):
         assert request.method == "POST", b'The request method for signup() was not "POST"!'
