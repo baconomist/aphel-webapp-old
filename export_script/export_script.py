@@ -60,6 +60,8 @@ if os.path.exists(export_dir + "\\assets"):
 # Being cool ;P
 # html_files = [currentDirPath + "\\" + filename for filename in fileList if ".html" in filename for currentDirPath, subDirList, fileList in os.walk(export_dir + "\\templates")]
 
+
+
 html_files = []
 
 for currentDirPath, subDirList, fileList in os.walk(export_dir + "\\templates"):

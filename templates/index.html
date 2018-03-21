@@ -12,36 +12,23 @@
   <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
  </head>
  <body>
-  <div class="login-dark">
-   <form method="post">
-    <h2 class="sr-only">
-     Login Form
-    </h2>
-    <div class="illustration">
-     <i class="icon ion-ios-locked-outline">
-     </i>
-    </div>
-    <div class="form-group">
-     <input class="form-control" name="email" placeholder="Email" type="email"/>
-    </div>
-    <div class="form-group">
-     <input class="form-control" name="password" placeholder="Password" type="password"/>
-    </div>
-    <div class="form-group">
-     <button class="btn btn-primary btn-block" type="submit">
-      Log In
-     </button>
-    </div>
-    <a class="forgot" href="#">
-     Forgot your email or password?
-    </a>
-   </form>
-  </div>
   <script src="{{ url_for('static', filename='js/jquery.min.js') }}">
   </script>
   <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}">
   </script>
-  <script src="{{ url_for('static', filename='js/test/untitled.js') }}">
+  <script src="{{ url_for('static', filename='js/lib/bower_components/crypto-js/crypto-js.js') }}">
+  </script>
+  <script src="{{ url_for('static', filename='js/server_bridge.js') }}">
+  </script>
+  <script src="{{ url_for('static', filename='js/request_handler.js') }}">
+  </script>
+  <script src="{{ url_for('static', filename='js/lib/require.js') }}">
+  </script>
+  <script src="{{ url_for('static', filename='js/init.js') }}">
+  </script>
+  <script src="{{ url_for('static', filename='js/login.js') }}">
+  </script>
+  <script src="{{ url_for('static', filename='js/signup.js') }}">
   </script>
  </body>
 </html>

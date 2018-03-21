@@ -38,5 +38,5 @@ def signup():
     return render_template("sign_up.html")
 
 if __name__ == "__main__":
-    app.run("192.168.224.68", 80, debug=True)
+    app.run("127.0.0.1", 80, debug=True)
 
