@@ -20,11 +20,13 @@ request_handler = RequestHandler()
 
 
 @app.route("/", methods=["GET"])
+@app.route("/index.html", methods=["GET"])
 def index():
     return render_template("index.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
+@app.route("/login.html", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         return request_handler.login(request)
