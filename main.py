@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect
 
-from modules.request_handler import RequestHandler
+from modules.request_handler import *
 
 import os
 import logging
@@ -16,9 +16,6 @@ rootLogger.addHandler(consoleHandler)
 
 app = Flask(__name__)
 
-request_handler = RequestHandler()
-
-
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html")
@@ -27,14 +24,14 @@ def index():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        return request_handler.login(request)
+        return RequestHandler.login(request)
     return render_template("login.html")
 
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-        return request_handler.signup(request)
+        return RequestHandler.signup(request)
     return render_template("signup.html")
 
 if __name__ == "__main__":
