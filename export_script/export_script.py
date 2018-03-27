@@ -82,7 +82,10 @@ for html_file in html_files:
         except:
             pass
     for image in soup.findAll("img"):
-        print(image)
+        try:
+            image["src"] = "{{ url_for('static', filename='%s') }}" % (image["src"].replace("assets/", ""))
+        except:
+            pass
     for link in soup.findAll("link"):
         if link["rel"][0] == "stylesheet":
             link["href"] = "{{ url_for('static', filename='%s') }}" % (link["href"].replace("assets/", ""))
