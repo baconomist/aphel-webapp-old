@@ -21,6 +21,8 @@ $("#signup_form").on("submit", function(){
         return server_bridge.sendToServer("/signup", values);
     }
     
+    console.log("submitted!")
+    
     // Don't post to server
     return false;
     
