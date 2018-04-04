@@ -1,13 +1,15 @@
 # User pyinstaller to compile any changes
 
 import os, sys, shutil
+
+import re
 from bs4 import BeautifulSoup
 
 script_dir = sys.argv[0]
 export_dir = sys.argv[1]
 
-# test_dir = "C:\\Users\\Lucas\\Desktop\\Projects\\PCHackers\\webapp"
-# export_dir = test_dir
+#test_dir = "C:\\Users\\Lucas\\Desktop\\Projects\\PCHackers\\webapp\\aa"
+#export_dir = test_dir
 
 
 # if os.path.exists(export_dir + "\\templates\\"):
@@ -60,8 +62,6 @@ if os.path.exists(export_dir + "\\assets"):
 # Being cool ;P
 # html_files = [currentDirPath + "\\" + filename for filename in fileList if ".html" in filename for currentDirPath, subDirList, fileList in os.walk(export_dir + "\\templates")]
 
-
-
 html_files = []
 
 for currentDirPath, subDirList, fileList in os.walk(export_dir + "\\templates"):
@@ -90,7 +90,24 @@ for html_file in html_files:
         if link["rel"][0] == "stylesheet":
             link["href"] = "{{ url_for('static', filename='%s') }}" % (link["href"].replace("assets/", ""))
 
+    for div in soup.findAll("div"):
+        try:
+            print(re.findall("url\(.*\)", div["style"])[0].replace("url(", "").replace(");", ""))
+            div["style"] = re.sub("url\(.*\)", "url({{ url_for('static', filename='%s') }})" % (re.findall("url\(.*\)", div["style"])[0]).replace("url(", "").replace(")", ""), div["style"]).replace('"', "").replace("assets/", "")
+        except:
+            pass
+
     file.close()
+
+    '''data = str(soup.prettify())
+    data = re.sub(r"assets/.*", "{{ url_for('static', filename='%s') }}"%, data)'''
+
+    '''
+    #****************************************************************************************************************************************************************************************************************
+    # If all else fails....
+    file.write(file.read().replace("assets/", "static/"))
+    #****************************************************************************************************************************************************************************************************************
+    '''
 
     file = open(html_file, "w")
     file.write(str(soup.prettify()))
