@@ -75,7 +75,7 @@ for html_file in html_files:
 
     print(html_file)
 
-    soup = BeautifulSoup(file, 'html.parser')
+    '''soup = BeautifulSoup(file, 'html.parser')
     for script in soup.findAll("script"):
         try:
             script["src"] = "{{ url_for('static', filename='%s') }}" % (script["src"].replace("assets/", ""))
@@ -95,7 +95,8 @@ for html_file in html_files:
             print(re.findall("url\(.*\)", div["style"])[0].replace("url(", "").replace(");", ""))
             div["style"] = re.sub("url\(.*\)", "url({{ url_for('static', filename='%s') }})" % (re.findall("url\(.*\)", div["style"])[0]).replace("url(", "").replace(")", ""), div["style"]).replace('"', "").replace("assets/", "")
         except:
-            pass
+            pass'''
+    data = file.read().replace("assets/", "static/").replace("&quot;", "'")
 
     file.close()
 
@@ -110,7 +111,7 @@ for html_file in html_files:
     '''
 
     file = open(html_file, "w")
-    file.write(str(soup.prettify()))
+    file.write(data)
     file.close()
 
 css_files = []
