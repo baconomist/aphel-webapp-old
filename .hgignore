@@ -8,3 +8,4 @@ syntax: glob
 .idea/.name
 server.log
 export_script/export_script.spec
+*.orig
