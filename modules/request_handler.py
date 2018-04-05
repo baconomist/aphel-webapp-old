@@ -2,6 +2,7 @@ from modules.database_handler import DatabaseHandler
 from modules.user import User
 import logging
 import hashlib, uuid
+from flask import jsonify
 
 class RequestHandler(object):
     
@@ -26,12 +27,12 @@ class RequestHandler(object):
     @staticmethod
     def do_signup(data):
         database = DatabaseHandler.get_instance()
-        if database.get_user(data.get("email")) == None and data.get("password").length > 6:
+        if database.get_user(data.get("email")) == None and data.get("password").length >= 8:
             database.store_user(User(data.get("email"), RequestHandler.hash_password(data.get("password"))))
             return "Successfully signed up %s" % data.get("email")
-        elif data.get("password").length < 6:
-            return "Failed to sign up! Password has to be > 6 characters in length"
-        return "Failed to sign up! User %s already exists!" % data.get("email")
+        elif len(data.get("password")) < 8:
+            return "Failed to sign up! Password has to be >= 8  characters in length"
+        return jsonify(data="Failed to sign up! User %s already exists!" % data.get("email"), href="/signup_failed")
 
     @staticmethod
     def do_login(data):

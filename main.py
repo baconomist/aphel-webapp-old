@@ -47,7 +47,6 @@ def signup():
         return RequestHandler.signup(request)
     return render_template("signup.html")
 
-
 all_special_redirects = {"login": login, "signup": signup}
 
 if __name__ == "__main__":

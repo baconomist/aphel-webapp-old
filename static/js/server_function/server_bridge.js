@@ -8,30 +8,23 @@ class ServerBridge {
     console.log(this.host);
   }
 
-  sendToServer(url_ext, data)
+  sendToServer(url_ext, data, callback)
   {
-    console.log("Sending data...")
+    console.log("Sending data...");
     $.post(this.host + url_ext, data, function (status){
-      console.log("Sent data:" + data);
-      console.log("Status:" + status)
+        console.log("Sent data:" + data);
+        console.log("Status:" + status);
+        callback(status);
     });
+      
   }
 
-  getFromServer(url_ext, dataa)
+  getFromServer(url_ext, data, callback)
   {
-    console.log("Getting data...")
-    $.ajax({
-      url: this.host + url_ext,
-      type: "get", //send it through get method
-      data: dataa,
-      success: function(response) {
-        //Do Something
-        console.log("Got data:" + response);
-      },
-      error: function(xhr) {
-        //Do Something to handle error
-        console.log("Got data:" + xhr);
-      }
+    console.log("Getting data...");
+    $.get(this.host + url_ext, data, function(response){
+        console.log("Received get response:" + response);
+        callback(response);
     });
   }
 

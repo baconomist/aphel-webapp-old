@@ -6,24 +6,30 @@
 });*/
 
 $("#signup_form").on("submit", function(){
-   // get all the inputs into an array.
+    
+    console.log("Signing up...");
+    
+    // get all the inputs into an array.
     var inputs = $('#signup_form :input');
-
+    
     // not sure if you wanted this, but I thought I'd add it.
     // get an associative array of just the values.
     var values = {};
     inputs.each(function() {
-        values[this.name] = $(this).val();
+        values[this.id] = $(this).val();
     });
     
-    if(values["password"].length > 6 && values["password"] == values["password-repeat"]){
-        console.log("Signing up!")
-        return server_bridge.sendToServer("/signup", values);
-    }
+    console.log("Password: " + values["password"] + " Email: " + values["email"]);
     
-    console.log("submitted!")
+    //if(values["password"].length >= 8 && values["password"] == values["password_confirm"]){
+    console.log("Signing up!");
+    server_bridge.sendToServer("/signup", values, function(response){
+        window.location.href = response["href"];
+        console.log(response["data"]);
+    });
+    //}
     
-    // Don't post to server
+    // Don't post to server/refresh the page
     return false;
     
 });
