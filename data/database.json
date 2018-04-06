@@ -1,6 +1,5 @@
 {
     "users": [
         "{\"py/object\": \"modules.user.User\", \"name\": \"1234@gmail.com\", \"password\": \"4c78b49c5ffceedfda6378a1faa7e1b8ed23eb6c84d4e0a29ec829161135ccc0:a6bd983d31184bd8b89b30fcdc13303e\", \"permission_level\": 0}",
-        "{\"py/object\": \"modules.user.User\", \"name\": \"\", \"password\": \"\", \"permission_level\": 0}"
     ]
 }

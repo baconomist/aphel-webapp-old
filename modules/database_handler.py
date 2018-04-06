@@ -64,6 +64,12 @@ class DatabaseHandler(object):
 
         logging.info("User not found: " + username)
 
+    def user_exists(self, username:str):
+        for user in self.get_users():
+            if user.name == username:
+                return True
+        return False
+
 
     def write(self):
         logging.info("Writing to database.")

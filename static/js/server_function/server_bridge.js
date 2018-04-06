@@ -9,23 +9,29 @@ class ServerBridge {
   }
 
   sendToServer(url_ext, data, callback)
-  {
-    console.log("Sending data...");
-    $.post(this.host + url_ext, data, function (status){
-        console.log("Sent data:" + data);
-        console.log("Status:" + status);
-        callback(status);
-    });
+  {      
+    console.log("**ServerBridge** Sending data to: " + this.host + url_ext);
+    $.post(this.host + url_ext, data)           
+       .done(
+        function (response){
+            console.log("Sent data:" + data);
+            console.log("**ServerBridge** Received Server Response: " + response);
+            callback(response);
+        });
+  
       
   }
-
-  getFromServer(url_ext, data, callback)
+    
+   // This doesn't really work, doesn't post data. Just use sendToServer().
+    
+  /*getFromServer(url_ext, data, callback)
   {
+    data = JSON.stringify(data); 
     console.log("Getting data...");
     $.get(this.host + url_ext, data, function(response){
-        console.log("Received get response:" + response);
+        console.log("**ServerBridge** Received GET response: " + response);
         callback(response);
     });
-  }
+  }*/
 
 }

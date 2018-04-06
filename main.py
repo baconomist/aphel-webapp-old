@@ -18,6 +18,7 @@ rootLogger.addHandler(consoleHandler)
 
 app = Flask(__name__)
 
+'''
 # Redirect to any html file
 @app.route("/", defaults={"path": ""})
 @app.route('/<path:path>')
@@ -31,23 +32,39 @@ def catch_all(path):
             return "404 error not found!"
     else:
         return render_template("index.html")
+all_special_redirects = {"login": login, "signup": signup}
+'''
+
+request_handler = RequestHandler()
+
+@app.route("/", methods=["GET", "POST"])
+@app.route("/home")
+@app.route("/index")
+@app.route("/index.html")
+def index():
+    if request.method == "POST":
+        return request_handler.handle_abstract()
+    return render_template("index.html")
 
 
 # Then have specific rules for specific html files/links
 @app.route("/login", methods=["GET", "POST"])
+@app.route("/login.html", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        return RequestHandler.login(request)
+        return request_handler.login()
     return render_template("login.html")
 
 
 @app.route("/signup", methods=["GET", "POST"])
+@app.route("/signup.html", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-        return RequestHandler.signup(request)
+        return request_handler.signup()
     return render_template("signup.html")
 
-all_special_redirects = {"login": login, "signup": signup}
-
 if __name__ == "__main__":
+    # use_reloader=False so that its only 1 python process, not 2 and
+    # then requests are only called once(ie post request if requested counts as 2 requests without this)
+    # but then code doesn't auto-reload on change...
     app.run("127.0.0.1", 80, debug=True)

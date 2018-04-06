@@ -5,6 +5,29 @@
     return false;
 });*/
 
+// When user leaves the form
+$("#signup_form").find("#email").on("blur", function(){
+    
+    var email = $("#signup_form").find("#email").val();
+    
+    server_bridge.sendToServer("/", data={"function":"user_exists", "data":email}, function(response){
+        
+        if(response["data"])
+        {
+            console.log("user exists!");
+        }
+        else
+        {
+            console.log("user doesn't exist!");
+        }
+        
+        console.log(response);
+        
+        
+    });    
+    
+});
+
 $("#signup_form").on("submit", function(){
     
     console.log("Signing up...");
@@ -24,7 +47,6 @@ $("#signup_form").on("submit", function(){
     //if(values["password"].length >= 8 && values["password"] == values["password_confirm"]){
     console.log("Signing up!");
     server_bridge.sendToServer("/signup", values, function(response){
-        window.location.href = response["href"];
         console.log(response["data"]);
     });
     //}
