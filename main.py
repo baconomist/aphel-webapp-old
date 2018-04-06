@@ -64,7 +64,4 @@ def signup():
     return render_template("signup.html")
 
 if __name__ == "__main__":
-    # use_reloader=False so that its only 1 python process, not 2 and
-    # then requests are only called once(ie post request if requested counts as 2 requests without this)
-    # but then code doesn't auto-reload on change...
     app.run("127.0.0.1", 80, debug=True)
