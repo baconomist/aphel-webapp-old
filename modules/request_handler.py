@@ -40,7 +40,7 @@ class RequestHandler(object):
     
     def do_signup(self, data):
         database = DatabaseHandler.get_instance()
-        if database.get_user(data.get("email")) is None and data.get("password").length >= 8:
+        if not database.user_exists(data.get("email")) and len(data.get("password")) >= 8:
             database.store_user(User(data.get("email"), self.hash_password(data.get("password"))))
             return "Successfully signed up %s" % data.get("email")
         elif len(data.get("password")) < 8:
