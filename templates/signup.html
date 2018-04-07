@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="static/css/Header-Blue.css">
     <link rel="stylesheet" href="static/css/Highlight-Phone.css">
     <link rel="stylesheet" href="static/css/Google-Style-Login.css">
+    <link rel="stylesheet" href="static/css/input/input_errors.css">
+    <link rel="stylesheet" href="static/css/input/input_sucesses.css">
     <link rel="stylesheet" href="static/css/navbar1.css">
     <link rel="stylesheet" href="static/css/Profile-Edit-Form.css">
     <link rel="stylesheet" href="static/css/Profile-Edit-Form1.css">
@@ -35,9 +37,10 @@
             <div class="d-flex align-items-center" style="height:100vh;background-color:rgb(238,238,238);padding:62vh 20px 55vh;padding-top:480px;">
                 <div class="login-card" style="font-family:'News Cycle', sans-serif;width:350px;height:569px;"><img src="static/img/avatar_2x.png" class="profile-img-card">
                     <p class="profile-name-card"> </p>
-                    <form id="signup_form" class="form-signin"><span class="reauth-email"> </span><input class="form-control" type="email" required="" placeholder="School Email" autofocus="" inputmode="email" id="email"><input class="form-control" type="password" required="" placeholder="Password"
-                            maxlength="16" minlength="8" id="password"><input class="form-control" type="password" required="" placeholder="Confirm Password" maxlength="16" minlength="8" id="pasword_confirm"><input class="form-control" type="text" required=""
-                            placeholder="School" autocomplete="on">
+                    <form id="signup_form" class="form-signin"><span class="reauth-email"> </span>
+                        <div id="inputs"><input class="form-control" type="email" required="" placeholder="School Email" autofocus="" inputmode="email" id="email"><input class="form-control" type="password" required="" placeholder="Password" maxlength="16" minlength="8"
+                                id="password"><input class="form-control" type="password" required="" placeholder="Confirm Password" maxlength="16" minlength="8" id="password_confirm"><input class="form-control" type="text" required="" placeholder="School"
+                                autocomplete="on" id="school"></div>
                         <div class="form-check"><input class="form-check-input" type="radio" name="AuthorityLevel" id="formCheck-2"><label class="form-check-label" for="formCheck-2">Teacher</label></div>
                         <div class="form-check"><input class="form-check-input" type="radio" name="AuthorityLevel" id="formCheck-2"><label class="form-check-label" for="formCheck-2">Student</label></div><span>&nbsp;</span>
                         <div class="checkbox">

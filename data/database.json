@@ -1,5 +1,6 @@
 {
     "users": [
-        "{\"py/object\": \"modules.user.User\", \"name\": \"1234@gmail.com\", \"password\": \"d6165f8f5b4e8cc1d149c83f9d6b84266d2f1544584415c40fcabb91c8a3a45e:34a3df2145be4f79ac95af53242e0494\", \"permission_level\": 0}"
+        "{\"py/object\": \"modules.user.User\", \"name\": \"1234@gmail.com\", \"password\": \"d6165f8f5b4e8cc1d149c83f9d6b84266d2f1544584415c40fcabb91c8a3a45e:34a3df2145be4f79ac95af53242e0494\", \"permission_level\": 0}",
+        "{\"py/object\": \"modules.user.User\", \"name\": \"12234@gmail.com\", \"password\": \"e53a8f0b3eb2d61ba5c46ca04245dd887f41ec537ceab37ef7f7a8d192990359:0ebb170fed224b57835dececb33b7e98\", \"permission_level\": 0}"
     ]
 }

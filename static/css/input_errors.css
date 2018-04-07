@@ -1,0 +1,10 @@
+input.invalid_input {
+  border:2px solid rgb(238,88,88);
+}
+
+span.input_error {
+  float:left;
+  color:red;
+  margin-left:10px;
+}
+

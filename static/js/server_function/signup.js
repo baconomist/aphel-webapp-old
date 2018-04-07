@@ -5,7 +5,7 @@
     return false;
 });*/
 
-// When user leaves the form
+// When user leaves the email box
 $("#signup_form").find("#email").on("blur", function(){
     
     var email = $("#signup_form").find("#email").val();
@@ -14,17 +14,44 @@ $("#signup_form").find("#email").on("blur", function(){
         
         if(response["data"])
         {
-            console.log("user exists!");
+            apply_error_to_input($("#signup_form").find("#email"), "Username already exists!");
+        }   
+        else
+        {
+            remove_error_from_input($("#signup_form").find("#email"));
+            apply_success_to_input($("#signup_form").find("#email"));
+        }
+        
+    });    
+    
+});
+
+$("#signup_form").find("#password").on("blur", function(){
+    var password = $("signup_form").find("#password").val();
+    
+    server_bridge.sendToServer("/", data={"function":"is_password_valid", "data":password}, function(response){
+        
+        if(response["data"])
+        {
+            
         }
         else
         {
-            console.log("user doesn't exist!");
+                
         }
         
-        console.log(response);
+    });
+    
+});
+
+$("#signup_form").find("#password_confirm").on("blur", function(){
+    var password = $("signup_form").find("#password").val();
+    var password_confirm = $("signup_form").find("#password_confirm").val();
+    
+    if(password == password_confirm)
+    {
         
-        
-    });    
+    } 
     
 });
 
