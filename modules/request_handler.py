@@ -40,15 +40,15 @@ class RequestHandler(object):
         is_user_valid = self.is_userdata_valid(data.get("email"), data.get("password"))
         if "Success" in is_user_valid:
             database.store_user(User(data.get("email"), self.hash_password(data.get("password"))))
-        return is_user_valid
+        return jsonify(status=is_user_valid)
 
     def do_login(self, data):
         for user in DatabaseHandler.get_instance().get_users():
             if user.name == data.get("email") and self.check_password(user.password, data.get("password")):
-                return "Logged in as %s" % user.name
+                return jsonify(status="Logged in as %s" % user.name, data=True)
 
-        return "Failed to log in. The login credentials may be incorrect " \
-               "\n or the user does not exist."
+        return jsonify(status="Failed to log in. The login credentials may be incorrect " \
+               "\n or the user does not exist.", data=False)
 
     def is_user_admin(self):
         database = DatabaseHandler.get_instance()

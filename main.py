@@ -52,7 +52,7 @@ def index():
 @app.route("/login.html", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        return jsonify(data=request_handler.login())
+        return request_handler.login()
     return render_template("login.html")
 
 
@@ -60,7 +60,7 @@ def login():
 @app.route("/signup.html", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-        return jsonify(data=request_handler.signup())
+        return request_handler.signup()
     return render_template("signup.html")
 
 if __name__ == "__main__":
