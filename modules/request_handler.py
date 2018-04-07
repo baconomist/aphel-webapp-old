@@ -37,10 +37,10 @@ class RequestHandler(object):
 
     def do_signup(self, data):
         database = DatabaseHandler.get_instance()
-        user = User(data["email"], data["password"])
-        if "Success" in self.is_user_valid(user):
+        is_user_valid = self.is_userdata_valid(data.get("email"), data.get("password"))
+        if "Success" in is_user_valid:
             database.store_user(User(data.get("email"), self.hash_password(data.get("password"))))
-        return self.is_user_valid(user)
+        return is_user_valid
 
     def do_login(self, data):
         for user in DatabaseHandler.get_instance().get_users():
@@ -72,16 +72,17 @@ class RequestHandler(object):
     Helper methods
     '''
 
-    def is_user_valid(self, user):
+    def is_userdata_valid(self, email, password):
         database = DatabaseHandler.get_instance()
-        if not database.user_exists(user.name) and len(user.password) >= 8 and "@pdsb.net" in user.name:
-            return "Successfully signed up %s" % user.name
-        elif len(user.password) < 8:
+
+        if not database.user_exists(email) and len(password) >= 8 and "@pdsb.net" in email:
+            return "Successfully signed up %s" % email
+        elif len(password) < 8:
             return "Failed to sign up! Password has to be >= 8  characters in length"
-        elif not "@pdsb.net" in user.name:
+        elif not "@pdsb.net" in email:
             return "Failed to signup! You must use your @pdsb.net email!"
         else:
-            return "Failed to sign up! User %s already exists!" % user.name
+            return "Failed to sign up! User %s already exists!" % email
 
     def hash_password(self, password):
         # uuid is used to generate a random number
