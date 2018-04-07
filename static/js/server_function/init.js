@@ -36,7 +36,6 @@ function apply_success_to_input(input_element)
 function remove_error_from_input(input_element)
 {
     input_element.removeClass("invalid_input");
-    console.log(input_element.attr("id"));
     input_element.parent().find("#" + input_element.attr("id") + "_error").remove();
 }
 

@@ -5,41 +5,67 @@
     return false;
 });*/
 
+function run_password_error_check()
+{
+    var password = $("#signup_form").find("#password").val();
+    var password_confirm = $("#signup_form").find("#password_confirm").val();
+    
+    console.log(password.toString().length);
+    
+    if(password.toString().length < 8)
+    {
+        apply_error_to_input($("#signup_form").find("#password"), "Password should be at least 8 characters long.");
+    }
+    else if(password == password_confirm)
+    {
+        apply_success_to_input($("#signup_form").find("#password"));
+        apply_success_to_input($("#signup_form").find("#password_confirm"));
+    } 
+    else if(password_confirm.toString().length > 0)
+    {
+        apply_error_to_input($("#signup_form").find("#password"), "Passwords do not match!")   
+        apply_error_to_input($("#signup_form").find("#password_confirm"), "Passwords do not match!")    
+    }    
+    else
+    {
+        apply_success_to_input($("#signup_form").find("#password"));
+    }
+}
+
+function run_email_error_check()
+{
+    var email = $("#signup_form").find("#email").val();
+    
+    if(!email.includes("@pdsb.net"))
+    {
+        apply_error_to_input($("#signup_form").find("#email"), "Please user your @pdsb.net email!");
+    }
+    else{
+        server_bridge.sendToServer("/", data={"function":"user_exists", "data":email}, function(response){
+
+            if(response["data"])
+            {
+                apply_error_to_input($("#signup_form").find("#email"), "Username already exists!");
+            }   
+            else
+            {
+                apply_success_to_input($("#signup_form").find("#email"));
+            }
+        });  
+    }
+    
+}
+
 // When user leaves the email box
 $("#signup_form").find("#email").on("blur", function(){
     
-    var email = $("#signup_form").find("#email").val();
-
-    server_bridge.sendToServer("/", data={"function":"user_exists", "data":email}, function(response){
-        
-        if(response["data"])
-        {
-            apply_error_to_input($("#signup_form").find("#email"), "Username already exists!");
-        }   
-        else
-        {
-            remove_error_from_input($("#signup_form").find("#email"));
-            apply_success_to_input($("#signup_form").find("#email"));
-        }
-        
-    });    
+    run_email_error_check(); 
     
 });
 
 $("#signup_form").find("#password").on("blur", function(){
     
-    var password = $("#signup_form").find("#password").val();
-    var password_confirm = $("#signup_form").find("#password_confirm").val();
-    if(password == password_confirm)
-    {
-        apply_success_to_input($("#signup_form").find("#password"));
-        apply_success_to_input($("#signup_form").find("#password_confirm"));
-    } 
-    else
-    {
-        apply_error_to_input($("#signup_form").find("#password"), "Passwords do not match!")   
-        apply_error_to_input($("#signup_form").find("#password_confirm"), "Passwords do not match!")    
-    }
+    run_password_error_check();
     
     var password = $("signup_form").find("#password").val();
     
@@ -59,19 +85,7 @@ $("#signup_form").find("#password").on("blur", function(){
 });
 
 $("#signup_form").find("#password_confirm").on("blur", function(){
-    var password = $("#signup_form").find("#password").val();
-    var password_confirm = $("#signup_form").find("#password_confirm").val();
-    if(password == password_confirm)
-    {
-        apply_success_to_input($("#signup_form").find("#password"));
-        apply_success_to_input($("#signup_form").find("#password_confirm"));
-    } 
-    else
-    {
-        apply_error_to_input($("#signup_form").find("#password"), "Passwords do not match!")   
-        apply_error_to_input($("#signup_form").find("#password_confirm"), "Passwords do not match!")    
-    }
-    
+    run_password_error_check();    
 });
 
 $("#signup_form").on("submit", function(){
