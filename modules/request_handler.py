@@ -1,3 +1,5 @@
+import os
+
 from modules.database_handler import DatabaseHandler
 from modules.user import User
 import logging
@@ -9,15 +11,17 @@ class RequestHandler(object):
     def __init__(self):
         # This is why this class needs an instance,
         # The app crashes if this dict is static
-        self.functions = {"user_exists": DatabaseHandler.get_instance().user_exists}
+        self.functions = {"user_exists": DatabaseHandler.get_instance().user_exists,
+                          "get_dashboard_data": self.dashboard}
 
     def handle_abstract(self):
         try:
             return jsonify(data=self.functions[request.form.get("function")](request.form.get("data")),
                            status="Success")
         except:
-            return jsonify(data="Failed to execute abstract request!", status="Error",
-                           reason="No matching function found: {function}".format(function=request.form.get("function")))
+            return jsonify(status="Error",
+                           reason="Failed to execute abstract request!" +
+                                  "\nNo matching function found: {function}".format(function=request.form.get("function")))
 
     def login(self):
         logging.info("self: Logging in...")
@@ -49,6 +53,27 @@ class RequestHandler(object):
 
         return jsonify(status="Failed to log in. The login credentials may be incorrect " \
                "\n or the user does not exist.", data=False)
+
+    def dashboard(self):
+        try:
+            file = open(os.path.join(__file__, "..\\..\\data\\dashboard.html"), "r")
+            dashboard = file.read()
+            file.close()
+            print(dashboard)
+            return jsonify(data=dashboard)
+        except:
+            print("b")
+            return jsonify(data="")
+
+    def announcement(self):
+
+        announcement_data = request.form.get("data")
+
+        dashboard = open(os.path.join(__file__, "..\\..\\data\\dashboard.html"), "w")
+        dashboard.write(announcement_data)
+        dashboard.close()
+
+        return jsonify(status="Success")
 
     def is_user_admin(self):
         database = DatabaseHandler.get_instance()

@@ -2,9 +2,14 @@
 
 class ServerBridge {
   constructor() {
-    var protocol = location.protocol;
+    /*var protocol = location.protocol;
     var slashes = protocol.concat("//");
     this.host = slashes.concat(window.location.hostname);
+    */
+    var url = window.location.href;
+    url = url.split("/");
+    this.host = url[0] + "//" + url[2];
+      
     console.log(this.host);
   }
 

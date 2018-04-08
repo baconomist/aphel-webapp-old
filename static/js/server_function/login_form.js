@@ -22,9 +22,8 @@ $("#login_form").on("submit", function(){
         {
             setCookie("login", JSON.stringify({"email":values["email"], "password":values["password"]}), 1)
             console.log("Succesfully logged in as: " + values["email"])
-            console.log(JSON.parse(getCookie("login"))["password"])
+            console.log(JSON.parse(getCookie("login")))
         }
-        console.log(response["data"])
     });
     
     // Don't post to server

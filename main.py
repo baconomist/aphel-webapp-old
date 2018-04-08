@@ -37,6 +37,7 @@ all_special_redirects = {"login": login, "signup": signup}
 
 request_handler = RequestHandler()
 
+
 @app.route("/", methods=["GET", "POST"])
 @app.route("/home")
 @app.route("/index")
@@ -63,5 +64,20 @@ def signup():
         return request_handler.signup()
     return render_template("signup.html")
 
+@app.route("/announcement", methods=["GET", "POST"])
+@app.route("/announcement.html", methods=["GET", "POST"])
+def announcement():
+    if request.method == "POST":
+        return request_handler.announcement()
+    return render_template("announcement.html")
+
+@app.route("/dashboard", methods=["GET", "POST"])
+@app.route("/dashboard.html", methods=["GET", "POST"])
+def dashboard():
+    if request.method == "POST":
+        return request_handler.dashboard()
+    return render_template("dashboard.html")
+
+
 if __name__ == "__main__":
-    app.run("127.0.0.1", 80, debug=True)
+    app.run("192.168.224.68", 6702, debug=True)

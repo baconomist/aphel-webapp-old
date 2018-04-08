@@ -1,0 +1,12 @@
+----------
+
+Sun Apr 08 2018 17:33:53 GMT-0400 (Eastern Daylight Time)
+
+[10516] Failed to execute script export_script
+Traceback (most recent call last):
+  File "export_script.py", line 52, in <module>
+  File "shutil.py", line 241, in copy
+  File "shutil.py", line 120, in copyfile
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\Lucas\\Desktop\\Projects\\PCHackers\\webapp\\assets\\bootstrap\\js\\bootstrap.min.js.tmp'
+
+
