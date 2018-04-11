@@ -37,7 +37,6 @@ function init_quill(div){
     announcement_id = 0
     server_bridge.sendToServer("", {"function": "get_new_announcement_id", "data":JSON.parse(getCookie("login"))["email"]}, function(response){
         announcement_id = response["data"];
-        console.log("announcementid "  + response["data"]);
     });    
     
     quill.on('text-change', function(delta, oldDelta, source) {

@@ -6,7 +6,7 @@ server_bridge.sendToServer("/dashboard", data=null, function(response){
     for(i = 0; i < response["data"].length; i++)
     {
         console.log(response["data"][i])
-        div.append("<div>" + JSON.parse(response["data"][i])["content_html"] + "</div>")
+        div.append("<div>" + "<p>"  + JSON.parse(response["data"][i])["user_name"] + ":</p>" + JSON.parse(response["data"][i])["content_html"] + "</div>")
     }
 });  
 }
