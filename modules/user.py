@@ -1,8 +1,28 @@
+from modules.announcement import Announcement
+
+
 class User(object):
-    def __init__(self, name, password):
-        self.name = name
+    def __init__(self, uid, password):
+        self.uid = uid
         self.password = password
         self.permission_level = 0
+        self.announcements = []
+
+    def create_announcement(self, content_html: str):
+        # if for some reason user has no attribute "self.announcements"
+        try:
+            self.announcements.append(Announcement(content_html=content_html,
+                                                   user_name=self.uid, id=len(self.announcements) + 1))
+        except:
+            self.announcements = []
+            self.announcements.append(Announcement(content_html=content_html,
+                                                   user_name=self.uid, id=0))
+
+    def announcement_exists(self, announcement_e):
+        for announcement in self.announcements:
+            if announcement.id == announcement_e.id:
+                return True
+        return False
 
     '''
     permission level 0 - can only view posted announcements

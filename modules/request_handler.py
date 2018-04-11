@@ -6,6 +6,8 @@ import logging
 import hashlib, uuid
 from flask import jsonify, request
 
+import datetime
+
 
 class RequestHandler(object):
     def __init__(self):
@@ -16,17 +18,19 @@ class RequestHandler(object):
 
     def handle_abstract(self):
         try:
-            return jsonify(data=self.functions[request.form.get("function")](request.form.get("data")),
-                           status="Success")
+            return jsonify(
+                data=self.functions[request.get_json(force=True)["function"]](request.get_json(force=True)["data"]),
+                status="Success")
         except:
             return jsonify(status="Error",
                            reason="Failed to execute abstract request!" +
-                                  "\nNo matching function found: {function}".format(function=request.form.get("function")))
+                                  "\nNo matching function found: {function}".format(
+                                      function=request.get_json(force=True)["function"]))
 
     def login(self):
         logging.info("self: Logging in...")
         assert request.method == "POST", b'The request method for login() was not "POST"!'
-        data = request.form
+        data = request.get_json(force=True)
         result = self.do_login(data)
         logging.info(result)
         return result
@@ -34,64 +38,60 @@ class RequestHandler(object):
     def signup(self):
         logging.info("self: Signing up...")
         assert request.method == "POST", b'The request method for signup() was not "POST"!'
-        data = request.form
+        data = request.get_json(force=True)
         result = self.do_signup(data)
         logging.info(result)
         return result
 
     def do_signup(self, data):
         database = DatabaseHandler.get_instance()
-        is_user_valid = self.is_userdata_valid(data.get("email"), data.get("password"))
+        is_user_valid = self.is_userdata_valid(data["email"], data["password"])
         if "Success" in is_user_valid:
-            database.store_user(User(data.get("email"), self.hash_password(data.get("password"))))
+            database.store_user(User(data["email"], self.hash_password(data["password"])))
         return jsonify(status=is_user_valid)
 
     def do_login(self, data):
+        print(data)
         for user in DatabaseHandler.get_instance().get_users():
-            if user.name == data.get("email") and self.check_password(user.password, data.get("password")):
-                return jsonify(status="Logged in as %s" % user.name, data=True)
+            if user.uid == data["email"] and self.check_password(user.password, data["password"]):
+                return jsonify(status="Logged in as %s" % user.uid, data=True)
 
         return jsonify(status="Failed to log in. The login credentials may be incorrect " \
-               "\n or the user does not exist.", data=False)
+                              "\n or the user does not exist.", data=False)
 
     def dashboard(self):
-        try:
-            file = open(os.path.join(__file__, "..\\..\\data\\dashboard.html"), "r")
-            dashboard = file.read()
-            file.close()
-            print(dashboard)
-            return jsonify(data=dashboard)
-        except:
-            print("b")
-            return jsonify(data="")
+        return jsonify(data=DatabaseHandler.get_instance().get_announcements_json(datetime.datetime.now()))
 
     def announcement(self):
+        if self.check_password(DatabaseHandler.get_instance().get_user(
+                request.get_json(force=True)["data"]["login"]["email"]).password,
+                               request.get_json(force=True)["data"]["login"]["password"]):
 
-        announcement_data = request.form.get("data")
+            user = DatabaseHandler.get_instance().get_user(request.get_json(force=True)["data"]["login"]["email"])
+            user.create_announcement(content_html=request.get_json(force=True)["data"]["announcement"])
+            DatabaseHandler.get_instance().store_user(user)
 
-        dashboard = open(os.path.join(__file__, "..\\..\\data\\dashboard.html"), "w")
-        dashboard.write(announcement_data)
-        dashboard.close()
-
-        return jsonify(status="Success")
+            return jsonify(status="Success")
+        else:
+            return jsonify(status="Error")
 
     def is_user_admin(self):
         database = DatabaseHandler.get_instance()
-        data = request.form
-        return database.get_user(data.get("email")).get_permission_level() > 2
+        data = request.get_json(force=True)
+        return database.get_user(data["email"]).get_permission_level() > 2
 
     def is_user_auth_for_post(self):
         database = DatabaseHandler.get_instance()
-        data = request.form
-        return database.get_user(data.get("email")).get_permission_level() > 1,
+        data = request.get_json(force=True)
+        return database.get_user(data["email"]).get_permission_level() > 1,
 
     def is_user_auth_for_post_review(self):
         database = DatabaseHandler.get_instance()
-        data = request.form
-        return database.get_user(data.get("email")).get_permission_level() > 0
+        data = request.get_json(force=True)
+        return database.get_user(data["email"]).get_permission_level() > 0
 
     def user_exists(self):
-        return DatabaseHandler.get_instance().user_exists(request.form.get("data"))
+        return DatabaseHandler.get_instance().user_exists(request.get_json(force=True)["data"])
 
     '''
     Helper methods

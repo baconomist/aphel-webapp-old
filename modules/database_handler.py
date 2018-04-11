@@ -3,10 +3,10 @@ from modules.user import User
 import logging
 import copy
 import os
+import datetime
 
 class DatabaseHandler(object):
-
-    databaseLocation = os.path.join(__file__, "..\\..\\data\\database.json")
+    _databaseLocation = os.path.join(__file__, "..\\..\\data\\database.json")
 
     _instance = None
 
@@ -19,19 +19,19 @@ class DatabaseHandler(object):
     def load_data(self):
         logging.info("Loading database...")
 
-        file = open(DatabaseHandler.databaseLocation, "r+")
+        file = open(DatabaseHandler._databaseLocation, "r+")
         self.raw_data = json.load(file)
         file.close()
 
         logging.info("Database Loaded.")
 
     def store_user(self, user):
-        logging.info("Storing user: " + user.name)
+        logging.info("Storing user: " + user.uid)
 
-        if self.get_user(user.name) != None:
+        if self.get_user(user.uid) != None:
             count = 0
             for u in self.raw_data["users"]:
-                if jsonpickle.decode(u).name == user.name:
+                if jsonpickle.decode(u).uid == user.uid:
                     self.raw_data["users"][count] = jsonpickle.encode(user)
                 count += 1
         else:
@@ -58,23 +58,22 @@ class DatabaseHandler(object):
         logging.info("Getting user: " + username)
 
         for user in self.get_users():
-            if user.name == username:
+            if user.uid == username:
                 logging.info("User found: " + username)
                 return user
 
         logging.info("User not found: " + username)
 
-    def user_exists(self, username:str):
+    def user_exists(self, username: str):
         for user in self.get_users():
-            if user.name == username:
+            if user.uid == username:
                 return True
         return False
-
 
     def write(self):
         logging.info("Writing to database.")
 
-        file = open(DatabaseHandler.databaseLocation, "w")
+        file = open(DatabaseHandler._databaseLocation, "w")
         json.dump(self.raw_data, file, sort_keys=True, indent=4)
         file.close()
 
@@ -85,6 +84,14 @@ class DatabaseHandler(object):
             data["users"][count] = jsonpickle.decode(user)
             count += 1
         return data["users"]
+
+    def get_announcements_json(self, date):
+        announcements_json = []
+        for user in self.get_users():
+            for announcement in user.announcements:
+                if announcement.date_created.day == date.day:
+                    announcements_json.append(announcement.to_json())
+        return announcements_json
 
     @staticmethod
     def get_instance():

@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect
 
-from modules.request_handler import *
+from modules.request_handler import RequestHandler
 
 import os
 import logging
@@ -80,4 +80,4 @@ def dashboard():
 
 
 if __name__ == "__main__":
-    app.run("192.168.224.68", 6702, debug=True)
+    app.run("127.0.0.1", 80, debug=True)

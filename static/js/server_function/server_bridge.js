@@ -15,6 +15,7 @@ class ServerBridge {
 
   sendToServer(url_ext, data, callback)
   {      
+      data = JSON.stringify(data);
     console.log("**ServerBridge** Sending data to: " + this.host + url_ext);
     $.post(this.host + url_ext, data)           
        .done(
