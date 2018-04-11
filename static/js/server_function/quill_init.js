@@ -24,7 +24,7 @@ function init_quill(div){
         [{ 'font': [] }],
         [{ 'align': [] }],
 
-        ['clean']                                         // remove formatting button
+        ['clean']                                         // add a remove formatting button
     ];
 
     var quill = new Quill("#" + div.attr('id'), {
@@ -45,8 +45,12 @@ function init_quill(div){
         } else if (source == 'user') {
             console.log("A user action triggered this change.");
             console.log(document.getElementById("editor").children[0].innerHTML)
+            
+            
             html = document.getElementById("editor").children[0].innerHTML;
 
+            html = quill.container.firstChild.innerHTML;
+            
             server_bridge.sendToServer("/announcement", data={"data":{"login":JSON.parse(getCookie("login")), 
                                       "announcement": {"content_html":html, "id": announcement_id}}}, 
             function(response){

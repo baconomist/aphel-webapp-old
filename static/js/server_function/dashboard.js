@@ -3,6 +3,7 @@ div = $("#dashboard");
 
 server_bridge.sendToServer("/dashboard", data=null, function(response){
     //div.html(response["data"]);
+    response["data"] = response["data"].reverse();
     for(i = 0; i < response["data"].length; i++)
     {
         console.log(response["data"][i])

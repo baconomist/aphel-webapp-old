@@ -5,6 +5,7 @@ import copy
 import os
 import datetime
 
+
 class DatabaseHandler(object):
     _databaseLocation = os.path.join(__file__, "..\\..\\data\\database.json")
 
@@ -85,12 +86,22 @@ class DatabaseHandler(object):
             count += 1
         return data["users"]
 
-    def get_announcements_json(self, date):
-        announcements_json = []
+    def get_announcements_json(self):
+        announcement_dates = {}
+
         for user in self.get_users():
             for announcement in user.announcements:
-                if announcement.date_created.day == date.day:
-                    announcements_json.append(announcement.to_json())
+                announcement_dates[announcement.time_stamp] = announcement
+
+        announcements = []
+        for announcement_date in sorted(announcement_dates.keys(), key=int):
+            announcements.append(announcement_dates[announcement_date])
+
+        print(announcement_dates)
+        announcements_json = []
+        for announcement in announcements:
+            announcements_json.append(announcement.to_json())
+
         return announcements_json
 
     @staticmethod

@@ -60,7 +60,7 @@ class RequestHandler(object):
                               "\n or the user does not exist.", data=False)
 
     def dashboard(self):
-        return jsonify(data=DatabaseHandler.get_instance().get_announcements_json(datetime.datetime.now()))
+        return jsonify(data=DatabaseHandler.get_instance().get_announcements_json())
 
     def announcement(self):
         if self.check_password(DatabaseHandler.get_instance().get_user(
