@@ -8,15 +8,18 @@ class User(object):
         self.permission_level = 0
         self.announcements = []
 
-    def create_announcement(self, content_html: str):
+    def create_announcement(self, content_html: str, id: int):
         # if for some reason user has no attribute "self.announcements"
         try:
-            self.announcements.append(Announcement(content_html=content_html,
-                                                   user_name=self.uid, id=len(self.announcements) + 1))
+            self.get_announcement_by_id(id).content_html = content_html
         except:
-            self.announcements = []
-            self.announcements.append(Announcement(content_html=content_html,
-                                                   user_name=self.uid, id=0))
+            self.announcements.append(Announcement(content_html=content_html, user_name=self.uid, id=id))
+
+    def get_announcement_by_id(self, id):
+        for announcement in self.announcements:
+            if announcement.id == id:
+                return announcement
+        return None
 
     def announcement_exists(self, announcement_e):
         for announcement in self.announcements:

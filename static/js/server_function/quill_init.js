@@ -1,9 +1,12 @@
 if(window.location.href.includes("announcement")){
+    
     div = $("#editor");
+    
+    init_quill(div)    
+}
 
-    // Clear editor html
-    div.html("");
-
+function init_quill(div){
+    
     var toolbarOptions = [
         ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
         ['blockquote', 'code-block'],
@@ -24,13 +27,19 @@ if(window.location.href.includes("announcement")){
         ['clean']                                         // remove formatting button
     ];
 
-    var quill = new Quill('#editor', {
+    var quill = new Quill("#" + div.attr('id'), {
             theme: 'snow',
             modules: {
             toolbar: toolbarOptions
         }
     });
-
+    
+    announcement_id = 0
+    server_bridge.sendToServer("", {"function": "get_new_announcement_id", "data":JSON.parse(getCookie("login"))["email"]}, function(response){
+        announcement_id = response["data"];
+        console.log("announcementid "  + response["data"]);
+    });    
+    
     quill.on('text-change', function(delta, oldDelta, source) {
         if (source == 'api') {
             console.log("An API call triggered this change.");
@@ -39,7 +48,9 @@ if(window.location.href.includes("announcement")){
             console.log(document.getElementById("editor").children[0].innerHTML)
             html = document.getElementById("editor").children[0].innerHTML;
 
-            server_bridge.sendToServer("/announcement", data={"data":{"login":JSON.parse(getCookie("login")), "announcement": html}}, function(response){
+            server_bridge.sendToServer("/announcement", data={"data":{"login":JSON.parse(getCookie("login")), 
+                                      "announcement": {"content_html":html, "id": announcement_id}}}, 
+            function(response){
                 console.log("Sent announcement to server!");
             });
 
@@ -47,5 +58,4 @@ if(window.location.href.includes("announcement")){
     });   
 
 }
-
 
