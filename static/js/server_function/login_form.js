@@ -29,7 +29,6 @@ $("#login_form").on("submit", function(){
         }
         else
         {
-            console.log("aaaa");
             $('body').find("#failed_login_modal").modal('show');   
         }
     });

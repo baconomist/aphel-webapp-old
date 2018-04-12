@@ -14,7 +14,8 @@ class RequestHandler(object):
         # This is why this class needs an instance,
         # The app crashes if this dict is static
         self.functions = {"user_exists": DatabaseHandler.get_instance().user_exists,
-                          "get_dashboard_data": self.dashboard, "get_new_announcement_id": self.get_new_announcement_id}
+                          "get_dashboard_data": self.dashboard, "get_new_announcement_id": self.get_new_announcement_id,
+                            "get_announcements_for_user": self.get_announcements_for_user}
 
     def handle_abstract(self):
         try:
@@ -67,7 +68,6 @@ class RequestHandler(object):
                 request.get_json(force=True)["data"]["login"]["email"]).password,
                                request.get_json(force=True)["data"]["login"]["password"]):
 
-
             announcement_id = request.get_json(force=True)["data"]["announcement"]["id"]
 
             user = DatabaseHandler.get_instance().get_user(request.get_json(force=True)["data"]["login"]["email"])
@@ -99,6 +99,12 @@ class RequestHandler(object):
 
     def get_new_announcement_id(self, user_id):
         return len(DatabaseHandler.get_instance().get_user(user_id).announcements) + 1
+
+    def get_announcements_for_user(self, user_name):
+        announcements = []
+        for announcement in DatabaseHandler.get_instance().get_user(user_name).announcements:
+            announcements.append(announcement.to_json())
+        return announcements
 
     '''
     Helper methods

@@ -78,6 +78,11 @@ def dashboard():
         return request_handler.dashboard()
     return render_template("dashboard.html")
 
+@app.route("/user_announcements", methods=["GET", "POST"])
+@app.route("/user_announcements.html", methods=["GET", "POST"])
+def user_announcements():
+    return render_template("user_announcements.html")
+
 
 if __name__ == "__main__":
     app.run("127.0.0.1", 80, debug=True)
