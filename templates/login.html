@@ -56,8 +56,8 @@
                                     <div class="dropdown-menu"
                                         role="menu"><a class="dropdown-item" role="presentation" href="http://pchacks.ca/index.html#about"><i class="fa fa-handshake-o" style="padding-right:5px;"></i>About Us</a><a class="dropdown-item" role="presentation" href="http://pchacks.ca/index.html#contact"><i class="fa fa-volume-control-phone" style="padding-right:5px;"></i>Contact</a></div>
                                 </li>
-                                <li class="dropdown show"><a class="dropdown-toggle nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="true" href="#" style="padding-right:20px;"><i class="fa fa-user" style="padding-right:7px;"></i>User</a>
-                                    <div class="dropdown-menu show"
+                                <li class="dropdown"><a class="dropdown-toggle nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#" style="padding-right:20px;"><i class="fa fa-user" style="padding-right:7px;"></i>User</a>
+                                    <div class="dropdown-menu"
                                         role="menu"><a class="dropdown-item" role="presentation" href="profile.html"><i class="fa fa-address-card" style="padding-right:5px;"></i>Profile</a><a class="dropdown-item" role="presentation" href="announcement.html"><i class="fa fa-envelope-open-o" style="padding-right:5px;"></i>Create Announcement</a>
                                         <a
                                             class="dropdown-item" role="presentation" href="logout.html"><i class="fa fa-sign-out"></i>&nbsp;Logout</a><a class="dropdown-item" role="presentation" href="user_announcements.html">Edit Announcements</a></div>
@@ -80,6 +80,17 @@
                 class="list-inline"></ul>
                 <p class="copyright" style="color:rgb(255,255,255);">Alphel @ 2018</p>
         </footer><a href="#0" class="cd-top js-cd-top cd-top--fade-out cd-top--show" style="background-image:url('static/img/cd-top-arrow.svg');width:40px;height:40px;">Top</a></div>
+    <div class="modal fade" role="dialog" tabindex="-1" id="failed_login_modal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+                <div class="modal-body">
+                    <p>Failed to log in. Please make sure you have the correct login information.</p>
+                </div>
+                <div class="modal-footer"><button class="btn btn-primary" type="button" id="close_modal_button">Close</button></div>
+            </div>
+        </div>
+    </div>
     <script src="static/js/jquery.min.js"></script>
     <script src="static/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
@@ -97,6 +108,7 @@
     <script src="static/js/server_function/dashboard.js"></script>
     <script src="static/js/server_function/quill_init.js"></script>
     <script src="static/js/server_function/edit_announcements.js"></script>
+    <script src="static/js/website_function/failed_login_modal.js"></script>
 </body>
 
 </html>

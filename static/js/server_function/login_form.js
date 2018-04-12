@@ -23,6 +23,14 @@ $("#login_form").on("submit", function(){
             setCookie("login", JSON.stringify({"email":values["email"], "password":values["password"]}), 1)
             console.log("Succesfully logged in as: " + values["email"])
             console.log(JSON.parse(getCookie("login")))
+            
+            // Redirect to home page after logged in
+            window.location.replace(server_bridge.host);
+        }
+        else
+        {
+            console.log("aaaa");
+            $('body').find("#failed_login_modal").modal('show');   
         }
     });
     
