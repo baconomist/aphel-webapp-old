@@ -1,11 +1,16 @@
-if(window.location.href.includes("announcement")){
+if(window.location.href.includes("announcement") && !window.location.href.includes("user")){
     
     div = $("#editor");
     
-    init_quill(div)    
+    announcement_id = 0
+    server_bridge.sendToServer("", {"function": "get_new_announcement_id", "data":JSON.parse(getCookie("login"))["email"]}, function(response){
+        announcement_id = response["data"];
+    });    
+    
+    init_quill(div, announcement_id);   
 }
 
-function init_quill(div){
+function init_quill(div, announcement_id){
     
     var toolbarOptions = [
         ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -34,20 +39,13 @@ function init_quill(div){
         }
     });
     
-    announcement_id = 0
-    server_bridge.sendToServer("", {"function": "get_new_announcement_id", "data":JSON.parse(getCookie("login"))["email"]}, function(response){
-        announcement_id = response["data"];
-    });    
-    
     quill.on('text-change', function(delta, oldDelta, source) {
         if (source == 'api') {
             console.log("An API call triggered this change.");
         } else if (source == 'user') {
-            console.log("A user action triggered this change.");
-            console.log(document.getElementById("editor").children[0].innerHTML)
+            console.log("A user action triggered this change.");            
             
-            
-            html = document.getElementById("editor").children[0].innerHTML;
+            html = document.getElementById(div.attr("id")).children[0].innerHTML;
 
             html = quill.container.firstChild.innerHTML;
             

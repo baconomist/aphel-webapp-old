@@ -15,7 +15,7 @@ class RequestHandler(object):
         # The app crashes if this dict is static
         self.functions = {"user_exists": DatabaseHandler.get_instance().user_exists,
                           "get_dashboard_data": self.dashboard, "get_new_announcement_id": self.get_new_announcement_id,
-                            "get_announcements_for_user": self.get_announcements_for_user}
+                            "get_announcements_for_user": self.get_announcements_for_user, "delete_announcement": self.delete_announcement}
 
     def handle_abstract(self):
         try:
@@ -64,9 +64,7 @@ class RequestHandler(object):
         return jsonify(data=DatabaseHandler.get_instance().get_announcements_json())
 
     def announcement(self):
-        if self.check_password(DatabaseHandler.get_instance().get_user(
-                request.get_json(force=True)["data"]["login"]["email"]).password,
-                               request.get_json(force=True)["data"]["login"]["password"]):
+        if self.is_user_logged_in():
 
             announcement_id = request.get_json(force=True)["data"]["announcement"]["id"]
 
@@ -105,6 +103,20 @@ class RequestHandler(object):
         for announcement in DatabaseHandler.get_instance().get_user(user_name).announcements:
             announcements.append(announcement.to_json())
         return announcements
+
+    def delete_announcement(self, data):
+        login = data["login"]
+        announcement_id = data["announcement_id"]
+
+        #if self.is_user_logged_in():
+
+
+    def is_user_logged_in(self):
+        return self.check_password(DatabaseHandler.get_instance().get_user(
+            request.get_json(force=True)["data"]["login"]["email"]).password,
+                            request.get_json(force=True)["data"]["login"]["password"])
+
+
 
     '''
     Helper methods
