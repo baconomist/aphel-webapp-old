@@ -14,7 +14,7 @@ function init_quill(div, announcement_id){
     
     var toolbarOptions = [
         ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-        ['blockquote', 'code-block'],
+        //['blockquote', 'code-block'],
 
         [{ 'header': 1 }, { 'header': 2 }],               // custom button values
         [{ 'list': 'ordered'}, { 'list': 'bullet' }],
