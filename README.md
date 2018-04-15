@@ -1,29 +1,13 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+**This readme includes the description and contributors of the Aphel school app**
 
-### What is this repository for? ###
+# Description #
+**The Aphel school webapp is ...** 
+# Shrey fill this out .......#
+**********
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+#Contributors
+	
+- **Lucas Borowiecki** --> Lead Programmer, Backend and front-end programming
+- **Asad Khan**..........
