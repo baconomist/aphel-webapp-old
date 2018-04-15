@@ -1,6 +1,6 @@
 if(window.location.href.includes("user_announcements")){
    
-    $('body').find("#announcement_template").hide();
+    //$('body').find("#announcement_template").hide();
     
     login_check();
     

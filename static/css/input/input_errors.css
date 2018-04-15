@@ -7,3 +7,7 @@ span.input_error {
   margin-left:10px;
 }
 
+#announcement_template {
+  display:none;
+}
+
