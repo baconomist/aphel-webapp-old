@@ -15,6 +15,18 @@ class User(object):
         except:
             self.announcements.append(Announcement(content_html=content_html, user_name=self.uid, id=id))
 
+    def remove_announcement_by_id(self, id):
+        copy = []
+        for announcement in self.announcements:
+            copy.append(announcement)
+
+        index = 0
+        for announcement in copy:
+            if announcement.id == id:
+                self.announcements.pop(index)
+                break
+            index += 1
+
     def get_announcement_by_id(self, id):
         for announcement in self.announcements:
             if announcement.id == id:

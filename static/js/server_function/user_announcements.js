@@ -79,8 +79,12 @@ function deleteAnnouncement(announcement)
 {
     console.log("delete");
     server_bridge.sendToServer("", {"function": "delete_announcement", 
-                                    "data": {"login":JSON.parse(getCookie("login")), "announcement_id": announcement["id"]}
-   });
+                                    "data": {"login":JSON.parse(getCookie("login")), "announcement_id": announcement["id"]}}, 
+        function(response){
+            location.reload();
+        }
+
+    );
 }
 
 

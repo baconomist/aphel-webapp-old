@@ -108,8 +108,13 @@ class RequestHandler(object):
         login = data["login"]
         announcement_id = data["announcement_id"]
 
-        #if self.is_user_logged_in():
-
+        if self.is_user_logged_in():
+            user = DatabaseHandler.get_instance().get_user(request.get_json(force=True)["data"]["login"]["email"])
+            user.remove_announcement_by_id(announcement_id)
+            DatabaseHandler.get_instance().store_user(user)
+            print("hi")
+            return "Announcement deleted"
+        return "User not logged in"
 
     def is_user_logged_in(self):
         return self.check_password(DatabaseHandler.get_instance().get_user(
