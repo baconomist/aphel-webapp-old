@@ -13,94 +13,105 @@ class RequestHandler(object):
     def __init__(self):
         # This is why this class needs an instance,
         # The app crashes if this dict is static
-        self.functions = {"user_exists": DatabaseHandler.get_instance().user_exists,
+        '''self.functions = {"user_exists": self.database.user_exists,
                           "get_dashboard_data": self.dashboard, "get_new_announcement_id": self.get_new_announcement_id,
-                            "get_announcements_for_user": self.get_announcements_for_user, "delete_announcement": self.delete_announcement}
+                            "get_announcements_for_user": self.get_announcements_for_user, "delete_announcement": self.delete_announcement}'''
 
-    def handle_abstract(self):
+        self.request = {}
+        self.request_data = {}
+        self.request_function = ""
+
+        self.database = DatabaseHandler.get_instance()
+
+    def handle_request(self):
+        self.request = request.get_json(force=True)
+        self.request_data = self.request["data"]
+        self.request_function = self.request["function"]
+
+        # Get function by name from class
         try:
-            return jsonify(
-                data=self.functions[request.get_json(force=True)["function"]](request.get_json(force=True)["data"]),
-                status="Success")
-        except:
-            return jsonify(status="Error",
-                           reason="Failed to execute abstract request!" +
-                                  "\nNo matching function found: {function}".format(
-                                      function=request.get_json(force=True)["function"]))
+            return getattr(self, self.request["function"])()
+        # No matching function found
+        except AttributeError as ae:
+            print(ae)
+            return jsonify(status="Error, Failed to execute abstract request!" +
+                                  "\nNo matching function found: {function}".format(function=self.request["function"]))
+        # Function created an arbitrary error
+        except Exception as e:
+            print(e)
+            return jsonify(status="Error, Function call failed!")
 
     def login(self):
-        logging.info("self: Logging in...")
-        assert request.method == "POST", b'The request method for login() was not "POST"!'
-        data = request.get_json(force=True)
-        result = self.do_login(data)
-        logging.info(result)
-        return result
+        logging.info("Request Handler: Logging in...")
+
+        email = self.request_data["login"]["email"]
+        password = self.request_data["login"]["password"]
+
+        for user in self.database.get_users():
+            if user.uid == email and self.check_password(user.password, password):
+                logging.info("Logged in as %s" % user.uid)
+                return jsonify(data=True, status="Logged in as %s" % user.uid)
+
+        logging.info("Failed to log in. The login credentials may be incorrect "
+                     "\n or the user does not exist.")
+        return jsonify(data=False, status="Failed to log in. The login credentials may be incorrect "
+                                          "\n or the user does not exist.")
 
     def signup(self):
-        logging.info("self: Signing up...")
-        assert request.method == "POST", b'The request method for signup() was not "POST"!'
-        data = request.get_json(force=True)
-        result = self.do_signup(data)
-        logging.info(result)
-        return result
+        logging.info("Request Handler: Signing up...")
 
-    def do_signup(self, data):
-        database = DatabaseHandler.get_instance()
-        is_user_valid = self.is_userdata_valid(data["email"], data["password"])
+        email = self.request_data["login"]["email"]
+        password = self.request_data["login"]["password"]
+
+        is_user_valid = self.is_user_data_valid(email, password)
+
         if "Success" in is_user_valid:
-            database.store_user(User(data["email"], self.hash_password(data["password"])))
-        return jsonify(status=is_user_valid)
+            self.database.store_user(User(email, self.hash_password(password)))
+            logging.info(is_user_valid)
+            return jsonify(data=True, status=is_user_valid)
 
-    def do_login(self, data):
-        print(data)
-        for user in DatabaseHandler.get_instance().get_users():
-            if user.uid == data["email"] and self.check_password(user.password, data["password"]):
-                return jsonify(status="Logged in as %s" % user.uid, data=True)
+        logging.info(is_user_valid)
 
-        return jsonify(status="Failed to log in. The login credentials may be incorrect " \
-                              "\n or the user does not exist.", data=False)
+        return jsonify(data=False, status=is_user_valid)
 
+    # **************************************************************************************************
     def dashboard(self):
-        return jsonify(data=DatabaseHandler.get_instance().get_announcements_json())
+        return jsonify(data=self.database.get_announcements_json())
+
+    # **************************************************************************************************
 
     def announcement(self):
         if self.is_user_logged_in():
 
-            announcement_id = request.get_json(force=True)["data"]["announcement"]["id"]
+            announcement_id = self.request_data["announcement"]["id"]
 
-            user = DatabaseHandler.get_instance().get_user(request.get_json(force=True)["data"]["login"]["email"])
-            user.create_announcement(content_html=request.get_json(force=True)["data"]["announcement"]["content_html"],
+            user = self.database.get_user(self.request_data["login"]["email"])
+            user.create_announcement(content_html=self.request_data["announcement"]["content_html"],
                                      id=announcement_id)
-            DatabaseHandler.get_instance().store_user(user)
+            self.database.store_user(user)
 
-            return jsonify(status="Success")
+            return jsonify(status="Success", data=True)
         else:
-            return jsonify(status="Error")
+            return jsonify(status="Error", data=False)
 
     def is_user_admin(self):
-        database = DatabaseHandler.get_instance()
-        data = request.get_json(force=True)
-        return database.get_user(data["email"]).get_permission_level() > 2
+        return self.database.get_user(self.request_data["login"]["email"]).get_permission_level() > 2
 
     def is_user_auth_for_post(self):
-        database = DatabaseHandler.get_instance()
-        data = request.get_json(force=True)
-        return database.get_user(data["email"]).get_permission_level() > 1,
+        return self.database.get_user(self.request_data["login"]["email"]).get_permission_level() > 1
 
     def is_user_auth_for_post_review(self):
-        database = DatabaseHandler.get_instance()
-        data = request.get_json(force=True)
-        return database.get_user(data["email"]).get_permission_level() > 0
+        return self.database.get_user(self.request_data["login"]["email"]).get_permission_level() > 0
 
     def user_exists(self):
-        return DatabaseHandler.get_instance().user_exists(request.get_json(force=True)["data"])
+        return self.database.user_exists(self.request_data)
 
     def get_new_announcement_id(self, user_id):
-        return len(DatabaseHandler.get_instance().get_user(user_id).announcements) + 1
+        return len(self.database.get_user(user_id).announcements) + 1
 
     def get_announcements_for_user(self, user_name):
         announcements = []
-        for announcement in DatabaseHandler.get_instance().get_user(user_name).announcements:
+        for announcement in self.database.get_user(user_name).announcements:
             announcements.append(announcement.to_json())
         return announcements
 
@@ -109,26 +120,23 @@ class RequestHandler(object):
         announcement_id = data["announcement_id"]
 
         if self.is_user_logged_in():
-            user = DatabaseHandler.get_instance().get_user(request.get_json(force=True)["data"]["login"]["email"])
+            user = self.database.get_user(self.request_data["login"]["email"])
             user.remove_announcement_by_id(announcement_id)
-            DatabaseHandler.get_instance().store_user(user)
-            print("hi")
+            self.database.store_user(user)
             return "Announcement deleted"
         return "User not logged in"
 
     def is_user_logged_in(self):
-        return self.check_password(DatabaseHandler.get_instance().get_user(
-            request.get_json(force=True)["data"]["login"]["email"]).password,
-                            request.get_json(force=True)["data"]["login"]["password"])
-
-
+        return self.check_password(self.database.get_user(
+            self.request_data["login"]["email"]).password,
+                                   self.request_data["login"]["password"])
 
     '''
     Helper methods
     '''
 
-    def is_userdata_valid(self, email, password):
-        database = DatabaseHandler.get_instance()
+    def is_user_data_valid(self, email, password):
+        database = self.database
 
         if not database.user_exists(email) and len(password) >= 8 and "@pdsb.net" in email:
             return "Successfully signed up %s" % email

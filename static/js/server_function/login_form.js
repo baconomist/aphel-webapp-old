@@ -14,15 +14,13 @@ $("#login_form").on("submit", function(){
         values[this.id] = $(this).val();
     });
     
-    console.log("Password: " + values["password"] + " Email: " + values["email"]);
-    
-    
-    server_bridge.sendToServer("/login", values, function(response){
+    server_bridge.sendToServer("/", {"function":"login", "data": { "login": {"email": values["email"], "password": values["password"]} } }, function(response){
         if(response["data"])
         {
-            setCookie("login", JSON.stringify({"email":values["email"], "password":values["password"]}), 1)
-            console.log("Succesfully logged in as: " + values["email"])
-            console.log(JSON.parse(getCookie("login")))
+            setCookie("login", JSON.stringify({"email":values["email"], "password":values["password"]}), 1);
+            
+            console.log("Succesfully logged in as: " + values["email"]);
+            console.log(JSON.parse(getCookie("login")));
             
             // Redirect to home page after logged in
             window.location.replace(server_bridge.host);
