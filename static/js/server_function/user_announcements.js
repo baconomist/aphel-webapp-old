@@ -4,7 +4,7 @@ if(window.location.href.includes("user_announcements")){
     
     login_check();
     
-    server_bridge.sendToServer("/", {"function": "get_announcements_for_user", "data":JSON.parse(getCookie("login"))["email"]}, function(response){ 
+    server_bridge.sendToServer("/", { "function": "get_announcements_for_user", "data":{ "email": JSON.parse(getCookie("login"))["email"] } }, function(response){ 
         response["data"] = response["data"].reverse();
         for(i=0; i < response["data"].length; i++){
             createEditableAnnouncement(JSON.parse(response["data"][i]));

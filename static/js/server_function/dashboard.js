@@ -1,7 +1,7 @@
 if(window.location.href.includes("dashboard")){
 div = $("#dashboard");
 
-server_bridge.sendToServer("/dashboard", data=null, function(response){
+server_bridge.sendToServer("/", { "function": "get_dashboard" }, function(response){
     //div.html(response["data"]);
     response["data"] = response["data"].reverse();
     for(i = 0; i < response["data"].length; i++)

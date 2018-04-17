@@ -25,7 +25,11 @@ class RequestHandler(object):
 
     def handle_request(self):
         self.request = request.get_json(force=True)
-        self.request_data = self.request["data"]
+        try:
+            self.request_data = self.request["data"]
+        except:
+            self.request_data = None
+
         self.request_function = self.request["function"]
 
         # Get function by name from class
@@ -33,12 +37,13 @@ class RequestHandler(object):
             return getattr(self, self.request["function"])()
         # No matching function found
         except AttributeError as ae:
-            print(ae)
+            print(ae, "Error, Failed to execute abstract request!" +
+                                  "\nNo matching function found: {function}".format(function=self.request["function"]))
             return jsonify(status="Error, Failed to execute abstract request!" +
                                   "\nNo matching function found: {function}".format(function=self.request["function"]))
         # Function created an arbitrary error
         except Exception as e:
-            print(e)
+            print(e, "Error, Function call failed!")
             return jsonify(status="Error, Function call failed!")
 
     def login(self):
@@ -75,12 +80,13 @@ class RequestHandler(object):
         return jsonify(data=False, status=is_user_valid)
 
     # **************************************************************************************************
-    def dashboard(self):
+    def get_dashboard(self):
+        print("hi")
         return jsonify(data=self.database.get_announcements_json())
 
     # **************************************************************************************************
 
-    def announcement(self):
+    def save_announcement(self):
         if self.is_user_logged_in():
 
             announcement_id = self.request_data["announcement"]["id"]
@@ -95,32 +101,33 @@ class RequestHandler(object):
             return jsonify(status="Error", data=False)
 
     def is_user_admin(self):
-        return self.database.get_user(self.request_data["login"]["email"]).get_permission_level() > 2
+        return jsonify(data=self.database.get_user(self.request_data["login"]["email"]).get_permission_level() > 2)
 
     def is_user_auth_for_post(self):
-        return self.database.get_user(self.request_data["login"]["email"]).get_permission_level() > 1
+        return jsonify(data=self.database.get_user(self.request_data["login"]["email"]).get_permission_level() > 1)
 
     def is_user_auth_for_post_review(self):
-        return self.database.get_user(self.request_data["login"]["email"]).get_permission_level() > 0
+        return jsonify(data=self.database.get_user(self.request_data["login"]["email"]).get_permission_level() > 0)
 
     def user_exists(self):
-        return self.database.user_exists(self.request_data)
+        return jsonify(data=self.database.user_exists(self.request_data))
 
-    def get_new_announcement_id(self, user_id):
-        return len(self.database.get_user(user_id).announcements) + 1
+    def get_new_announcement_id(self):
+        return jsonify(data=len(self.database.get_user(self.request_data["email"]).announcements) + 1)
 
-    def get_announcements_for_user(self, user_name):
+    def get_announcements_for_user(self):
+        user_name = self.request_data["email"]
         announcements = []
         for announcement in self.database.get_user(user_name).announcements:
             announcements.append(announcement.to_json())
-        return announcements
+        return jsonify(data=announcements)
 
-    def delete_announcement(self, data):
-        login = data["login"]
-        announcement_id = data["announcement_id"]
+    def delete_announcement(self):
+        email = self.request_data["login"]["email"]
+        announcement_id = self.request_data["announcement_id"]
 
         if self.is_user_logged_in():
-            user = self.database.get_user(self.request_data["login"]["email"])
+            user = self.database.get_user(email)
             user.remove_announcement_by_id(announcement_id)
             self.database.store_user(user)
             return "Announcement deleted"

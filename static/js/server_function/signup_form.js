@@ -58,30 +58,11 @@ function run_email_error_check()
 
 // When user leaves the email box
 $("#signup_form").find("#email").on("blur", function(){
-    
     run_email_error_check(); 
-    
 });
 
 $("#signup_form").find("#password").on("blur", function(){
-    
-    run_password_error_check();
-    
-    var password = $("signup_form").find("#password").val();
-    
-    server_bridge.sendToServer("/", data={"function":"is_password_valid", "data":password}, function(response){
-        
-        if(response["data"])
-        {
-            
-        }
-        else
-        {
-                
-        }
-        
-    });
-    
+    run_password_error_check();    
 });
 
 $("#signup_form").find("#password_confirm").on("blur", function(){
@@ -102,14 +83,15 @@ $("#signup_form").on("submit", function(){
         values[this.id] = $(this).val();
     });
     
-    console.log("Password: " + values["password"] + " Email: " + values["email"]);
-    
-    //if(values["password"].length >= 8 && values["password"] == values["password_confirm"]){
     console.log("Signing up!");
-    server_bridge.sendToServer("/signup", values, function(response){
-        console.log(response["data"]);
+    server_bridge.sendToServer("/", {"function": "signup", "data": { "login": { "email": values["email"], "password": values["password"] } } }, function(response){
+        if(response["data"])
+        {
+            // Redirect to home page after signed up
+            window.location.replace(server_bridge.host);
+        }
     });
-    //}
+
     
     // Don't post to server/refresh the page
     return false;

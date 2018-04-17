@@ -3,11 +3,12 @@ if(window.location.href.includes("announcement") && !window.location.href.includ
     div = $("#editor");
     
     announcement_id = 0
-    server_bridge.sendToServer("", {"function": "get_new_announcement_id", "data":JSON.parse(getCookie("login"))["email"]}, function(response){
+    server_bridge.sendToServer("", {"function": "get_new_announcement_id", "data": { "email": JSON.parse(getCookie("login"))["email"]} }, function(response){
         announcement_id = response["data"];
-    });    
-    
-    init_quill(div, announcement_id);   
+        
+        console.log(announcement_id)
+        init_quill(div, announcement_id);  
+    });     
 }
 
 function init_quill(div, announcement_id){
@@ -49,7 +50,7 @@ function init_quill(div, announcement_id){
 
             html = quill.container.firstChild.innerHTML;
             
-            server_bridge.sendToServer("/announcement", data={"data":{"login":JSON.parse(getCookie("login")), 
+            server_bridge.sendToServer("/", {"function": "save_announcement", "data":{"login":JSON.parse(getCookie("login")), 
                                       "announcement": {"content_html":html, "id": announcement_id}}}, 
             function(response){
                 console.log("Sent announcement to server!");
