@@ -37,13 +37,13 @@ class RequestHandler(object):
             return getattr(self, self.request["function"])()
         # No matching function found
         except AttributeError as ae:
-            print(ae, "Error, Failed to execute abstract request!" +
+            print(ae, "\t**Error, Failed to execute abstract request!**" +
                                   "\nNo matching function found: {function}".format(function=self.request["function"]))
             return jsonify(status="Error, Failed to execute abstract request!" +
                                   "\nNo matching function found: {function}".format(function=self.request["function"]))
         # Function created an arbitrary error
         except Exception as e:
-            print(e, "Error, Function call failed!")
+            print(e, "\t**Error, Function call failed!**")
             return jsonify(status="Error, Function call failed!")
 
     def login(self):
@@ -81,7 +81,6 @@ class RequestHandler(object):
 
     # **************************************************************************************************
     def get_dashboard(self):
-        print("hi")
         return jsonify(data=self.database.get_announcements_json())
 
     # **************************************************************************************************

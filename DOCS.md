@@ -9,18 +9,6 @@
 	"function":"a function(ie signup)",
 	"data":"any parameters for said function"
 	}
-
-#### User Info Syntax ####
-	{
-	"data": 
-		{
-		"login": 
-			{
-			"email": value,
-			"password": value
-			}
-		}
-	}
 	
 ### SERVER RESPONSE SYNTAX ###
 	{
@@ -35,6 +23,7 @@
     def catch_all(path):
 		request_handler.handle_request()
 
+## maybe make the function syntax like {function:"function name", data:"function params named like function params on server"}
 
 
 
