@@ -7,6 +7,7 @@ class User(object):
         self.password = password
         self.permission_level = 0
         self.announcements = []
+        self.confirmed = False
 
     def create_announcement(self, content_html: str, id: int):
         # if for some reason user has no attribute "self.announcements"

@@ -65,5 +65,10 @@ def user_announcements():
     return render_template("user_announcements.html")
 
 
+@app.route("/confirmation", methods=["GET"])
+def confirmation():
+    return render_template("confirmation.html")
+
+
 if __name__ == "__main__":
     app.run("127.0.0.1", 80, debug=True)

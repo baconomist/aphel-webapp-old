@@ -2,6 +2,11 @@ import os
 
 from modules.database_handler import DatabaseHandler
 from modules.user import User
+from modules.confirmation_manager import ConfirmationManager
+from modules.emailer import send_email
+
+import traceback
+
 import logging
 import hashlib, uuid
 from flask import jsonify, request
@@ -37,13 +42,15 @@ class RequestHandler(object):
             return getattr(self, self.request["function"])()
         # No matching function found
         except AttributeError as ae:
-            print(ae, "\t**Error, Failed to execute abstract request!**" +
+            print("\t**Error, Failed to execute abstract request!**" +
                                   "\nNo matching function found: {function}".format(function=self.request["function"]))
+            traceback.print_exc()
             return jsonify(status="Error, Failed to execute abstract request!" +
                                   "\nNo matching function found: {function}".format(function=self.request["function"]))
         # Function created an arbitrary error
         except Exception as e:
-            print(e, "\t**Error, Function call failed!**")
+            print("\t**Error, Function call failed!**")
+            traceback.print_exc()
             return jsonify(status="Error, Function call failed!")
 
     def login(self):
@@ -71,8 +78,17 @@ class RequestHandler(object):
         is_user_valid = self.is_user_data_valid(email, password)
 
         if "Success" in is_user_valid:
-            self.database.store_user(User(email, self.hash_password(password)))
+            user = User(email, self.hash_password(password))
+
+            id = str(ConfirmationManager.get_instance().new_confirmation(user).id)
+
+            send_email(receivers=email, subject="APHEL TECH EMAIL CONFIRMATION",
+                       body=r"url: 127.0.0.1/confirmation?id={id}".format(id=id))
+
+            self.database.store_user(user)
+
             logging.info(is_user_valid)
+
             return jsonify(data=True, status=is_user_valid)
 
         logging.info(is_user_valid)
@@ -132,10 +148,11 @@ class RequestHandler(object):
             return "Announcement deleted"
         return "User not logged in"
 
-    def is_user_logged_in(self):
-        return self.check_password(self.database.get_user(
-            self.request_data["login"]["email"]).password,
-                                   self.request_data["login"]["password"])
+    def validate_confirmation(self):
+        confirmation_id = self.request_data["confirmation_id"]
+        logging.info("Validating confirmation link...")
+        return jsonify(data=ConfirmationManager.get_instance().handle_confirmation(confirmation_id))
+
 
     '''
     Helper methods
@@ -161,3 +178,8 @@ class RequestHandler(object):
     def check_password(self, hashed_password, user_password):
         password, salt = hashed_password.split(':')
         return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
+
+    def is_user_logged_in(self):
+        return self.check_password(self.database.get_user(
+            self.request_data["login"]["email"]).password,
+                                   self.request_data["login"]["password"])
