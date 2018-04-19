@@ -44,6 +44,19 @@ function remove_success_from_input(input_element)
     input_element.removeClass("valid_input");
 }
 
+function recursive_id_change(element, change)
+{
+    element.children().each(function () {
+        if(this.id.length > 0)
+        {
+            this.id = this.id + change;
+            console.log(this.id);
+        }
+        jQueryElement = $(this);
+        recursive_id_change(jQueryElement, change);
+    });
+}
+
 
 
 /*apply_error_to_input($("#signup_form").find("#email"));

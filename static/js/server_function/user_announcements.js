@@ -31,19 +31,8 @@ function createEditableAnnouncement(announcement)
     }
     
     // Make all child element ids unique, you can't have duplicate ids anywhere in the document.
-    (function recursiveChildren(element)
-    {
-        element.children().each(function () {
-            if(this.id.length > 0)
-            {
-                this.id = this.id + x;
-                console.log(this.id);
-            }
-            jQueryElement = $(this);
-            recursiveChildren(jQueryElement);
-        });
-    })(clone);
-    
+    recursive_id_change(clone, x);                 
+                        
     // Unhide object since it was hidden earlier
     clone.show();
         

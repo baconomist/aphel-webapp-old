@@ -24,6 +24,7 @@ class ConfirmationManager(object):
                 DatabaseHandler.get_instance().store_user(user)
                 del self.unconfirmed_users[user]
                 return True
+            #elif confirmation.time_created < confirmation.time_before_expired
 
         return False
 
