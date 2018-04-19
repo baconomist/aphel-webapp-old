@@ -48,11 +48,13 @@ class DatabaseHandler(object):
 
         count = 0
         for u in raw_data["users"]:
-            if jsonpickle.decode(u).name == username:
+            if jsonpickle.decode(u).uid == username:
                 self.raw_data["users"].pop(count)
                 self.write()
                 break
             count += 1
+
+        self.write()
 
     def get_user(self, username):
 

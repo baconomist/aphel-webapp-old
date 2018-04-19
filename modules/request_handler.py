@@ -151,7 +151,7 @@ class RequestHandler(object):
     def validate_confirmation(self):
         confirmation_id = self.request_data["confirmation_id"]
         logging.info("Validating confirmation link...")
-        return jsonify(data=ConfirmationManager.get_instance().handle_confirmation(confirmation_id))
+        return jsonify(data=ConfirmationManager.get_instance().validate_confirmation(confirmation_id))
 
 
     '''
