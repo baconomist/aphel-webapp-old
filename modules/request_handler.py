@@ -4,6 +4,7 @@ from modules.database_handler import DatabaseHandler
 from modules.user import User
 from modules.confirmation_manager import ConfirmationManager
 from modules.emailer import send_email
+from modules.server import Server
 
 import traceback
 
@@ -83,7 +84,7 @@ class RequestHandler(object):
             id = str(ConfirmationManager.get_instance().new_confirmation(user).id)
 
             send_email(receivers=email, subject="APHEL TECH EMAIL CONFIRMATION",
-                       body=r"url: 127.0.0.1/confirmation?id={id}".format(id=id))
+                       body=r"url: {server_ip}/confirmation?id={id}".format(server_ip=Server.ip, id=id))
 
             self.database.store_user(user)
 

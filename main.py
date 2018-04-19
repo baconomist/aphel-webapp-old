@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect
 
 from modules.request_handler import RequestHandler
+from modules.server import Server
+
 
 import os
 import logging
@@ -71,4 +73,4 @@ def confirmation():
 
 
 if __name__ == "__main__":
-    app.run("127.0.0.1", 80, debug=True)
+    app.run(Server.ip, 80, debug=True)
