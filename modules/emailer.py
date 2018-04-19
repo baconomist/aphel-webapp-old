@@ -1,7 +1,12 @@
 import smtplib
+import threading
 
 
 def send_email(receivers, subject, body):
+    threading.Thread(target=email_thread, args=(receivers, subject, body)).start()
+
+
+def email_thread(receivers, subject, body):
     gmail_user = 'pchackersofficial@gmail.com'
     gmail_password = 'SHADAPWATERLOO'
     body = 'Subject: %s\n%s\n' % (subject, body)
