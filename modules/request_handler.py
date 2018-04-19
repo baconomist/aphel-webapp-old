@@ -44,7 +44,7 @@ class RequestHandler(object):
         # No matching function found
         except AttributeError as ae:
             print("\t**Error, Failed to execute abstract request!**" +
-                                  "\nNo matching function found: {function}".format(function=self.request["function"]))
+                  "\nNo matching function found: {function}".format(function=self.request["function"]))
             traceback.print_exc()
             return jsonify(status="Error, Failed to execute abstract request!" +
                                   "\nNo matching function found: {function}".format(function=self.request["function"]))
@@ -76,10 +76,10 @@ class RequestHandler(object):
         email = self.request_data["login"]["email"]
         password = self.request_data["login"]["password"]
 
-        is_user_valid = self.is_user_data_valid(email, password)
+        is_user_valid = Helper.is_user_data_valid(email, password)
 
         if "Success" in is_user_valid:
-            user = User(email, self.hash_password(password))
+            user = User(email, Helper.hash_password(password))
 
             id = str(ConfirmationManager.get_instance().new_confirmation(user).id)
 
@@ -116,15 +116,6 @@ class RequestHandler(object):
         else:
             return jsonify(status="Error", data=False)
 
-    def is_user_admin(self):
-        return jsonify(data=self.database.get_user(self.request_data["login"]["email"]).get_permission_level() > 2)
-
-    def is_user_auth_for_post(self):
-        return jsonify(data=self.database.get_user(self.request_data["login"]["email"]).get_permission_level() > 1)
-
-    def is_user_auth_for_post_review(self):
-        return jsonify(data=self.database.get_user(self.request_data["login"]["email"]).get_permission_level() > 0)
-
     def user_exists(self):
         return jsonify(data=self.database.user_exists(self.request_data))
 
@@ -154,13 +145,18 @@ class RequestHandler(object):
         logging.info("Validating confirmation link...")
         return jsonify(data=ConfirmationManager.get_instance().validate_confirmation(confirmation_id))
 
+    def is_user_logged_in(self):
+        return self.database.get_user(self.request_data["login"]["email"].uid).confirmed and \
+                   Helper.check_password(self.database.get_user(self.request_data["login"]["email"]).password,
+                                     self.request_data["login"]["password"])\
 
-    '''
-    Helper methods
-    '''
 
-    def is_user_data_valid(self, email, password):
-        database = self.database
+
+
+class Helper(object):
+    @staticmethod
+    def is_user_data_valid(email, password):
+        database = DatabaseHandler.get_instance()
 
         if not database.user_exists(email) and len(password) >= 8 and "@pdsb.net" in email:
             return "Successfully signed up %s" % email
@@ -171,16 +167,25 @@ class RequestHandler(object):
         else:
             return "Failed to sign up! User %s already exists!" % email
 
-    def hash_password(self, password):
+    @staticmethod
+    def hash_password(password):
         # uuid is used to generate a random number
         salt = uuid.uuid4().hex
         return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
 
-    def check_password(self, hashed_password, user_password):
+    @staticmethod
+    def check_password(hashed_password, user_password):
         password, salt = hashed_password.split(':')
         return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
 
-    def is_user_logged_in(self):
-        return self.check_password(self.database.get_user(
-            self.request_data["login"]["email"]).password,
-                                   self.request_data["login"]["password"])
+    @staticmethod
+    def is_user_admin(user):
+        return user.get_permission_level() > 2
+
+    @staticmethod
+    def is_user_auth_for_post(user):
+        return user.get_permission_level() > 1
+
+    @staticmethod
+    def is_user_auth_for_post_review(user):
+        return user.get_permission_level() > 0
