@@ -60,8 +60,10 @@ class RequestHandler(object):
         email = self.request_data["login"]["email"]
         password = self.request_data["login"]["password"]
 
+        print(email, password)
+
         for user in self.database.get_users():
-            if user.confirmed and user.uid == email and self.check_password(user.password, password):
+            if user.confirmed and user.uid == email and Helper.check_password(user.password, password):
                 logging.info("Logged in as %s" % user.uid)
                 return jsonify(data=True, status="Logged in as %s" % user.uid)
 

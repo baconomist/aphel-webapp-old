@@ -1,5 +1,5 @@
 {
     "users": [
-        "{\"py/object\": \"modules.user.User\", \"announcements\": [], \"confirmed\": true, \"password\": \"d81d21a98707dbd8949bb77dec2974fb916f7f3751456c5df8debf422d73a0ab:80237a3fb98e4b90ba3ce5bb92174c9a\", \"permission_level\": 0, \"uid\": \"623609@pdsb.net\"}"
+        "{\"py/object\": \"modules.user.User\", \"announcements\": [], \"confirmed\": true, \"password\": \"2b9d01baf952750e22c8f3ee846a5b7274e2e1131278bb58fea1639fb45f8182:b08a2398a33d4d879eddfd65d9cf4936\", \"permission_level\": 0, \"uid\": \"623609@pdsb.net\"}"
     ]
 }
