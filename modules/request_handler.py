@@ -148,7 +148,7 @@ class RequestHandler(object):
         return jsonify(data=ConfirmationManager.get_instance().validate_confirmation(confirmation_id))
 
     def is_user_logged_in(self):
-        return self.database.get_user(self.request_data["login"]["email"].uid).confirmed and \
+        return self.database.get_user(self.request_data["login"]["email"]).confirmed and \
                    Helper.check_password(self.database.get_user(self.request_data["login"]["email"]).password,
                                      self.request_data["login"]["password"])\
 

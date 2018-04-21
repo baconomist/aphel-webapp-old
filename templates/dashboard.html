@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="static/css/quill.css">
 </head>
 
-<body>
+<body style="background-color:rgb(238,238,238);padding-right:0px;padding-left:0px;">
     <div class="row" style="height:183px;">
         <div class="col">
             <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white transparency border-bottom border-light" id="transmenu" style="color:rgb(255,255,255);background-color:#439d4c;">
@@ -63,20 +63,31 @@
     </div>
     <div class="row">
         <div class="col">
-            <div class="container" id="dashboard_announcement_template" style="padding:0px;margin-bottom:21px;border:2px solid green;display:none">
-                <div class="d-block" style="height:70px;background-color:#439d4c;padding:10px;padding-left:20px;padding-right:20px;">
-                    <blockquote class="blockquote">
-                        <p id="announcement_title" class="mb-0" style="color:rgb(255,255,255);font-family:'News Cycle', sans-serif;">Announcement Title</p>
-                        <footer class="blockquote-footer" id="announcement_info" style="color:rgb(255,255,255);font-family:'News Cycle', sans-serif;">Club Name, Name of user that posted this</footer>
-                    </blockquote>
-                </div>
-                <div class="d-block overflow" style="height:170px;background-color:#ffffff;font-family:'News Cycle', sans-serif;padding:10px;padding-right:20px;padding-left:20px;">
-                    <p class="d-block" id="announcement_content">Announcement info goes here.&nbsp;Announcement info goes here.&nbsp;Announcement info goes here.&nbsp;Announcement info goes here.&nbsp;Announcement info goes here.&nbsp;<br></p>
-                    <p class="d-block" id="announcement_time_stamp">VVV Add a footer to each post with the timestamp, and a function to pin the post so that it is always at the top of the students announcements, or in a separate favourites page.</p>
+            <div id="dashboard_div" style="padding-right:10px;padding-left:10px;height:auto;">
+                <div class="container" id="dashboard_announcement_template" style="padding:0px;margin-bottom:21px;border:2px solid green;display:none">
+                    <div class="d-block" style="height:70px;background-color:#439d4c;padding:10px;padding-left:20px;padding-right:20px;">
+                        <blockquote class="blockquote">
+                            <p id="announcement_title" class="mb-0" style="color:rgb(255,255,255);font-family:'News Cycle', sans-serif;">Announcement Title</p>
+                            <footer class="blockquote-footer" id="announcement_info" style="color:rgb(255,255,255);font-family:'News Cycle', sans-serif;">Club Name, Name of user that posted this</footer>
+                        </blockquote>
+                    </div>
+                    <div class="d-block overflow" style="height:170px;background-color:#ffffff;font-family:'News Cycle', sans-serif;padding:10px;padding-right:20px;padding-left:20px;">
+                        <p class="d-block" id="announcement_content">Announcement info goes here.&nbsp;Announcement info goes here.&nbsp;Announcement info goes here.&nbsp;Announcement info goes here.&nbsp;Announcement info goes here.&nbsp;<br></p>
+                        <p class="d-block" id="announcement_time_stamp">VVV Add a footer to each post with the timestamp, and a function to pin the post so that it is always at the top of the students announcements, or in a separate favourites page.</p>
+                    </div>
                 </div>
             </div>
+            <div id="empty_space_fixer" style="height:225px;"></div>
         </div>
     </div>
+    <div style="margin-top:24px;"></div>
+    <div class="footer-basic" style="background-color:#439d4c;bottom:0px;position:fixed;width:100%;">
+        <footer>
+            <div class="social"><a href="https://www.instagram.com/pchackingsquad/" style="color:rgb(255,255,255);"><i class="icon ion-social-instagram"></i></a><a href="#" style="color:rgb(255,255,255);"><i class="icon ion-social-twitter" style="color:rgb(255,255,255);"></i></a></div>
+            <ul
+                class="list-inline"></ul>
+                <p class="copyright" style="color:rgb(255,255,255);">Alphel @ 2018</p>
+        </footer><a href="#0" class="cd-top js-cd-top cd-top--fade-out cd-top--show" style="background-image:url('static/img/cd-top-arrow.svg');width:40px;height:40px;">Top</a></div>
     <script src="static/js/jquery.min.js"></script>
     <script src="static/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
