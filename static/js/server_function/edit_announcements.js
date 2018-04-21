@@ -1,4 +1,4 @@
-if(window.location.href.includes("edit_announcements")){
+if(window.location.href.includes("edit")){
     server_bridge.sendToServer("/dashboard", data=null, function(response){
         //div.html(response["data"]);
         for(i = 0; i < response["data"].length; i++)
