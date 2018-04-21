@@ -61,10 +61,10 @@ def dashboard():
     return render_template("dashboard.html")
 
 
-@app.route("/edit_announcements", methods=["GET"])
-@app.route("/edit_announcements.html", methods=["GET"])
+@app.route("/user_announcements", methods=["GET"])
+@app.route("/user_announcements.html", methods=["GET"])
 def user_announcements():
-    return render_template("edit_announcements.html")
+    return render_template("user_announcements.html")
 
 
 @app.route("/confirmation", methods=["GET"])
