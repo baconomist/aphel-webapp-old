@@ -14,7 +14,10 @@ from flask import jsonify, request
 
 import datetime
 
-
+''' ATTENTION '''
+''' ALL METHODS IN REQUEST HANDLER ARE CALLABLE BY CLIENT '''
+''' MAKE SURE THE METHODS HERE ARE SECURE '''
+''' ATTENTION '''
 class RequestHandler(object):
     def __init__(self):
         # This is why this class needs an instance,
@@ -98,23 +101,31 @@ class RequestHandler(object):
 
         return jsonify(data=False, status=is_user_valid)
 
-    # **************************************************************************************************
     def get_dashboard(self):
         return jsonify(data=self.database.get_announcements_json())
 
-    # **************************************************************************************************
-
     def save_announcement(self):
-        if self.is_user_logged_in():
+        if self.is_user_logged_in() and Helper.is_user_auth_for_post(DatabaseHandler.get_instance().get_user(self.request_data["login"]["email"])):
+            title = self.request_data["announcement_data"]["title"]
+            info = self.request_data["announcement_data"]["info"]
+            content_html = self.request_data["announcement_data"]["content_html"]
+            id = self.request_data["announcement_data"]["id"]
 
-            announcement_id = self.request_data["announcement"]["id"]
+            user = self.database.get_user(self.request_data["login"]["email"])
+            user.create_announcement(title=title, info=info, content_html=content_html, id=id)
+            self.database.store_user(user)
+
+            return jsonify(status="Success", data=True)
+        elif self.is_user_logged_in() and Helper.is_user_auth_for_post_review(DatabaseHandler.get_instance().get_user(self.request_data["login"]["email"])):
+            '''announcement_id = self.request_data["announcement"]["id"]
 
             user = self.database.get_user(self.request_data["login"]["email"])
             user.create_announcement(content_html=self.request_data["announcement"]["content_html"],
                                      id=announcement_id)
             self.database.store_user(user)
 
-            return jsonify(status="Success", data=True)
+            return jsonify(status="Success", data=True)'''
+            pass
         else:
             return jsonify(status="Error", data=False)
 
@@ -152,7 +163,14 @@ class RequestHandler(object):
                    Helper.check_password(self.database.get_user(self.request_data["login"]["email"]).password,
                                      self.request_data["login"]["password"])\
 
+    def is_user_admin(self):
+        return jsonify(data=Helper.is_user_admin(DatabaseHandler.get_instance().get_user(self.request_data["email"])))
 
+    def is_user_auth_for_post(self):
+        return jsonify(data=Helper.is_user_auth_for_post(DatabaseHandler.get_instance().get_user(self.request_data["email"])))
+
+    def is_user_auth_for_post_review(self):
+        return jsonify(data=Helper.is_user_auth_for_post_review(DatabaseHandler.get_instance().get_user(self.request_data["email"])))
 
 
 class Helper(object):

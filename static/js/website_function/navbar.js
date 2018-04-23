@@ -11,7 +11,8 @@ class Navbar
         var items_to_hide = this.layouts[layout]
         for(var i=0; i < items_to_hide.length; i++)
         {
-            $("#transmenu").find(items_to_hide[i]).hide();    
+            $("#transmenu").find(items_to_hide[i]).hide();  
+                        console.log("aaaaa");
         }    
     }
     

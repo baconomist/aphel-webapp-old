@@ -1,4 +1,4 @@
-if(window.location.href.includes("edit")){
+if(window.location.href.includes("user_")){
    
     //$('body').find("#announcement_template").hide();
     
@@ -16,7 +16,6 @@ if(window.location.href.includes("edit")){
 
 function createShowableAnnouncement(announcement)
 {
-    console.log("aaaa");
     
     num_id = announcement["id"]
     
@@ -43,6 +42,9 @@ function constructShowableAnnouncement(announcement, num_id)
     // Unhide object since it was hidden earlier
     clone.show();
     
+    clone.find("#announcement_title").html(announcement["title"]);
+    clone.find("#announcement_info").html(announcement["info"]);
+    clone.find("#announcement_time_stamp").html(announcement["time_stamp"]);
     clone.find("#announcement_content").html(announcement["content_html"]);
     
     clone.attr("id", "announcement_not_editing"+num_id);
@@ -59,6 +61,9 @@ function createEditableAnnouncement(announcement, showableAnnouncement, num_id)
     clone = $("#announcement_editing").clone();
     clone.show();
     
+    clone.find("#announcement_edit_title").val(announcement["title"]);
+    clone.find("#announcement_edit_info").val(announcement["info"]);
+    
     clone.attr("id", "announcement_editing"+num_id);
     recursive_id_change(clone, num_id)
     
@@ -72,8 +77,20 @@ function createEditableAnnouncement(announcement, showableAnnouncement, num_id)
     var announcement_editor = new AnnouncementEditor(div, announcement["id"]);
     
     clone.find("#save_button"+num_id).click(function(){
-        announcement_editor.save();
         
+        title = clone.find("#announcement_edit_title"+num_id).val()
+        info = clone.find("#announcement_edit_info"+num_id).val()
+        content_html = announcement_editor.get_content();
+        id = announcement["id"];
+        
+        server_bridge.sendToServer("", {"function": "save_announcement", "data": {"login": JSON.parse(getCookie("login")),
+                                                                                         "announcement_data": {"title": title, "info": info,                                          "content_html": content_html, "id": id} } },
+               function(response){
+                    console.log("Edited Announcement!");
+        });
+        
+        announcement["title"] = clone.find("#announcement_edit_title" + num_id).val()
+        announcement["info"] = clone.find("#announcement_edit_info" + num_id).val()
         announcement["content_html"] = announcement_editor.get_content();
         
         showableAnnClone = constructShowableAnnouncement(announcement, num_id);

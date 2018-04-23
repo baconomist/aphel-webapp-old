@@ -46,12 +46,15 @@
                                     <div class="dropdown-menu"
                                         role="menu"><a class="dropdown-item" role="presentation" href="http://pchacks.ca/index.html#about"><i class="fa fa-handshake-o" style="padding-right:5px;"></i>About Us</a><a class="dropdown-item" role="presentation" href="http://pchacks.ca/index.html#contact"><i class="fa fa-volume-control-phone" style="padding-right:5px;"></i>Contact</a></div>
                                 </li>
-                                <li class="dropdown"><a class="dropdown-toggle nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#" style="padding-right:20px;"><i class="fa fa-user" style="padding-right:7px;"></i>User</a>
+                                <li class="dropdown"><a class="dropdown-toggle nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#" id="nav_user" style="padding-right:20px;"><i class="fa fa-user" style="padding-right:7px;"></i>User</a>
                                     <div class="dropdown-menu"
-                                        role="menu"><a class="dropdown-item" role="presentation" href="profile.html"><i class="fa fa-address-card" style="padding-right:5px;"></i>Profile</a><a class="dropdown-item" role="presentation" href="announcement.html"><i class="fa fa-envelope-open-o" style="padding-right:5px;"></i>Create Announcement</a>
+                                        role="menu"><a class="dropdown-item" role="presentation" href="profile.html"><i class="fa fa-address-card" style="padding-right:5px;"></i>Profile</a><a class="dropdown-item" role="presentation" href="post_announcement.html"><i class="fa fa-envelope-open-o" style="padding-right:5px;"></i>Create Announcement</a>
                                         <a
                                             class="dropdown-item" role="presentation" href="logout.html"><i class="fa fa-sign-out"></i>&nbsp;Logout</a><a class="dropdown-item" role="presentation" href="user_announcements.html">Edit Announcements</a></div>
                                 </li>
+                                <li class="nav-item" role="presentation"><a class="nav-link" href="dashboard.html" style="padding-right:20px;"><i class="fa fa-tachometer" style="padding-right:7px;"></i>Dashboard</a></li>
+                                <li class="nav-item" role="presentation"><a class="nav-link" href="login.html" id="nav_login" style="padding-right:20px;"><i class="fa fa-sign-in" style="padding-right:7px;"></i>Login</a></li>
+                                <li class="nav-item" role="presentation"><a class="nav-link" href="signup.html" id="nav_register" style="padding-right:20px;"><i class="fa fa-wpforms" style="padding-right:7px;"></i>Register</a></li>
                             </ul>
                         </div>
                 </div>
@@ -61,17 +64,24 @@
     <div class="row">
         <div class="col"><div id="dashboard"></div></div>
     </div>
-    <div style="padding-left:10px;padding-right:10px;">
-        <div class="container" style="padding:0px;margin-bottom:21px;">
-            <div class="d-block login-card" style="height:580px;padding:25px;">
+    <div id="template_area" style="padding-left:10px;padding-right:10px;">
+        <div class="container card-shadow ann-post" style="padding:0px;margin-bottom:21px;height:502px;display:none">
+            <div class="d-block" style="height:211px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;padding-top:20px;">
                 <p class="profile-name-card" style="font-family:'News Cycle', sans-serif;font-size:26px;color:rgb(92,104,116);margin-bottom:20px;">Make Your Announcement!<br></p>
-                <form class="form-signin"><span class="reauth-email"> </span><input class="form-control" type="email" required="" placeholder="Announcement Title" autofocus="" id="inputEmail" style="font-family:'News Cycle', sans-serif;"><input class="form-control" type="email"
-                        required="" placeholder="Club/Team" autofocus="" id="inputEmail" style="font-family:'News Cycle', sans-serif;">
-                    <p class="profile-name-card" style="font-family:'News Cycle', sans-serif;font-size:16px;color:rgb(133,140,146);margin-bottom:20px;"><i class="fa fa-check" style="margin-right:5px;"></i>You are Trusted to Make Announcements<br></p><textarea class="form-control" style="margin-bottom:20px;font-family:'News Cycle', sans-serif;height:200px;" placeholder="Type Your Anouncement Here!"></textarea></form>
-                <button
-                    class="btn btn-primary btn-block btn-lg btn-signin" type="submit" style="background-color:#439d4c;font-family:'News Cycle', sans-serif;">Post Announcement</button>
-            </div>
+                <p class="profile-name-card" style="font-family:'News Cycle', sans-serif;font-size:16px;color:rgb(133,140,146);margin-bottom:20px;"><i class="fa fa-check" style="margin-right:5px;"></i>You are Trusted to Make Announcements<br></p><input class="d-block ann-title" type="text" placeholder="Title" style="width:100%;margin-left:0px;margin-bottom:20px;font-family:'News Cycle', sans-serif;padding-left:5px;">
+                <input
+                    class="d-block ann-info" type="text" placeholder="Club/Team" style="width:100%;margin-left:0px;font-family:'News Cycle', sans-serif;padding-left:5px;"></div>
+            <div class="d-block overflow ann-content" id="editor" style="height:189px;background-color:#ffffff;font-family:'News Cycle', sans-serif;padding:10px;padding-right:20px;padding-left:20px;"></div>
+            <div class="d-block" style="height:80px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;padding-top:15px;"><button class="btn btn-primary btn-block btn-lg d-inline-block btn-signin ann-post-btn" type="submit" id="save_button" style="background-color:#439d4c;width:246px;font-size:18px;height:47px;">Post Announcement</button></div>
         </div>
+        <div class="container card-shadow ann-post-review" style="padding:0px;margin-bottom:21px;height:502px;display:none">
+            <div class="d-block" style="height:227px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;padding-top:20px;">
+                <p class="profile-name-card" style="font-family:'News Cycle', sans-serif;font-size:26px;color:rgb(92,104,116);margin-bottom:20px;">Make Your Announcement!<br></p><input class="d-block ann-title" type="default" placeholder="Title" style="width:100%;margin-left:0px;margin-bottom:20px;font-family:'News Cycle', sans-serif;padding-left:5px;"><input class="d-block ann-info"
+                    type="default" placeholder="Club/Team" style="width:100%;margin:0px 0px 20px;margin-left:0px;font-family:'News Cycle', sans-serif;padding-left:5px;"><input class="d-block ann-teacher" type="text" placeholder="Reviewing Teacher" style="width:100%;margin-left:0px;font-family:'News Cycle', sans-serif;padding-left:5px;"></div>
+            <div
+                class="d-block overflow ann-content" id="editor" style="height:199px;background-color:#ffffff;font-family:'News Cycle', sans-serif;padding:10px;padding-right:20px;padding-left:20px;"></div>
+        <div class="d-block" style="height:73px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;padding-top:15px;"><button class="btn btn-primary btn-block btn-lg d-inline-block btn-signin ann-post-btn" type="submit" id="save_button" style="background-color:#439d4c;width:246px;font-size:18px;height:47px;">Post Announcement</button></div>
+    </div>
     </div>
     <div class="footer-basic" style="background-color:#439d4c;">
         <footer>
@@ -96,7 +106,7 @@
     <script src="static/js/website_function/Smooth-Scrollto-button-read-Description.js"></script>
     <script src="static/js/server_function/login_form.js"></script>
     <script src="static/js/server_function/dashboard.js"></script>
-    <script src="static/js/server_function/create_announcement.js"></script>
+    <script src="static/js/server_function/post_announcement.js"></script>
     <script src="static/js/server_function/user_announcements.js"></script>
     <script src="static/js/website_function/failed_login_modal.js"></script>
     <script src="static/js/server_function/confirmation.js"></script>

@@ -3,10 +3,8 @@ from flask import Flask, render_template, request, redirect
 from modules.request_handler import RequestHandler
 from modules.server import Server
 
-
 import os
 import logging
-import inspect
 
 # Clear server.log
 open(os.path.join(__file__, "..\\server.log"), "w").close()
@@ -49,10 +47,10 @@ def signup():
     return render_template("signup.html")
 
 
-@app.route("/announcement", methods=["GET"])
-@app.route("/announcement.html", methods=["GET"])
+@app.route("/post_announcement", methods=["GET"])
+@app.route("/post_announcement.html", methods=["GET"])
 def announcement():
-    return render_template("announcement.html")
+    return render_template("post_announcement.html")
 
 
 @app.route("/dashboard", methods=["GET"])

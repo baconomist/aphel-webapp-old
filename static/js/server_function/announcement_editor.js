@@ -8,27 +8,17 @@ class AnnouncementEditor
         this.quill = this.init_quill(editor_div, announcement_id);
     }  
     
-    save()
-    {
-        var html = this.quill.container.firstChild.innerHTML;
-            
-        server_bridge.sendToServer("/", {"function": "save_announcement", "data":{"login":JSON.parse(getCookie("login")), 
-                                  "announcement": {"content_html":html, "id": this.announcement_id}}}, 
-        function(response){
-            console.log("Sent announcement to server!");
-        });   
-    }
-    
     get_content()
     {
-        return this.quill.container.firstChild.innerHTML;
+        return this.quill.root.innerHTML;
     }
     
     
     
-    init_quill(div, announcement_id){
-    
+    init_quill(editor_div, toolbar_div, announcement_id){       
+        
         var toolbarOptions = [
+            
             ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
             //['blockquote', 'code-block'],
 
@@ -39,16 +29,18 @@ class AnnouncementEditor
             [{ 'direction': 'rtl' }],                         // text direction
 
             [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+            //[{ 'header': [1, 2, 3, 4, 5, 6, false] }], //disable header sizes cus those break the displaying announcements
 
             [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
             [{ 'font': [] }],
             [{ 'align': [] }],
 
-            ['clean']                                         // add a remove formatting button
+            ['clean']                                        // add a remove formatting button,
+            
+            
         ];
 
-        var quill = new Quill("#" + div.attr('id'), {
+        var quill = new Quill("#" + editor_div.attr('id'), {
                 theme: 'snow',
                 modules: {
                 toolbar: toolbarOptions

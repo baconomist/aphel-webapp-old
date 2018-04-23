@@ -10,3 +10,11 @@
   font-size:0.75em;
 }
 
+.ql-font-monospace {
+  font-family:monospace;
+}
+
+ql-font-serif {
+  font-family:serif;
+}
+
