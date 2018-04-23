@@ -1,5 +1,5 @@
 {
     "users": [
-        "{\"py/object\": \"modules.user.User\", \"announcements\": [{\"py/object\": \"modules.announcement.Announcement\", \"content_html\": \"<p><strong style=\\\"color: rgb(161, 0, 0);\\\" class=\\\"ql-size-huge ql-font-monospace\\\"><em><s>11111111111111111111</s></em></strong></p>\", \"id\": 1, \"info\": \"PCHACKERS\", \"time_stamp\": 1524441912.2756343, \"title\": \"TEST ANN\", \"user_name\": \"623609@pdsb.net\"}], \"confirmed\": true, \"password\": \"2b9d01baf952750e22c8f3ee846a5b7274e2e1131278bb58fea1639fb45f8182:b08a2398a33d4d879eddfd65d9cf4936\", \"permission_level\": 2, \"uid\": \"623609@pdsb.net\"}"
+        "{\"py/object\": \"modules.user.User\", \"announcements\": [], \"confirmed\": true, \"password\": \"d9e687ced6966d93074e3bab2ba9de66ddcd913b9bd48437f8b7050381ba15f5:b6dfc38585e743d69fb7a5240e667ac7\", \"permission_level\": 0, \"uid\": \"623609@pdsb.net\"}"
     ]
 }

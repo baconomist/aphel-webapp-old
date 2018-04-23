@@ -1,4 +1,4 @@
-if(window.location.href.includes("confirmation"))
+if(window.location.href.includes("confirmation_confirmed"))
 {
     server_bridge.sendToServer("", {"function": "validate_confirmation", "data": {"confirmation_id": getParameterByName("id")} }, function(response){
         if(response["data"])

@@ -88,7 +88,7 @@ $("#signup_form").on("submit", function(){
         if(response["data"])
         {
             // Redirect to home page after signed up
-            window.location.replace(server_bridge.host);
+            window.location.replace(server_bridge.host + "/confirmation");
         }
     });
 

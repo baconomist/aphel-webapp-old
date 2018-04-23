@@ -89,7 +89,7 @@ class RequestHandler(object):
             id = str(ConfirmationManager.get_instance().new_confirmation(user).id)
 
             send_email(receivers=email, subject="APHEL TECH EMAIL CONFIRMATION",
-                       body=r"url: {server_ip}/confirmation?id={id}".format(server_ip=Server.ip, id=id))
+                       body=r"url: {server_ip}/confirmation_confirmed?id={id}".format(server_ip=Server.ip, id=id))
 
             self.database.store_user(user)
 

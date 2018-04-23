@@ -40,6 +40,11 @@ def index():
 def login():
     return render_template("login.html")
 
+@app.route("/logout", methods=["GET"])
+@app.route("/logout.html", methods=["GET"])
+def logout():
+    return render_template("logout.html")
+
 
 @app.route("/signup", methods=["GET"])
 @app.route("/signup.html", methods=["GET"])
@@ -66,8 +71,14 @@ def user_announcements():
 
 
 @app.route("/confirmation", methods=["GET"])
+@app.route("/confirmation.html", methods=["GET"])
 def confirmation():
     return render_template("confirmation.html")
+
+
+@app.route("/confirmation_confirmed", methods=["GET"])
+def confirmation_confirmed():
+    return render_template("confirmation_confirmed.html")
 
 
 if __name__ == "__main__":
