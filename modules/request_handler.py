@@ -174,6 +174,13 @@ class RequestHandler(object):
         logging.info("Validation announcement review...")
         return jsonify(data=AnnouncementReviewHandler.get_instance().validate_review(review_id))
 
+    def get_teachers(self):
+        teachers = []
+        for user in DatabaseHandler.get_instance().get_users():
+            if Helper.is_user_admin(user):
+                teachers.append(user.uid)
+        return jsonify(data=teachers)
+
     def is_user_logged_in(self):
         return self.database.get_user(self.request_data["login"]["email"]).confirmed and \
                    Helper.check_password(self.database.get_user(self.request_data["login"]["email"]).password,

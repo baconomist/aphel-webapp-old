@@ -1,6 +1,15 @@
 if(window.location.href.includes("announcement") && !window.location.href.includes("user")){
     
-    div = $("#editor");
+    server_bridge.sendToServer("", {"function": "get_teachers"}, function(response){
+        teachers = response["data"];
+        for(i = 0; i < teachers.length; i++)
+        {
+            teachers[i] = "<option value=" + teachers[i] + "></option>";
+        }
+        
+        $("<datalist id='teacher_list'>" + teachers + "</datalist>").insertAfter(".ann-teacher")
+    });
+    
     
     announcement_id = 0
     server_bridge.sendToServer("", {"function": "get_new_announcement_id", "data": { "email": JSON.parse(getCookie("login"))["email"]} }, function(response){
@@ -56,5 +65,21 @@ if(window.location.href.includes("announcement") && !window.location.href.includ
         
     });     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
