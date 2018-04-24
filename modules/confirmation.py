@@ -8,7 +8,7 @@ class Confirmation(object):
         self.id = self.generate_new_url_hash().hexdigest()
         self.time_created = time.time()
 
-        twenty_four_hours_in_millis = (24*60*60*1000)
+        twenty_four_hours_in_millis = (24 * 60 * 60 * 1000)
         self.time_before_expired = time.time() + twenty_four_hours_in_millis
 
     def generate_new_url_hash(self):

@@ -80,6 +80,10 @@ def confirmation():
 def confirmation_confirmed():
     return render_template("confirmation_confirmed.html")
 
+@app.route("/review_confirmed", methods=["GET"])
+def review_confirmed():
+    return render_template("review_confirmed.html")
+
 
 if __name__ == "__main__":
     app.run(Server.ip, 80, debug=True)

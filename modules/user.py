@@ -12,9 +12,15 @@ class User(object):
     def create_announcement(self, title: str, info: str, content_html: str, id: int):
         # if for some reason user has no attribute "self.announcements"
         try:
+            self.get_announcement_by_id(id).title = title
+            self.get_announcement_by_id(id).info = info
             self.get_announcement_by_id(id).content_html = content_html
         except:
             self.announcements.append(Announcement(title=title, info=info, content_html=content_html, user_name=self.uid, id=id))
+
+    def store_announcement(self, announcement: Announcement):
+        announcement.id = get
+        self.announcements.append(announcement)
 
     def remove_announcement_by_id(self, id):
         copy = []

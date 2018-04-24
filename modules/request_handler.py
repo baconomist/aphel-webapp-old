@@ -5,6 +5,8 @@ from modules.user import User
 from modules.confirmation_manager import ConfirmationManager
 from modules.emailer import send_email
 from modules.server import Server
+from modules.announcement_review_handler import AnnouncementReviewHandler
+from modules.announcement import Announcement
 
 import traceback
 
@@ -117,15 +119,24 @@ class RequestHandler(object):
 
             return jsonify(status="Success", data=True)
         elif self.is_user_logged_in() and Helper.is_user_auth_for_post_review(DatabaseHandler.get_instance().get_user(self.request_data["login"]["email"])):
-            '''announcement_id = self.request_data["announcement"]["id"]
+            title = self.request_data["announcement_data"]["title"]
+            info = self.request_data["announcement_data"]["info"]
+            content_html = self.request_data["announcement_data"]["content_html"]
+            teacher = self.request_data["announcement_data"]["teacher"]
+            id = self.request_data["announcement_data"]["id"]
 
             user = self.database.get_user(self.request_data["login"]["email"])
-            user.create_announcement(content_html=self.request_data["announcement"]["content_html"],
-                                     id=announcement_id)
+
+            announcement = Announcement(title, info, content_html, user.uid, id)
+
+            send_email(receivers=teacher, subject="APHEL TECH ANNOUNCEMENT REVIEW",
+                       body="url: {server_ip}/review_confirmed?id={id}\n announcement content: \n {announcement_content} \n"
+                       .format(server_ip=Server.ip, announcement_content=announcement.content_html,
+                                id=str(AnnouncementReviewHandler.get_instance().new_announcement_review(teacher, announcement).id)))
+
             self.database.store_user(user)
 
-            return jsonify(status="Success", data=True)'''
-            pass
+            return jsonify(status="Success", data=True)
         else:
             return jsonify(status="Error", data=False)
 
@@ -157,6 +168,11 @@ class RequestHandler(object):
         confirmation_id = self.request_data["confirmation_id"]
         logging.info("Validating confirmation link...")
         return jsonify(data=ConfirmationManager.get_instance().validate_confirmation(confirmation_id))
+
+    def validate_review(self):
+        review_id = self.request_data["review_id"]
+        logging.info("Validation announcement review...")
+        return jsonify(data=AnnouncementReviewHandler.get_instance().validate_review(review_id))
 
     def is_user_logged_in(self):
         return self.database.get_user(self.request_data["login"]["email"]).confirmed and \
