@@ -35,6 +35,10 @@ $( document ).ready(function() {
             navbar.update_layout("not_logged_in");
         }
     });
+    
+    server_bridge.sendToServer("", {function: "get_teacher_students", data: { "email": JSON.prase(getCookie("login"))["email"] } }, function(response){
+        
+    });
 
 });
 

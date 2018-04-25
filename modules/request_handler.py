@@ -181,6 +181,10 @@ class RequestHandler(object):
                 teachers.append(user.uid)
         return jsonify(data=teachers)
 
+    def get_teacher_students(self):
+        teacher = DatabaseHandler.get_instance().get_user(self.request_data["email"])
+        
+
     def is_user_logged_in(self):
         return self.database.get_user(self.request_data["login"]["email"]).confirmed and \
                    Helper.check_password(self.database.get_user(self.request_data["login"]["email"]).password,
