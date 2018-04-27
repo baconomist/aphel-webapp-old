@@ -1,12 +1,17 @@
 import os
 
 from modules.database_handler import DatabaseHandler
-from modules.user import User
 from modules.confirmation_manager import ConfirmationManager
+from modules.announcement_review_handler import AnnouncementReviewHandler
+
+from modules.user import User
+from modules.teacher import Teacher
+
+
+from modules.announcement import Announcement
+
 from modules.emailer import send_email
 from modules.server import Server
-from modules.announcement_review_handler import AnnouncementReviewHandler
-from modules.announcement import Announcement
 
 import traceback
 
@@ -86,7 +91,11 @@ class RequestHandler(object):
         is_user_valid = Helper.is_user_data_valid(email, password)
 
         if "Success" in is_user_valid:
-            user = User(email, Helper.hash_password(password))
+
+            if Helper.is_teacher_email(email):
+                user = Teacher(email, Helper.hash_password(password))
+            else:
+                user = User(email, Helper.hash_password(password))
 
             id = str(ConfirmationManager.get_instance().new_confirmation(user).id)
 
@@ -183,7 +192,24 @@ class RequestHandler(object):
 
     def get_teacher_students(self):
         teacher = DatabaseHandler.get_instance().get_user(self.request_data["email"])
-        
+        return jsonify(data=teacher.__dict__["students"])
+
+    def get_user_permission_level(self):
+        return jsonify(data=DatabaseHandler.get_instance().get_user(self.request_data["email"]).permission_level)
+
+    def change_user_permission_level(self):
+        user = DatabaseHandler.get_instance().get_user(self.request_data["email"])
+        permission_level = self.request_data["permission_level"]
+        login = self.request_data["login"]
+
+        if self.is_user_logged_in() and DatabaseHandler.get_instance().get_user(login["email"]).permission_level >= 3:
+            user.permission_level = permission_level
+            DatabaseHandler.get_instance().store_user(user)
+            return jsonify(data=True, status="Success")
+
+        return jsonify(data=False, status="Failed to change user permission level. User attempting to change "
+                                          "permission may not have sufficient privileges.")
+
 
     def is_user_logged_in(self):
         return self.database.get_user(self.request_data["login"]["email"]).confirmed and \
@@ -236,3 +262,8 @@ class Helper(object):
     @staticmethod
     def is_user_auth_for_post_review(user):
         return user.get_permission_level() > 0
+
+    @staticmethod
+    def is_teacher_email(email):
+        # All peel teacher emails are prefixed with "p0"
+        return "p0" in email

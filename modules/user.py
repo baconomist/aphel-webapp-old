@@ -1,5 +1,5 @@
 from modules.announcement import Announcement
-
+import json
 
 class User(object):
     def __init__(self, uid, password):
@@ -17,10 +17,6 @@ class User(object):
             self.get_announcement_by_id(id).content_html = content_html
         except:
             self.announcements.append(Announcement(title=title, info=info, content_html=content_html, user_name=self.uid, id=id))
-
-    def store_announcement(self, announcement: Announcement):
-        announcement.id = get
-        self.announcements.append(announcement)
 
     def remove_announcement_by_id(self, id):
         copy = []
@@ -59,3 +55,8 @@ class User(object):
 
     def get_permission_level(self):
         return self.permission_level
+
+    @staticmethod
+    def get_teacher_permisison_level():
+        return 3
+
