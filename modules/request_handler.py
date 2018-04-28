@@ -202,13 +202,29 @@ class RequestHandler(object):
         permission_level = self.request_data["permission_level"]
         login = self.request_data["login"]
 
-        if self.is_user_logged_in() and DatabaseHandler.get_instance().get_user(login["email"]).permission_level >= 3:
-            user.permission_level = permission_level
+        if self.is_user_logged_in() and Helper.is_user_admin(DatabaseHandler.get_instance().get_user(login["email"])):
+            user.permission_level = int(permission_level)
             DatabaseHandler.get_instance().store_user(user)
             return jsonify(data=True, status="Success")
 
         return jsonify(data=False, status="Failed to change user permission level. User attempting to change "
                                           "permission may not have sufficient privileges.")
+
+
+    def add_student_to_teacher(self):
+        student_name = self.request_data["student_name"]
+        login = self.request_data["login"]
+        if self.is_user_logged_in() and Helper.is_user_admin(DatabaseHandler.get_instance().get_user(login["email"])):
+            return jsonify(data=student_name)
+
+    def get_students(self):
+        users = DatabaseHandler.get_instance().get_users()
+        students = []
+        for user in users:
+            if not Helper.is_user_admin(user):
+                students.append(user.uid)
+
+        return jsonify(data=students)
 
 
     def is_user_logged_in(self):

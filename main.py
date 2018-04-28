@@ -93,5 +93,17 @@ def students():
     return render_template("students.html")
 
 
+@app.route("/add_student", methods=["GET"])
+@app.route("/add_student.html", methods=["GET"])
+def add_student():
+    return render_template("add_student.html")
+
+
+@app.route("/add_student_status", methods=["GET"])
+@app.route("/add_student_status.html", methods=["GET"])
+def add_student_status():
+    return render_template("add_student_status.html")
+
+
 if __name__ == "__main__":
     app.run(Server.ip, 80, debug=True)
