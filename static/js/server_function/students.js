@@ -58,9 +58,7 @@ function createEditableStudent(clone)
     {
         if(this.value.toString() == clone.attr("student_perm"))
         {
-            this.selected = 'selected'
-            // Stop the loop
-            return false;
+            this.selected = 'selected';
         }
     });
     
@@ -77,6 +75,7 @@ function disableEditing(clone)
     createEventListenersForDropdown(clone);
     
     clone.find(".student-perm").html("Permission Level: " + clone.find(".student-perm-input").val());
+    clone.attr("student_perm", clone.find(".student-perm-input").val());
     clone.find(".student-perm").show();
     
     clone.find(".student-perm-input").remove();
