@@ -96,7 +96,7 @@ for html_file in html_files:
             div["style"] = re.sub("url\(.*\)", "url({{ url_for('static', filename='%s') }})" % (re.findall("url\(.*\)", div["style"])[0]).replace("url(", "").replace(")", ""), div["style"]).replace('"', "").replace("assets/", "")
         except:
             pass'''
-    data = file.read().replace("assets/", "static/").replace("&quot;", "'")
+    data = file.read().replace("assets/", "../static/").replace("&quot;", "'")
 
     file.close()
 
@@ -113,25 +113,27 @@ for html_file in html_files:
     file = open(html_file, "w")
     file.write(data)
     file.close()
-
-css_files = []
+'''
+static_files = []
 
 for currentDirPath, subDirList, fileList in os.walk(export_dir + "\\static"):
     for filename in fileList:
         if ".css" in filename:
-            css_files.append(currentDirPath + "\\" + filename)
+            static_files.append(currentDirPath + "\\" + filename)
 
-for css_file in css_files:
+for static_file in static_files:
     # Open file for read/write
-    file = open(css_file, "r")
+    file = open(static_file, "r")
 
     data = file.read().replace("../assets/", "").replace("../", "/static/")  # .replace("/static/fonts/", "")
 
     file.close()
 
-    file = open(css_file, "w")
+    file = open(static_file, "w")
     file.write(data)
     file.close()
+    
+'''
 
 
 
