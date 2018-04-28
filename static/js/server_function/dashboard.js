@@ -20,7 +20,7 @@ function create_announcement(announcement_data)
     clone.show();
     clone.find("#announcement_title").text(announcement_data["title"]);
     clone.find("#announcement_info").text("Club/Team: " + announcement_data["info"] + ", User: " + announcement_data["user_name"]);
-    clone.find("#announcement_content").html("Content: " + announcement_data["content_html"]);
+    clone.find("#announcement_content").html(announcement_data["content_html"]);
     clone.find("#announcement_time_stamp").text("TimeStamp: " + announcement_data["time_stamp"]);
     
     clone.attr("id", "dashboard_announcement"+x)

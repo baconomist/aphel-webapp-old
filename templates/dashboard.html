@@ -64,17 +64,27 @@
     <div class="row">
         <div class="col">
             <div id="dashboard_div" style="padding-right:10px;padding-left:10px;height:auto;">
-                <div class="container" id="dashboard_announcement_template" style="padding:0px;margin-bottom:21px;border:2px solid green;display:none">
+                <div class="container" id="dashboard_announcement_template" style="padding:0px;margin-bottom:21px;border:2px solid green;display:none;">
+
                     <div class="d-block" style="height:70px;background-color:#439d4c;padding:10px;padding-left:20px;padding-right:20px;">
                         <blockquote class="blockquote">
                             <p id="announcement_title" class="mb-0" style="color:rgb(255,255,255);font-family:'News Cycle', sans-serif;">Announcement Title</p>
                             <footer class="blockquote-footer" id="announcement_info" style="color:rgb(255,255,255);font-family:'News Cycle', sans-serif;">Club Name, Name of user that posted this</footer>
                         </blockquote>
                     </div>
-                    <div class="d-block overflow" style="height:170px;background-color:#ffffff;font-family:'News Cycle', sans-serif;padding:10px;padding-right:20px;padding-left:20px;">
-                        <p class="d-block" id="announcement_content">Announcement info goes here.&nbsp;Announcement info goes here.&nbsp;Announcement info goes here.&nbsp;Announcement info goes here.&nbsp;Announcement info goes here.&nbsp;<br></p>
-                        <p class="d-block" id="announcement_time_stamp">VVV Add a footer to each post with the timestamp, and a function to pin the post so that it is always at the top of the students announcements, or in a separate favourites page.</p>
+
+                    <div class="d-block overflow" style="height:170px;background-color:#ffffff;font-family:'News Cycle', sans-serif;padding:10px;padding-right:20px;padding-left:20px;overflow: auto;border: 2px solid #63cb40;margin: 5px 5px;">
+                        <p class="d-block" id="announcement_content">
+                            Announcement info goes here.
+                        </p>
                     </div>
+
+                    <p class="d-block" id="announcement_time_stamp">
+                        VVV Add a footer to each post with the timestamp,
+                        and a function to pin the post so that it is always at the top of the students announcements,
+                        or in a separate favourites page.
+                    </p>
+
                 </div>
             </div>
             <div id="empty_space_fixer" style="height:225px;"></div>
