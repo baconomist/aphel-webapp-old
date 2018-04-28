@@ -63,10 +63,6 @@ function createEditableStudent(clone)
             return false;
         }
     });
-                        
-    
-    
-    
     
     createSaveButton(clone);
     
@@ -104,6 +100,12 @@ function createEventListenersForDropdown(clone)
         //IDK what this means exactly yet
         // Delete account or set user permission to 0 and stop managing user...
         //deleteStudent(clone);
+        
+        server_bridge.sendToServer("", {"function": "remove_student_from_teacher", "data": {"student_name": clone.attr("student_uid"),
+                                                                                            "login": JSON.parse(getCookie("login"))} },
+        function(response){
+            clone.remove();
+        });
     }
     ); 
 }

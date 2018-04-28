@@ -210,12 +210,31 @@ class RequestHandler(object):
         return jsonify(data=False, status="Failed to change user permission level. User attempting to change "
                                           "permission may not have sufficient privileges.")
 
-
+    # email or name?@!?!?!??!?!?!?!?
     def add_student_to_teacher(self):
         student_name = self.request_data["student_name"]
         login = self.request_data["login"]
-        if self.is_user_logged_in() and Helper.is_user_admin(DatabaseHandler.get_instance().get_user(login["email"])):
-            return jsonify(data=student_name)
+        teacher = DatabaseHandler.get_instance().get_user(login["email"])
+        # email or name?@!?!?!??!?!?!?!?
+        if self.is_user_logged_in() and Helper.is_user_admin(teacher) and student_name not in teacher.students:
+            teacher.students.append(student_name)
+            DatabaseHandler.get_instance().store_user(teacher)
+            return jsonify(data=True)
+
+        return jsonify(data=False)
+
+    # email or name?@!?!?!??!?!?!?!?
+    def remove_student_from_teacher(self):
+        student_name = self.request_data["student_name"]
+        login = self.request_data["login"]
+        teacher = DatabaseHandler.get_instance().get_user(login["email"])
+
+        # email or name?@!?!?!??!?!?!?!?# email or name?@!?!?!??!?!?!?!?# email or name?@!?!?!??!?!?!?!?# email or name?@!?!?!??!?!?!?!?# email or name?@!?!?!??!?!?!?!?
+        if self.is_user_logged_in() and Helper.is_user_admin(teacher) and student_name in teacher.students:
+            teacher.students.remove(student_name)
+            DatabaseHandler.get_instance().store_user(teacher)
+            return jsonify(data=True)
+        return jsonify(data=False)
 
     def get_students(self):
         users = DatabaseHandler.get_instance().get_users()

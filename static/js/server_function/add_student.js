@@ -16,7 +16,7 @@ if(window.location.href.includes("add_student"))
                                                                                        "login": JSON.parse(getCookie("login"))} },
            function(response)
            {
-                location.replace(server_bridge.host + "/add_student_status");
+                location.replace(server_bridge.host + "/students");
            });
     });
 }
