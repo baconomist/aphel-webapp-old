@@ -1,6 +1,6 @@
 {
     "users": [
-        "{\"py/object\": \"modules.user.User\", \"announcements\": [], \"confirmed\": true, \"password\": \"d9e687ced6966d93074e3bab2ba9de66ddcd913b9bd48437f8b7050381ba15f5:b6dfc38585e743d69fb7a5240e667ac7\", \"permission_level\": 0, \"uid\": \"623609@pdsb.net\"}",
+        "{\"py/object\": \"modules.user.User\", \"announcements\": [], \"confirmed\": true, \"password\": \"d9e687ced6966d93074e3bab2ba9de66ddcd913b9bd48437f8b7050381ba15f5:b6dfc38585e743d69fb7a5240e667ac7\", \"permission_level\": 1, \"uid\": \"623609@pdsb.net\"}",
         "{\"py/object\": \"modules.user.User\", \"announcements\": [], \"confirmed\": true, \"password\": \"d9e687ced6966d93074e3bab2ba9de66ddcd913b9bd48437f8b7050381ba15f5:b6dfc38585e743d69fb7a5240e667ac7\", \"permission_level\": 3, \"uid\": \"12748@gmail.com\"}",
         "{\"py/object\": \"modules.user.User\", \"announcements\": [], \"confirmed\": true, \"password\": \"d9e687ced6966d93074e3bab2ba9de66ddcd913b9bd48437f8b7050381ba15f5:b6dfc38585e743d69fb7a5240e667ac7\", \"permission_level\": 3, \"uid\": \"4444@gmail.com\"}",
         "{\"py/object\": \"modules.user.User\", \"announcements\": [], \"confirmed\": true, \"password\": \"d9e687ced6966d93074e3bab2ba9de66ddcd913b9bd48437f8b7050381ba15f5:b6dfc38585e743d69fb7a5240e667ac7\", \"permission_level\": 3, \"uid\": \"44344@gmail.com\"}",

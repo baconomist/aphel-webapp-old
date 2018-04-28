@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect
+from flask_cors import cross_origin
 
 from modules.request_handler import RequestHandler
 from modules.server import Server
@@ -21,10 +22,11 @@ app = Flask(__name__)
 request_handler = RequestHandler()
 
 
+#cross origin for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 @app.route("/", methods=["POST"])
+@cross_origin(origin='*')
 def catch_all():
     return request_handler.handle_request()
-
 
 @app.route("/", methods=["GET"])
 @app.route("/home")

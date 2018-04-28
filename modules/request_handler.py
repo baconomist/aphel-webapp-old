@@ -40,6 +40,7 @@ class RequestHandler(object):
         self.database = DatabaseHandler.get_instance()
 
     def handle_request(self):
+        print(request.get_json(force=True))
         self.request = request.get_json(force=True)
         try:
             self.request_data = self.request["data"]

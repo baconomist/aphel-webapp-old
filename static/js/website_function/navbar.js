@@ -3,18 +3,18 @@ class Navbar
     constructor()
     {
         this.layouts = {"logged_in": ["#nav_login", "#nav_register"], "not_logged_in": ["#nav_user"]}
-    }    
-    
+    }
+
     update_layout(layout)
     {
         this.unhide_all();
         var items_to_hide = this.layouts[layout]
-        for(var i=0; i < items_to_hide.length; i++)
+        for (var i = 0; i < items_to_hide.length; i++)
         {
-            $("#transmenu").find(items_to_hide[i]).hide();  
-        }    
+            $("#transmenu").find(items_to_hide[i]).hide();
+        }
     }
-    
+
     unhide_all()
     {
         $("#nav_login").show();
@@ -23,10 +23,12 @@ class Navbar
     }
 }
 
-$( document ).ready(function() {
+$(document).ready(function ()
+{
     navbar = new Navbar();
-    is_user_logged_in(function(is_logged_in){
-        if(is_logged_in)
+    is_user_logged_in(function (is_logged_in)
+    {
+        if (is_logged_in)
         {
             navbar.update_layout("logged_in");
         }
@@ -35,6 +37,20 @@ $( document ).ready(function() {
             navbar.update_layout("not_logged_in");
         }
     });
+
+    server_bridge.sendToServer("", {
+            "function": "get_user_permission_level",
+            "data": {"email": JSON.parse(getCookie("login"))["email"]}
+        },
+        function (response)
+        {
+            console.log(response["data"]);
+            if(!(response["data"] >= 3))
+            {
+                $(".admin").hide();
+            }
+
+        });
 
 });
 
