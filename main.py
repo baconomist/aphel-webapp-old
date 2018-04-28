@@ -106,4 +106,4 @@ def add_student_status():
 
 
 if __name__ == "__main__":
-    app.run(Server.ip, 80, debug=True)
+    app.run(Server.ip, Server.port, debug=True)

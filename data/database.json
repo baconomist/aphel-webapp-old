@@ -1,11 +1,12 @@
 {
     "users": [
-        "{\"py/object\": \"modules.user.User\", \"announcements\": [], \"confirmed\": true, \"password\": \"d9e687ced6966d93074e3bab2ba9de66ddcd913b9bd48437f8b7050381ba15f5:b6dfc38585e743d69fb7a5240e667ac7\", \"permission_level\": 2, \"uid\": \"623609@pdsb.net\"}",
+        "{\"py/object\": \"modules.user.User\", \"announcements\": [], \"confirmed\": true, \"password\": \"d9e687ced6966d93074e3bab2ba9de66ddcd913b9bd48437f8b7050381ba15f5:b6dfc38585e743d69fb7a5240e667ac7\", \"permission_level\": 0, \"uid\": \"623609@pdsb.net\"}",
         "{\"py/object\": \"modules.user.User\", \"announcements\": [], \"confirmed\": true, \"password\": \"d9e687ced6966d93074e3bab2ba9de66ddcd913b9bd48437f8b7050381ba15f5:b6dfc38585e743d69fb7a5240e667ac7\", \"permission_level\": 3, \"uid\": \"12748@gmail.com\"}",
         "{\"py/object\": \"modules.user.User\", \"announcements\": [], \"confirmed\": true, \"password\": \"d9e687ced6966d93074e3bab2ba9de66ddcd913b9bd48437f8b7050381ba15f5:b6dfc38585e743d69fb7a5240e667ac7\", \"permission_level\": 3, \"uid\": \"4444@gmail.com\"}",
         "{\"py/object\": \"modules.user.User\", \"announcements\": [], \"confirmed\": true, \"password\": \"d9e687ced6966d93074e3bab2ba9de66ddcd913b9bd48437f8b7050381ba15f5:b6dfc38585e743d69fb7a5240e667ac7\", \"permission_level\": 3, \"uid\": \"44344@gmail.com\"}",
         "{\"py/object\": \"modules.user.User\", \"announcements\": [], \"confirmed\": true, \"password\": \"d9e687ced6966d93074e3bab2ba9de66ddcd913b9bd48437f8b7050381ba15f5:b6dfc38585e743d69fb7a5240e667ac7\", \"permission_level\": 3, \"uid\": \"444344@gmail.com\"}",
         "{\"py/object\": \"modules.user.User\", \"announcements\": [], \"confirmed\": true, \"password\": \"d9e687ced6966d93074e3bab2ba9de66ddcd913b9bd48437f8b7050381ba15f5:b6dfc38585e743d69fb7a5240e667ac7\", \"permission_level\": 3, \"uid\": \"99383939@gmail.com\"}",
-        "{\"py/object\": \"modules.teacher.Teacher\", \"announcements\": [], \"confirmed\": true, \"password\": \"292b624f16953d86523e63058f849d6947d35578d2ecbe2a8ca5c40d8af2ee2e:0c071c8b6b6342f188b488038082339c\", \"permission_level\": 3, \"students\": [], \"uid\": \"baconomist@gmail.com\"}"
+        "{\"py/object\": \"modules.teacher.Teacher\", \"announcements\": [], \"confirmed\": true, \"password\": \"292b624f16953d86523e63058f849d6947d35578d2ecbe2a8ca5c40d8af2ee2e:0c071c8b6b6342f188b488038082339c\", \"permission_level\": 3, \"students\": [\"623609@pdsb.net\"], \"uid\": \"baconomist@gmail.com\"}",
+        "{\"py/object\": \"modules.user.User\", \"announcements\": [], \"confirmed\": false, \"password\": \"96745fd7da529a20b9ae26866c14b7d9bae44201bad733cfeeba1fb8f97576d7:2882e140fa66440ba8688e0b2f182b7d\", \"permission_level\": 0, \"uid\": \"788309@pdsb.net\"}"
     ]
 }

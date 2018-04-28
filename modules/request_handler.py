@@ -231,6 +231,10 @@ class RequestHandler(object):
 
         # email or name?@!?!?!??!?!?!?!?# email or name?@!?!?!??!?!?!?!?# email or name?@!?!?!??!?!?!?!?# email or name?@!?!?!??!?!?!?!?# email or name?@!?!?!??!?!?!?!?
         if self.is_user_logged_in() and Helper.is_user_admin(teacher) and student_name in teacher.students:
+            student = DatabaseHandler.get_instance().get_user(student_name)
+            student.permission_level = 0
+            DatabaseHandler.get_instance().store_user(student)
+
             teacher.students.remove(student_name)
             DatabaseHandler.get_instance().store_user(teacher)
             return jsonify(data=True)
