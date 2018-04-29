@@ -2,25 +2,18 @@ class Navbar
 {
     constructor()
     {
-        this.layouts = {"logged_in": ["#nav_login", "#nav_register"], "not_logged_in": ["#nav_user"]}
+        this.layouts = {"not_logged_in": ["#nav_login", "#nav_register"], "logged_in": ["#nav_user"]}
     }
 
     update_layout(layout)
     {
-        this.unhide_all();
-        var items_to_hide = this.layouts[layout]
-        for (var i = 0; i < items_to_hide.length; i++)
+        let items_to_show = this.layouts[layout];
+        for (let i = 0; i < items_to_show.length; i++)
         {
-            $("#transmenu").find(items_to_hide[i]).hide();
+            $("#transmenu").find(items_to_show[i]).show();
         }
     }
 
-    unhide_all()
-    {
-        $("#nav_login").show();
-        $("#nav_register").show();
-        $("#nav_user").show();
-    }
 }
 
 $(document).ready(function ()
@@ -38,19 +31,22 @@ $(document).ready(function ()
         }
     });
 
-    server_bridge.sendToServer("", {
-            "function": "get_user_permission_level",
-            "data": {"email": JSON.parse(getCookie("login"))["email"]}
-        },
-        function (response)
-        {
-            console.log(response["data"]);
-            if(!(response["data"] >= 3))
+    if(getCookie("login") != null)
+    {
+        server_bridge.sendToServer("", {
+                "function": "get_user_permission_level",
+                "data": {"email": JSON.parse(getCookie("login"))["email"]}
+            },
+            function (response)
             {
-                $(".admin").hide();
-            }
+                console.log(response["data"]);
+                if (response["data"] >= 3)
+                {
+                    $(".admin").show();
+                }
 
-        });
+            });
+    }
 
 });
 
