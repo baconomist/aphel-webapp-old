@@ -18,6 +18,13 @@ class Navbar
 
 $(document).ready(function ()
 {
+    // Call function twice to make sure the navabar is updated
+    check_navbar();
+    check_navbar();
+});
+
+function check_navbar()
+{
     navbar = new Navbar();
     is_user_logged_in(function (is_logged_in)
     {
@@ -47,8 +54,7 @@ $(document).ready(function ()
 
             });
     }
-
-});
+}
 
 
 
