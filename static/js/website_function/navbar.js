@@ -20,26 +20,16 @@ $(document).ready(function ()
 {
     // Call function twice to make sure the navabar is updated
     check_navbar();
-    check_navbar();
 });
 
 function check_navbar()
 {
     navbar = new Navbar();
-    is_user_logged_in(function (is_logged_in)
-    {
-        if (is_logged_in)
-        {
-            navbar.update_layout("logged_in");
-        }
-        else
-        {
-            navbar.update_layout("not_logged_in");
-        }
-    });
 
     if(getCookie("login") != null)
     {
+        navbar.update_layout("logged_in");
+
         server_bridge.sendToServer("", {
                 "function": "get_user_permission_level",
                 "data": {"email": JSON.parse(getCookie("login"))["email"]}
@@ -53,6 +43,10 @@ function check_navbar()
                 }
 
             });
+    }
+    else
+    {
+        navbar.update_layout("not_logged_in");
     }
 }
 
