@@ -13,7 +13,7 @@ class ServerBridge {
     console.log(this.host);
 
     // TEST HOST FOR FLASK SERVER@!!!!!
-    this.host = "http://localhost:80";
+    ///this.host = "http://localhost:80";
       
     console.log(this.host);
   }

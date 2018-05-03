@@ -36,6 +36,12 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/profile", methods=["GET"])
+@app.route("/profile.html", methods=["GET"])
+def profile():
+    return render_template("profile.html")
+
+
 # Then have specific rules for specific html files/links
 @app.route("/login", methods=["GET"])
 @app.route("/login.html", methods=["GET"])

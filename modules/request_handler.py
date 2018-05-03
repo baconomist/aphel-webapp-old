@@ -101,7 +101,7 @@ class RequestHandler(object):
             id = str(ConfirmationManager.get_instance().new_confirmation(user).id)
 
             send_email(receivers=email, subject="APHEL TECH EMAIL CONFIRMATION",
-                       body=r"url: {server_ip}/confirmation_confirmed?id={id}".format(server_ip=Server.ip, id=id))
+                       body=r"url: http://{server_ip}/confirmation_confirmed?id={id}".format(server_ip=Server.public_address, id=id))
 
             self.database.store_user(user)
 
@@ -140,9 +140,9 @@ class RequestHandler(object):
             announcement = Announcement(title, info, content_html, user.uid, id)
 
             send_email(receivers=teacher, subject="APHEL TECH ANNOUNCEMENT REVIEW",
-                       body="url: {server_ip}/review_confirmed?id={id} <br><br> ***announcement content*** <br> {announcement_content} <br> ***announcement content***"
-                       .format(server_ip=Server.ip, announcement_content=announcement.content_html,
-                                id=str(AnnouncementReviewHandler.get_instance().new_announcement_review(teacher, announcement).id)))
+                       body="url: http://{server_ip}/review_confirmed?id={id} <br><br> ***announcement content*** <br> {announcement_content} <br> ***announcement content***"
+                       .format(server_ip=Server.public_address, announcement_content=announcement.content_html,
+                               id=str(AnnouncementReviewHandler.get_instance().new_announcement_review(teacher, announcement).id)))
 
             self.database.store_user(user)
 

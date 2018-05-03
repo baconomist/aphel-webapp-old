@@ -1,3 +1,4 @@
 class Server(object):
-    ip = "127.0.0.1"
-    port = 80
+    ip = "192.168.224.68"
+    port = 6702
+    public_address = "192.0.212.53" + str(port)
