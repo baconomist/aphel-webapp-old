@@ -26,6 +26,8 @@ function check_navbar()
 {
     navbar = new Navbar();
 
+    console.log($("body").html());
+
     if(getCookie("login") != null)
     {
         navbar.update_layout("logged_in");
@@ -42,7 +44,13 @@ function check_navbar()
                     $(".admin").show();
                 }
 
+                if(response["data"] >= 1)
+                {
+                    $(".auth-for-post").show();
+                }
+
             });
+
     }
     else
     {

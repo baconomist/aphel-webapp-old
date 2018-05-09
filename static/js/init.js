@@ -116,10 +116,3 @@ function login_check()
 
     }
 }
-
-
-
-/*apply_error_to_input($("#signup_form").find("#email"));
-apply_error_to_input($("#signup_form").find("#password"));
-apply_error_to_input($("#signup_form").find("#password_confirm"));
-apply_error_to_input($("#signup_form").find("#school"));*/

@@ -32,7 +32,7 @@ if(window.location.href.includes("announcement") && !window.location.href.includ
                 {
                     $(".ann-post").remove();
                     template = $(".ann-post-review");             
-                }                
+                }
                 
                 template.show();
                 
