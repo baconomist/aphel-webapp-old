@@ -1,8 +1,0 @@
-{
-    "clubs": [],
-    "users": [
-        "{\"py/object\": \"modules.user.User\", \"announcements\": [], \"confirmed\": true, \"password\": \"f4ffc019ec928bcd22def79257ac16a8b3f3ccc6f914c9670801c760a319180b:fb71394a36564cacb12ff6e21a46c652\", \"permission_level\": 0, \"uid\": \"788309@pdsb.net\"}",
-        "{\"py/object\": \"modules.user.User\", \"announcements\": [], \"confirmed\": true, \"password\": \"a76231445651dc6d273f7475397e2553e062547efa99a86182fd70d642d72696:af95387a305f433d80748ae2dca362f7\", \"permission_level\": 0, \"uid\": \"623609@pdsb.net\"}",
-        "{\"py/object\": \"modules.user.User\", \"announcements\": [], \"confirmed\": true, \"password\": \"1ff9dca0bdc2b4e8791ec615ed74f9b267fd9dfd110ee1d15b761df026bf7e24:f18ed92856564120ba33cf541bb6f535\", \"permission_level\": 0, \"uid\": \"baconomist@gmail.com\"}"
-    ]
-}

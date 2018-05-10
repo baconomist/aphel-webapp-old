@@ -48,7 +48,6 @@ def profile():
 def login():
     return render_template("login.html")
 
-
 @app.route("/logout", methods=["GET"])
 @app.route("/logout.html", methods=["GET"])
 def logout():
@@ -111,7 +110,6 @@ def add_student():
 @app.route("/add_student_status.html", methods=["GET"])
 def add_student_status():
     return render_template("add_student_status.html")
-
 
 if __name__ == "__main__":
     app.run(Server.ip, Server.port, debug=True)

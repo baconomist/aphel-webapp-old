@@ -9,6 +9,11 @@ class User(object):
         self.announcements = []
         self.confirmed = False
 
+        self.profile_image = None
+        self.firstname = ""
+        self.lastname = ""
+        self.clubs = []
+
     def create_announcement(self, title: str, info: str, content_html: str, id: int):
         # if for some reason user has no attribute "self.announcements"
         try:
@@ -42,6 +47,9 @@ class User(object):
                 return True
         return False
 
+    def get_profile_info_json(self):
+        return json.dumps({"firstname": self.firstname, "lastname": self.lastname, "clubs": self.clubs})
+
     '''
     permission level 0 - can only view posted announcements
     permission level 1 - student can only post announcements with teacher review
@@ -60,3 +68,14 @@ class User(object):
     def get_teacher_permisison_level():
         return 3
 
+    @staticmethod
+    def get_trusted_student_permission_level():
+        return 2
+
+    @staticmethod
+    def get_untrusted_student_permission_level():
+        return 1
+
+    @staticmethod
+    def get_new_student_permission_level():
+        return 0

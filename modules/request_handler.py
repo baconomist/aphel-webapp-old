@@ -5,6 +5,7 @@ from modules.confirmation_manager import ConfirmationManager
 from modules.announcement_review_handler import AnnouncementReviewHandler
 
 from modules.user import User
+from modules.student import Student
 from modules.teacher import Teacher
 
 
@@ -96,7 +97,7 @@ class RequestHandler(object):
             if Helper.is_teacher_email(email):
                 user = Teacher(email, Helper.hash_password(password))
             else:
-                user = User(email, Helper.hash_password(password))
+                user = Student(email, Helper.hash_password(password))
 
             id = str(ConfirmationManager.get_instance().new_confirmation(user).id)
 
@@ -249,6 +250,10 @@ class RequestHandler(object):
                 students.append(user.uid)
 
         return jsonify(data=students)
+
+    def save_profile(self):
+        firstname = self.request_data["firstname"]
+        lastname = self.request_data["lastname"]
 
 
     def is_user_logged_in(self):
