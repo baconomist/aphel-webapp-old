@@ -25,10 +25,9 @@ $(document).ready(function ()
 function check_navbar()
 {
     navbar = new Navbar();
-    console.log((getCookie("login") == null));
-    console.log(getCookie("login"));
-    
-    if(getCookie("login") != null)
+
+    // Try if login cookie exists
+    try
     {
         navbar.update_layout("logged_in");
 
@@ -50,9 +49,8 @@ function check_navbar()
                 }
 
             });
-
     }
-    else
+    catch
     {
         navbar.update_layout("not_logged_in");
     }
