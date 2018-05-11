@@ -25,9 +25,9 @@ $(document).ready(function ()
 function check_navbar()
 {
     navbar = new Navbar();
-
-    console.log($("body").html());
-
+    console.log((getCookie("login") == null));
+    console.log(getCookie("login"));
+    
     if(getCookie("login") != null)
     {
         navbar.update_layout("logged_in");

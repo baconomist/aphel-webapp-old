@@ -1,0 +1,6 @@
+{
+    "clubs": [],
+    "users": [
+        "{\"py/object\": \"modules.user.User\", \"announcements\": [], \"clubs\": [], \"confirmed\": true, \"firstname\": \"\", \"lastname\": \"\", \"password\": \"058a8b8c62fb411f07838cf13c64864f06650e16c1009d6e2993bbd3dd6410ec:5414efeec1984f838e65f67aa6f385b5\", \"permission_level\": 3, \"profile_image\": null, \"uid\": \"baconomist@gmail.com\"}"
+    ]
+}

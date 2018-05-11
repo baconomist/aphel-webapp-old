@@ -8,7 +8,6 @@ from modules.user import User
 from modules.student import Student
 from modules.teacher import Teacher
 
-
 from modules.announcement import Announcement
 
 from modules.emailer import send_email
@@ -26,6 +25,8 @@ import datetime
 ''' ALL METHODS IN REQUEST HANDLER ARE CALLABLE BY CLIENT '''
 ''' MAKE SURE THE METHODS HERE ARE SECURE '''
 ''' ATTENTION '''
+
+
 class RequestHandler(object):
     def __init__(self):
         # This is why this class needs an instance,
@@ -102,7 +103,8 @@ class RequestHandler(object):
             id = str(ConfirmationManager.get_instance().new_confirmation(user).id)
 
             send_email(receivers=email, subject="APHEL TECH EMAIL CONFIRMATION",
-                       body=r"url: http://{server_ip}/confirmation_confirmed?id={id}".format(server_ip=Server.public_address, id=id))
+                       body=r"url: http://{server_ip}/confirmation_confirmed?id={id}".format(
+                           server_ip=Server.public_address, id=id))
 
             self.database.store_user(user)
 
@@ -118,7 +120,8 @@ class RequestHandler(object):
         return jsonify(data=self.database.get_announcements_json())
 
     def save_announcement(self):
-        if self.is_user_logged_in() and Helper.is_user_auth_for_post(DatabaseHandler.get_instance().get_user(self.request_data["login"]["email"])):
+        if self.is_user_logged_in() and Helper.is_user_auth_for_post(
+                DatabaseHandler.get_instance().get_user(self.request_data["login"]["email"])):
             title = self.request_data["announcement_data"]["title"]
             info = self.request_data["announcement_data"]["info"]
             content_html = self.request_data["announcement_data"]["content_html"]
@@ -129,7 +132,8 @@ class RequestHandler(object):
             self.database.store_user(user)
 
             return jsonify(status="Success", data=True)
-        elif self.is_user_logged_in() and Helper.is_user_auth_for_post_review(DatabaseHandler.get_instance().get_user(self.request_data["login"]["email"])):
+        elif self.is_user_logged_in() and Helper.is_user_auth_for_post_review(
+                DatabaseHandler.get_instance().get_user(self.request_data["login"]["email"])):
             title = self.request_data["announcement_data"]["title"]
             info = self.request_data["announcement_data"]["info"]
             content_html = self.request_data["announcement_data"]["content_html"]
@@ -143,7 +147,8 @@ class RequestHandler(object):
             send_email(receivers=teacher, subject="APHEL TECH ANNOUNCEMENT REVIEW",
                        body="url: http://{server_ip}/review_confirmed?id={id} <br><br> ***announcement content*** <br> {announcement_content} <br> ***announcement content***"
                        .format(server_ip=Server.public_address, announcement_content=announcement.content_html,
-                               id=str(AnnouncementReviewHandler.get_instance().new_announcement_review(teacher, announcement).id)))
+                               id=str(AnnouncementReviewHandler.get_instance().new_announcement_review(teacher,
+                                                                                                       announcement).id)))
 
             self.database.store_user(user)
 
@@ -251,24 +256,46 @@ class RequestHandler(object):
 
         return jsonify(data=students)
 
-    def save_profile(self):
+    def save_profile_data(self):
         firstname = self.request_data["firstname"]
         lastname = self.request_data["lastname"]
 
+        grade = self.request_data["grade"]
+
+        user = self.database.get_user(self.request_data["login"]["email"])
+
+        if grade != None and self.is_user_logged_in():
+            user: Student
+
+            user.firstname = firstname
+            user.lastname = lastname
+            user.grade = grade
+        elif self.is_user_logged_in():
+            user: Teacher
+
+            user.firstname = firstname
+            user.lastname = lastname
+
+        self.database.store_user(user)
+
+    def get_profile_data(self):
+        return jsonify(data=self.database.get_user(self.request_data["email"]).get_profile_info_json())
 
     def is_user_logged_in(self):
         return self.database.get_user(self.request_data["login"]["email"]).confirmed and \
-                   Helper.check_password(self.database.get_user(self.request_data["login"]["email"]).password,
-                                     self.request_data["login"]["password"])\
+               Helper.check_password(self.database.get_user(self.request_data["login"]["email"]).password,
+                                     self.request_data["login"]["password"])
 
     def is_user_admin(self):
         return jsonify(data=Helper.is_user_admin(DatabaseHandler.get_instance().get_user(self.request_data["email"])))
 
     def is_user_auth_for_post(self):
-        return jsonify(data=Helper.is_user_auth_for_post(DatabaseHandler.get_instance().get_user(self.request_data["email"])))
+        return jsonify(
+            data=Helper.is_user_auth_for_post(DatabaseHandler.get_instance().get_user(self.request_data["email"])))
 
     def is_user_auth_for_post_review(self):
-        return jsonify(data=Helper.is_user_auth_for_post_review(DatabaseHandler.get_instance().get_user(self.request_data["email"])))
+        return jsonify(data=Helper.is_user_auth_for_post_review(
+            DatabaseHandler.get_instance().get_user(self.request_data["email"])))
 
 
 class Helper(object):
