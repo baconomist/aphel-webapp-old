@@ -7,18 +7,28 @@ class Navbar
 
     update_layout(layout)
     {
+        this.hide_all();
+
         let items_to_show = this.layouts[layout];
         for (let i = 0; i < items_to_show.length; i++)
         {
             $("#transmenu").find(items_to_show[i]).show();
+            console.log(items_to_show[i]);
         }
+    }
+
+    hide_all()
+    {
+        $("#nav_login").hide();
+        $("#nav_register").hide();
+        $("#nav_user").hide();
     }
 
 }
 
 $(document).ready(function ()
 {
-    // Call function twice to make sure the navabar is updated
+    // Call function twice to make sure the navbar is updated
     check_navbar();
 });
 
@@ -26,7 +36,7 @@ function check_navbar()
 {
     navbar = new Navbar();
 
-    // Try if login cookie exists
+    //If login cookie null
     try
     {
         navbar.update_layout("logged_in");
@@ -49,6 +59,7 @@ function check_navbar()
                 }
 
             });
+
     }
     catch
     {
