@@ -1,6 +1,6 @@
 {
     "clubs": [],
     "users": [
-        "{\"py/object\": \"modules.user.User\", \"announcements\": [], \"clubs\": [], \"confirmed\": true, \"firstname\": \"\", \"lastname\": \"\", \"password\": \"058a8b8c62fb411f07838cf13c64864f06650e16c1009d6e2993bbd3dd6410ec:5414efeec1984f838e65f67aa6f385b5\", \"permission_level\": 3, \"profile_image\": null, \"uid\": \"baconomist@gmail.com\"}"
+        "{\"py/object\": \"modules.student.Student\", \"announcements\": [], \"clubs\": [], \"confirmed\": true, \"firstname\": \"Lucas\", \"grade\": \"12\", \"lastname\": \"Borowiecki\", \"password\": \"19a0f4ef16a67ce87301b05a5173f2193c13c8857304a439bb645094644b4fc7:61c4679f31144835ad556ec63351d9e8\", \"permission_level\": 2, \"profile_image\": null, \"uid\": \"623609@pdsb.net\"}"
     ]
 }

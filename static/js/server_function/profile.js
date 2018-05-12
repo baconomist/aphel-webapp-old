@@ -4,33 +4,47 @@ server_bridge.sendToServer("", {
     },
     function (response)
     {
-        $("#firstname").html(response["data"]["firstname"]);
-        $("#lastname").html(response["data"]["lastname"]);
+        response["data"] = JSON.parse(response["data"]);
 
-        try
+        $("#firstname").val(response["data"]["firstname"]);
+        $("#lastname").val(response["data"]["lastname"]);
+
+        $("#email").val(JSON.parse(getCookie("login"))["email"]);
+        console.log(response["data"]["grade"]);
+        if(response["data"]["grade"])
         {
-            $("#grade").html(response["data"]["grade"]);
+            $("#grade_input").children().each(function()
+            {
+                if(this.value.toString() == response["data"]["grade"])
+                {
+                    this.selected = 'selected';
+                    console.log("adada");
+                }
+            });
         }
-        catch
+        else
         {
-            console.log("Grade not found in profile data.")
-            $("#grade").hide();
+            console.log("grade_input not found in profile data.");
+            $("#grade_input").hide();
+            $("#grade_label").hide();
         }
 
     });
 
 $("#profile_form").on("submit", function ()
 {
-    if ($("#grade").find(":selected").text() != null)
+    let grade = 0;
+    if ($("#grade_input").is(":visible"))
     {
-        let grade = $("#grade").find(":selected").text();
+        grade = $("#grade_input").val();
     }
+    console.log("grade", grade);
 
     server_bridge.sendToServer("", {
             "function": "save_profile_data",
             "data": {
                 "login": JSON.parse(getCookie("login")),
-                "firstname": $("#firstname").html(), "lastname": $("#lastname").html(),
+                "firstname": $("#firstname").val(), "lastname": $("#lastname").val(),
                 "grade": grade
             }
         },
@@ -39,7 +53,7 @@ $("#profile_form").on("submit", function ()
             console.log("Profile Successfully Saved!")
         });
 
-
+    location.replace(server_bridge.host + "/profile");
     return false;
 });
 

@@ -13,7 +13,6 @@ class Navbar
         for (let i = 0; i < items_to_show.length; i++)
         {
             $("#transmenu").find(items_to_show[i]).show();
-            console.log(items_to_show[i]);
         }
     }
 
@@ -47,7 +46,6 @@ function check_navbar()
             },
             function (response)
             {
-                console.log(response["data"]);
                 if (response["data"] >= 3)
                 {
                     $(".admin").show();

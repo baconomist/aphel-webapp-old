@@ -278,6 +278,8 @@ class RequestHandler(object):
 
         self.database.store_user(user)
 
+        return jsonify(data=True)
+
     def get_profile_data(self):
         return jsonify(data=self.database.get_user(self.request_data["email"]).get_profile_info_json())
 
