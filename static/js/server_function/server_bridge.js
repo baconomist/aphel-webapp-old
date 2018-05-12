@@ -29,7 +29,6 @@ class ServerBridge {
                     console.log("**ServerBridge** Received Server Response: " + response);
                     callback(response);
                 });
-
     }
 
     // This doesn't really work, doesn't post data. Just use sendToServer().

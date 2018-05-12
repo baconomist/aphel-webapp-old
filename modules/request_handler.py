@@ -1,4 +1,7 @@
+import base64
+import json
 import os
+import re
 
 from modules.database_handler import DatabaseHandler
 from modules.confirmation_manager import ConfirmationManager
@@ -19,7 +22,7 @@ import logging
 import hashlib, uuid
 from flask import jsonify, request
 
-import datetime
+from werkzeug.datastructures import ImmutableMultiDict
 
 ''' ATTENTION '''
 ''' ALL METHODS IN REQUEST HANDLER ARE CALLABLE BY CLIENT '''
@@ -278,10 +281,27 @@ class RequestHandler(object):
 
         self.database.store_user(user)
 
+        print(self.request_data)
+
+        return jsonify(data=True)
+
+    def handle_file_upload(self):
+        email = self.request_data["login"]["email"]
+
+        if self.is_user_logged_in():
+            file = open(os.path.join(__file__, "..\\..\\data\\profile_images\\"+email+".jpg"), "wb")
+            file.write(request.get_data())
+            file.close()
         return jsonify(data=True)
 
     def get_profile_data(self):
-        return jsonify(data=self.database.get_user(self.request_data["email"]).get_profile_info_json())
+        email = self.request_data["email"]
+
+        profile_dat = json.loads(self.database.get_user(email).get_profile_info_json())
+        profile_dat["profile_image"] = open(os.path.join(__file__, "..\\..\\data\\profile_images\\"+email+".jpg"), "rb").read()
+        profile_dat
+        profile_dat = json.dumps(profile_dat)
+        return jsonify(data=profile_dat)
 
     def is_user_logged_in(self):
         return self.database.get_user(self.request_data["login"]["email"]).confirmed and \

@@ -6,6 +6,7 @@ from modules.server import Server
 
 import os
 import logging
+from flask import jsonify
 
 # Clear server.log
 open(os.path.join(__file__, "..\\server.log"), "w").close()
@@ -27,6 +28,11 @@ request_handler = RequestHandler()
 @cross_origin(origin='*')
 def catch_all():
     return request_handler.handle_request()
+
+@app.route("/file_upload", methods=["POST"])
+@cross_origin(origin="*")
+def file_upload():
+    return request_handler.handle_file_upload()
 
 @app.route("/", methods=["GET"])
 @app.route("/home")

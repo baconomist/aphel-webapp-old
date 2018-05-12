@@ -10,7 +10,7 @@ server_bridge.sendToServer("", {
         $("#lastname").val(response["data"]["lastname"]);
 
         $("#email").val(JSON.parse(getCookie("login"))["email"]);
-        console.log(response["data"]["grade"]);
+
         if(response["data"]["grade"])
         {
             $("#grade_input").children().each(function()
@@ -31,6 +31,7 @@ server_bridge.sendToServer("", {
 
     });
 
+
 $("#profile_form").on("submit", function ()
 {
     let grade = 0;
@@ -38,22 +39,47 @@ $("#profile_form").on("submit", function ()
     {
         grade = $("#grade_input").val();
     }
-    console.log("grade", grade);
 
-    server_bridge.sendToServer("", {
-            "function": "save_profile_data",
-            "data": {
-                "login": JSON.parse(getCookie("login")),
-                "firstname": $("#firstname").val(), "lastname": $("#lastname").val(),
-                "grade": grade
+    let profile_image = document.getElementById('profile_image').files[0];
+    let reader = new FileReader();
+    reader.addEventListener('load', function (event)
+    {
+        console.log("adasdadad", event.target.result);
+
+        server_bridge.sendToServer("", {
+                "function": "save_profile_data",
+                "data": {
+                    "login": JSON.parse(getCookie("login")),
+                    "firstname": $("#firstname").val(), "lastname": $("#lastname").val(),
+                    "grade": grade
+                }
+            },
+            function (response)
+            {
+                console.log("Profile Successfully Saved!")
+
+                //location.replace(server_bridge.host + "/profile");
+            });
+
+
+        $.ajax({
+            url: server_bridge.host+"/file_upload",
+            type: "POST",
+            dataType: "binary",
+            processData: false,
+            data: event.target.result,
+            crossOrigin: true,
+            success: function(result){
+                // do something with binary data
             }
-        },
-        function (response)
-        {
-            console.log("Profile Successfully Saved!")
         });
 
-    location.replace(server_bridge.host + "/profile");
+    });
+
+    reader.readAsArrayBuffer(profile_image);
+
+
+    //location.replace(server_bridge.host + "/profile");
     return false;
 });
 
