@@ -10,3 +10,4 @@ server.log
 export_script/export_script.spec
 *.orig
 error.log
+test.py
