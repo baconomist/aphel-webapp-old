@@ -298,8 +298,8 @@ class RequestHandler(object):
         email = self.request_data["email"]
 
         profile_dat = json.loads(self.database.get_user(email).get_profile_info_json())
-        profile_dat["profile_image"] = open(os.path.join(__file__, "..\\..\\data\\profile_images\\"+email+".jpg"), "rb").read()
-        profile_dat
+        #profile_dat["profile_image"] = open(os.path.join(__file__, "..\\..\\data\\profile_images\\"+email+".jpg"), "rb").read()
+       # profile_dat
         profile_dat = json.dumps(profile_dat)
         return jsonify(data=profile_dat)
 
