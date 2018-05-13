@@ -8,7 +8,7 @@ import os
 
 
 class DatabaseHandler(object):
-    _databaseLocation = os.path.join(__file__, "..\\..\\data\\database.json")
+    _databaseLocation = os.path.join(os.path.dirname(__file__), "..", "data", "database.json")
 
     _instance = None
 

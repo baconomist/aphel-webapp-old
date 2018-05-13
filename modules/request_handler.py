@@ -289,7 +289,8 @@ class RequestHandler(object):
         email = self.request_data["login"]["email"]
 
         if self.is_user_logged_in():
-            file = open(os.path.join(__file__, "..\\..\\data\\profile_images\\"+email+".jpg"), "wb")
+            file = open(os.path.join(os.path.dirname(__file__),
+                         "..", "data", "profile_images", email+".jpg"), "wb")
             file.write(request.get_data())
             file.close()
         return jsonify(data=True)

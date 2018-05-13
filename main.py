@@ -9,7 +9,7 @@ import logging
 from flask import jsonify
 
 # Clear server.log
-open(os.path.join(__file__, "..\\server.log"), "w").close()
+open(os.path.join(os.path.dirname(__file__), "server.log"), "w").close()
 
 # Comment out these lines to disable logging
 
