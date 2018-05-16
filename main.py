@@ -23,17 +23,37 @@ app = Flask(__name__)
 
 request_handler = RequestHandler()
 
+'''
+    cross origin for testing
+'''
 
-#cross origin for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+def debug_cross_origin(decorator):
+    return decorator if config.DEBUG else lambda x: x
+
+
+@app.route("/debug", methods=["POST"])
+@cross_origin(origin="*")
+def debug():
+    return jsonify(data=config.DEBUG)
+
+
 @app.route("/", methods=["POST"])
-@cross_origin(origin='*')
+@debug_cross_origin(cross_origin(origin="*"))
 def catch_all():
     return request_handler.handle_request()
 
+
 @app.route("/file_upload", methods=["POST"])
-@cross_origin(origin="*")
+@debug_cross_origin(cross_origin(origin="*"))
 def file_upload():
     return request_handler.handle_file_upload()
+
+
+'''
+    cross origin for testing
+'''
+
 
 @app.route("/", methods=["GET"])
 @app.route("/home")
@@ -54,6 +74,7 @@ def profile():
 @app.route("/login.html", methods=["GET"])
 def login():
     return render_template("login.html")
+
 
 @app.route("/logout", methods=["GET"])
 @app.route("/logout.html", methods=["GET"])
@@ -117,6 +138,7 @@ def add_student():
 @app.route("/add_student_status.html", methods=["GET"])
 def add_student_status():
     return render_template("add_student_status.html")
+
 
 if __name__ == "__main__":
     app.run(config.ip, config.port, debug=config.DEBUG)
