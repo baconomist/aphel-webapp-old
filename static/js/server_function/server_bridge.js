@@ -11,6 +11,10 @@ class ServerBridge {
         this.host = "http://localhost:80";
 
         this.sendToServer("/debug", {}, this.setHost.bind(this));
+
+        let url = window.location.href;
+        url = url.split("/");
+        this.host = url[0] + "//" + url[2];
     }
 
     setHost(response)
@@ -20,6 +24,10 @@ class ServerBridge {
             let url = window.location.href;
             url = url.split("/");
             this.host = url[0] + "//" + url[2];
+        }
+        else
+        {
+            this.host = "http://localhost:80";
         }
         console.log(this.host, "DEBUG: " + response["data"]);
     }
