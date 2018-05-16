@@ -13,8 +13,9 @@ from modules.teacher import Teacher
 
 from modules.announcement import Announcement
 
+import config
+
 from modules.emailer import send_email
-from modules.server import Server
 
 import traceback
 
@@ -107,7 +108,7 @@ class RequestHandler(object):
 
             send_email(receivers=email, subject="APHEL TECH EMAIL CONFIRMATION",
                        body=r"url: http://{server_ip}/confirmation_confirmed?id={id}".format(
-                           server_ip=Server.public_address, id=id))
+                           server_ip=config.public_address, id=id))
 
             self.database.store_user(user)
 
@@ -149,7 +150,7 @@ class RequestHandler(object):
 
             send_email(receivers=teacher, subject="APHEL TECH ANNOUNCEMENT REVIEW",
                        body="url: http://{server_ip}/review_confirmed?id={id} <br><br> ***announcement content*** <br> {announcement_content} <br> ***announcement content***"
-                       .format(server_ip=Server.public_address, announcement_content=announcement.content_html,
+                       .format(server_ip=config.public_address, announcement_content=announcement.content_html,
                                id=str(AnnouncementReviewHandler.get_instance().new_announcement_review(teacher,
                                                                                                        announcement).id)))
 

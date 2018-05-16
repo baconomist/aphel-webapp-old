@@ -2,7 +2,8 @@ from flask import Flask, render_template, request, redirect
 from flask_cors import cross_origin
 
 from modules.request_handler import RequestHandler
-from modules.server import Server
+
+import config
 
 import os
 import logging
@@ -118,4 +119,4 @@ def add_student_status():
     return render_template("add_student_status.html")
 
 if __name__ == "__main__":
-    app.run(Server.ip, Server.port, debug=True)
+    app.run(config.ip, config.port, debug=config.DEBUG)
