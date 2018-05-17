@@ -14,7 +14,7 @@ open(os.path.join(os.path.dirname(__file__), "server.log"), "w").close()
 
 # Comment out these lines to disable logging
 
-logging.basicConfig(filename=os.path.join(__file__, "..\\server.log"), level=logging.DEBUG)
+logging.basicConfig(filename=os.path.join(os.path.dirname(__file__), "server.log"), level=logging.DEBUG)
 rootLogger = logging.getLogger()
 consoleHandler = logging.StreamHandler()
 rootLogger.addHandler(consoleHandler)
