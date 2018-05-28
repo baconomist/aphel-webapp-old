@@ -11,6 +11,7 @@ class ServerBridge
 
         // TEST HOST FOR FLASK SERVER!!!!!
         this.debug_host = "http://localhost:80";
+        this.host = this.debug_host
 
         this.sendToServer("/debug", {}, this.setHost.bind(this));
 
