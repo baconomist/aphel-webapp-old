@@ -3,6 +3,8 @@ from flask_cors import cross_origin
 
 from modules.request_handler import RequestHandler
 
+from html_modules.navbar import NavBar
+
 import config
 
 import os
@@ -131,7 +133,7 @@ def students():
 @app.route("/add_student", methods=["GET"])
 @app.route("/add_student.html", methods=["GET"])
 def add_student():
-    return render_template("add_student.html")
+    return render_template("add_student.html", navbar=NavBar().markup)
 
 
 @app.route("/add_student_status", methods=["GET"])

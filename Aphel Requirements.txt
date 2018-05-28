@@ -1,0 +1,18 @@
+Costs for Aphel Development:
+
+Webstorm(Jetbrains IDE, 
+	https://www.jetbrains.com/webstorm/buy/#edition=commercial, 
+	https://www.jetbrains.com/shop/eform/startup):
+ - $130/user/month or $70/user/month with startup discount(requires registered company)
+ - 4 users probably
+ 
+Bitbucket(repo, https://bitbucket.org/product/pricing?tab=cloud):
+ - $2/month/user
+ - 1 extra user minimum
+ 
+DigitalOcean(hosting, https://www.digitalocean.com/pricing/):
+ - $5/month cheapest option, 1 cpu, 500mb of ram, may need to upgrade
+ 
+CheckMobi(SMS Service, https://checkmobi.com/pricing.html#/subscription-plans/):
+ -$10/month
+ -cheaper than twilio I think
