@@ -1,7 +1,9 @@
 
 
-class ServerBridge {
-    constructor() {
+class ServerBridge
+{
+    constructor()
+    {
         /*var protocol = location.protocol;
         var slashes = protocol.concat("//");
         this.host = slashes.concat(window.location.hostname);
@@ -19,7 +21,7 @@ class ServerBridge {
 
     setHost(response)
     {
-        if(!response["data"])
+        if (!response["data"])
         {
             let url = window.location.href;
             url = url.split("/");
@@ -38,7 +40,8 @@ class ServerBridge {
         console.log("**ServerBridge** Sending data to: " + this.host + url_ext);
         $.post(this.host + url_ext, data)
             .done(
-                function (response){
+                function (response)
+                {
                     console.log("Sent data:" + data);
                     console.log("**ServerBridge** Received Server Response: " + response);
                     callback(response);
@@ -54,7 +57,10 @@ class ServerBridge {
       $.get(this.host + url_ext, data, function(response){
           console.log("**ServerBridge** Received GET response: " + response);
           callback(response);
+}
+
       });
     }*/
-
+    
 }
+    
