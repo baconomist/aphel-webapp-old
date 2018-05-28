@@ -10,7 +10,7 @@ class ServerBridge
         */
 
         // TEST HOST FOR FLASK SERVER!!!!!
-        this.host = "http://localhost:80";
+        this.debug_host = "http://localhost:80";
 
         this.sendToServer("/debug", {}, this.setHost.bind(this));
 
@@ -29,7 +29,7 @@ class ServerBridge
         }
         else
         {
-            this.host = "http://localhost:80";
+            this.host = this.debug_host;
         }
         console.log(this.host, "DEBUG: " + response["data"]);
     }
@@ -61,6 +61,6 @@ class ServerBridge
 
       });
     }*/
-    
+
 }
     
