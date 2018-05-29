@@ -34,10 +34,10 @@ def debug_cross_origin(decorator):
     return decorator if config.DEBUG else lambda x: x
 
 
-@app.route("/debug", methods=["POST"])
-@cross_origin(origin="*")
-def debug():
-    return jsonify(data=config.DEBUG)
+#@app.route("/debug", methods=["POST"])
+#@cross_origin(origin="*")
+#def debug():
+    #return jsonify(data=config.DEBUG)
 
 
 @app.route("/", methods=["POST"])
