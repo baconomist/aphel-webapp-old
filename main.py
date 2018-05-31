@@ -133,13 +133,17 @@ def students():
 @app.route("/add_student", methods=["GET"])
 @app.route("/add_student.html", methods=["GET"])
 def add_student():
-    return render_template("add_student.html", navbar=NavBar().markup)
+    return render_template("add_student.html")
 
 
 @app.route("/add_student_status", methods=["GET"])
 @app.route("/add_student_status.html", methods=["GET"])
 def add_student_status():
     return render_template("add_student_status.html")
+
+@app.context_processor
+def inject_navbar():
+    return dict(navbar=NavBar().markup)
 
 
 if __name__ == "__main__":
