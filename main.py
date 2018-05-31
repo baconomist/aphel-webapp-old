@@ -3,7 +3,7 @@ from flask_cors import cross_origin
 
 from modules.request_handler import RequestHandler
 
-from html_modules.navbar import NavBar
+from html_modules.navbar import navbar_markup
 
 import config
 
@@ -143,7 +143,7 @@ def add_student_status():
 
 @app.context_processor
 def inject_navbar():
-    return dict(navbar=NavBar().markup)
+    return dict(navbar=navbar_markup)
 
 
 if __name__ == "__main__":
