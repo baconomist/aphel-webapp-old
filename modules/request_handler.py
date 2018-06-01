@@ -6,6 +6,7 @@ import re
 from modules.database_handler import DatabaseHandler
 from modules.confirmation_manager import ConfirmationManager
 from modules.announcement_review_handler import AnnouncementReviewHandler
+from modules.profanity_filter import ProfanityFilter
 
 from modules.user import User
 from modules.student import Student
@@ -129,9 +130,14 @@ class RequestHandler(object):
             info = self.request_data["announcement_data"]["info"]
             content_html = self.request_data["announcement_data"]["content_html"]
             id = self.request_data["announcement_data"]["id"]
-
             user = self.database.get_user(self.request_data["login"]["email"])
-            user.create_announcement(title=title, info=info, content_html=content_html, id=id)
+            if not ProfanityFilter.is_profane(content_html):
+
+                user.create_announcement(title=title, info=info, content_html=content_html, id=id)
+            else:
+                print("User entered a profane message")
+                # DO NOT USE PROFANE LANGUAGE alert shows up
+
             self.database.store_user(user)
 
             return jsonify(status="Success", data=True)
