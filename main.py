@@ -1,5 +1,4 @@
-from flask import Flask, render_template, request, redirect
-from flask_cors import cross_origin
+from flask import Flask, render_template
 
 from modules.request_handler import RequestHandler
 
@@ -9,7 +8,6 @@ import config
 
 import os
 import logging
-from flask import jsonify
 
 # Clear server.log
 open(os.path.join(os.path.dirname(__file__), "server.log"), "w").close()
@@ -25,36 +23,15 @@ app = Flask(__name__)
 
 request_handler = RequestHandler()
 
-'''
-    cross origin for testing
-'''
-
-
-def debug_cross_origin(decorator):
-    return decorator if config.DEBUG else lambda x: x
-
-
-#@app.route("/debug", methods=["POST"])
-#@cross_origin(origin="*")
-#def debug():
-    #return jsonify(data=config.DEBUG)
-
 
 @app.route("/", methods=["POST"])
-@debug_cross_origin(cross_origin(origin="*"))
 def catch_all():
     return request_handler.handle_request()
 
 
 @app.route("/file_upload", methods=["POST"])
-@debug_cross_origin(cross_origin(origin="*"))
 def file_upload():
     return request_handler.handle_file_upload()
-
-
-'''
-    cross origin for testing
-'''
 
 
 @app.route("/", methods=["GET"])
@@ -140,6 +117,7 @@ def add_student():
 @app.route("/add_student_status.html", methods=["GET"])
 def add_student_status():
     return render_template("add_student_status.html")
+
 
 @app.context_processor
 def inject_navbar():
