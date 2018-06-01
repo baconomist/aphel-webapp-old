@@ -46,7 +46,6 @@ class RequestHandler(object):
         self.database = DatabaseHandler.get_instance()
 
     def handle_request(self):
-        print(request.get_json(force=True))
         self.request = request.get_json(force=True)
         try:
             self.request_data = self.request["data"]
@@ -77,8 +76,6 @@ class RequestHandler(object):
         email = self.request_data["login"]["email"]
         password = self.request_data["login"]["password"]
 
-        print(email, password)
-
         for user in self.database.get_users():
             if user.confirmed and user.uid == email and Helper.check_password(user.password, password):
                 logging.info("Logged in as %s" % user.uid)
@@ -86,8 +83,10 @@ class RequestHandler(object):
 
         logging.info("Failed to log in. The login credentials may be incorrect "
                      "\n or the user does not exist.")
-        return jsonify(data=False, status="Failed to log in. The login credentials may be incorrect "
-                                          "\n or the user does not exist.")
+        return jsonify(data=False,
+                       status="Failed to log in. The login credentials may be incorrect, the user might not be "
+                              "confirmed "
+                              "\n or the user does not exist.")
 
     def signup(self):
         logging.info("Request Handler: Signing up...")
@@ -282,8 +281,6 @@ class RequestHandler(object):
 
         self.database.store_user(user)
 
-        print(self.request_data)
-
         return jsonify(data=True)
 
     def handle_file_upload(self):
@@ -291,7 +288,7 @@ class RequestHandler(object):
 
         if self.is_user_logged_in():
             file = open(os.path.join(os.path.dirname(__file__),
-                         "..", "data", "profile_images", email+".jpg"), "wb")
+                                     "..", "data", "profile_images", email + ".jpg"), "wb")
             file.write(request.get_data())
             file.close()
         return jsonify(data=True)
@@ -300,8 +297,8 @@ class RequestHandler(object):
         email = self.request_data["email"]
 
         profile_dat = json.loads(self.database.get_user(email).get_profile_info_json())
-        #profile_dat["profile_image"] = open(os.path.join(__file__, "..\\..\\data\\profile_images\\"+email+".jpg"), "rb").read()
-       # profile_dat
+        # profile_dat["profile_image"] = open(os.path.join(__file__, "..\\..\\data\\profile_images\\"+email+".jpg"), "rb").read()
+        # profile_dat
         profile_dat = json.dumps(profile_dat)
         return jsonify(data=profile_dat)
 
