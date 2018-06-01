@@ -14,5 +14,7 @@ pipelines:
           - pip install -r requirements.txt
     - step:
         script:
-          - python -m unittest tests/main_test.py
+        - python -m unittest tests/main_test.py
+    - step:
+        script:
           - python test-bitbucket-pipelines.py
