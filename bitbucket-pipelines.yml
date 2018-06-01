@@ -12,8 +12,6 @@ pipelines:
           - pip
         script: # Modify the commands below to build your repository.
           - pip install -r requirements.txt
-          - python3
-          - import jsonpickle
     - step:
         script:
           - python -m unittest tests/main_test.py
