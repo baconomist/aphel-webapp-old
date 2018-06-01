@@ -1,4 +1,5 @@
-import json, jsonpickle
+import json
+import jsonpickle
 from modules.user import User
 from modules.club import Club
 from typing import List
@@ -19,6 +20,7 @@ class DatabaseHandler(object):
             self.raw_data = {"users": [], "clubs": []}
 
     def load_data(self):
+
         logging.info("Loading database...")
 
         file = open(DatabaseHandler._databaseLocation, "r+")
@@ -131,10 +133,8 @@ class DatabaseHandler(object):
 
         logging.info("Club not found: " + club_name)
 
-
     def write(self):
         logging.info("Writing to database.")
-
         file = open(DatabaseHandler._databaseLocation, "w")
         json.dump(self.raw_data, file, sort_keys=True, indent=4)
         file.close()
