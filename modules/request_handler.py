@@ -34,14 +34,11 @@ def login_required(request_function):
     @wraps(request_function)
     def wrapper(*args, **kwargs):
         database = DatabaseHandler.get_instance()
-        request_data = request.get_json(force=True)["data"]
 
         # Continue running the function, otherwise return an error
-        return request_function(*args, **kwargs) if database.get_user(request_data["login"]["email"]).confirmed and \
-                                     Helper.check_password(database.get_user(request_data["login"]["email"]).password,
-                                                           request_data["login"]["password"]) else jsonify(
-                                                                                                    data=False,
-                                                                                                    status="Failed to log in.")
+        return request_function(*args, **kwargs) if session.get("uid") is not None and database.get_user(
+            session.get("uid")).confirmed \
+            else jsonify(data=False, status="Failed to log in.")
 
     return wrapper
 
@@ -140,13 +137,16 @@ class RequestHandler(object):
 
     @login_required
     def save_announcement(self):
-        if Helper.is_user_auth_for_post(
-                DatabaseHandler.get_instance().get_user(self.request_data["login"]["email"])):
+
+        user = self.database.get_user(session.get("uid"))
+
+        if Helper.is_user_auth_for_post(user):
+
             title = self.request_data["announcement_data"]["title"]
             info = self.request_data["announcement_data"]["info"]
             content_html = self.request_data["announcement_data"]["content_html"]
             id = self.request_data["announcement_data"]["id"]
-            user = self.database.get_user(self.request_data["login"]["email"])
+
             if not ProfanityFilter().is_profane(content_html):
                 user.create_announcement(title=title, info=info, content_html=content_html, id=id)
             else:
@@ -156,15 +156,13 @@ class RequestHandler(object):
             self.database.store_user(user)
 
             return jsonify(status="Success", data=True)
-        elif Helper.is_user_auth_for_post_review(
-                DatabaseHandler.get_instance().get_user(self.request_data["login"]["email"])):
+        elif Helper.is_user_auth_for_post_review(user):
+
             title = self.request_data["announcement_data"]["title"]
             info = self.request_data["announcement_data"]["info"]
             content_html = self.request_data["announcement_data"]["content_html"]
             teacher = self.request_data["announcement_data"]["teacher"]
             id = self.request_data["announcement_data"]["id"]
-
-            user = self.database.get_user(self.request_data["login"]["email"])
 
             announcement = Announcement(title, info, content_html, user.uid, id)
 
@@ -186,16 +184,18 @@ class RequestHandler(object):
     def get_new_announcement_id(self):
         return jsonify(data=len(self.database.get_user(self.request_data["email"]).announcements) + 1)
 
+    @login_required
     def get_announcements_for_user(self):
-        user_name = self.request_data["email"]
+        user_name = session.get("uid")
         announcements = []
         for announcement in self.database.get_user(user_name).announcements:
             announcements.append(announcement.to_json())
+        print(announcements)
         return jsonify(data=announcements)
 
     @login_required
     def delete_announcement(self):
-        email = self.request_data["login"]["email"]
+        email = session.get("uid")
         announcement_id = self.request_data["announcement_id"]
 
         user = self.database.get_user(email)
@@ -220,8 +220,10 @@ class RequestHandler(object):
                 teachers.append(user.uid)
         return jsonify(data=teachers)
 
+    @login_required
     def get_teacher_students(self):
         teacher = DatabaseHandler.get_instance().get_user(self.request_data["email"])
+        print(teacher.__dict__["students"])
         return jsonify(data=teacher.__dict__["students"])
 
     def get_user_permission_level(self):
