@@ -17,7 +17,7 @@ $("#login_form").on("submit", function(){
     server_bridge.sendToServer("/", {"function":"login", "data": { "login": {"email": values["email"], "password": values["password"]} } }, function(response){
         if(response["data"])
         {
-            setCookie("login", JSON.stringify({"email":values["email"], "password":values["password"]}), 1);
+            //setCookie("login", JSON.stringify({"email":values["email"], "password":values["password"]}), 1);
             
             console.log("Succesfully logged in as: " + values["email"]);
             console.log(JSON.parse(getCookie("login")));
