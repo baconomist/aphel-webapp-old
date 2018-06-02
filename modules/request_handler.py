@@ -20,8 +20,7 @@ import traceback
 
 import logging
 import hashlib, uuid
-from flask import jsonify, request
-
+from flask import jsonify, request, session
 
 ''' ATTENTION '''
 ''' ALL METHODS IN REQUEST HANDLER ARE CALLABLE BY CLIENT '''
@@ -29,17 +28,22 @@ from flask import jsonify, request
 ''' ATTENTION '''
 
 
-#https://stackoverflow.com/questions/308999/what-does-functools-wraps-do
-@wraps
-def login_required(function):
-    database = DatabaseHandler.get_instance()
-    request_data = request.get_json(force=True)["data"]
+# https://stackoverflow.com/questions/308999/what-does-functools-wraps-do
 
-    # Continue running the function, otherwise return an error
-    return function if database.get_user(request_data["login"]["email"]).confirmed and \
-                       Helper.check_password(database.get_user(request_data["login"]["email"]).password,
-                                             request_data["login"]["password"]) else lambda x: jsonify(data=False,
-                                                                                                       status="Failed to log in.")
+def login_required(request_function):
+    @wraps(request_function)
+    def wrapper(*args, **kwargs):
+        database = DatabaseHandler.get_instance()
+        request_data = request.get_json(force=True)["data"]
+
+        # Continue running the function, otherwise return an error
+        return request_function(*args, **kwargs) if database.get_user(request_data["login"]["email"]).confirmed and \
+                                     Helper.check_password(database.get_user(request_data["login"]["email"]).password,
+                                                           request_data["login"]["password"]) else jsonify(
+                                                                                                    data=False,
+                                                                                                    status="Failed to log in.")
+
+    return wrapper
 
 
 class RequestHandler(object):
@@ -90,6 +94,7 @@ class RequestHandler(object):
         for user in self.database.get_users():
             if user.confirmed and user.uid == email and Helper.check_password(user.password, password):
                 logging.info("Logged in as %s" % user.uid)
+                session["uid"] = user.uid
                 return jsonify(data=True, status="Logged in as %s" % user.uid)
 
         logging.info("Failed to log in. The login credentials may be incorrect "
@@ -142,8 +147,7 @@ class RequestHandler(object):
             content_html = self.request_data["announcement_data"]["content_html"]
             id = self.request_data["announcement_data"]["id"]
             user = self.database.get_user(self.request_data["login"]["email"])
-            if not ProfanityFilter.is_profane(content_html):
-
+            if not ProfanityFilter().is_profane(content_html):
                 user.create_announcement(title=title, info=info, content_html=content_html, id=id)
             else:
                 print("User entered a profane message")
@@ -198,7 +202,6 @@ class RequestHandler(object):
         user.remove_announcement_by_id(announcement_id)
         self.database.store_user(user)
         return "Announcement deleted"
-
 
     def validate_confirmation(self):
         confirmation_id = self.request_data["confirmation_id"]

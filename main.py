@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, session
 
 from modules.request_handler import RequestHandler
 
@@ -20,6 +20,9 @@ consoleHandler = logging.StreamHandler()
 rootLogger.addHandler(consoleHandler)
 
 app = Flask(__name__)
+
+# Secret key needed for flask-sessions
+app.secret_key = os.urandom(24)
 
 request_handler = RequestHandler()
 
@@ -58,6 +61,7 @@ def login():
 @app.route("/logout", methods=["GET"])
 @app.route("/logout.html", methods=["GET"])
 def logout():
+    session.pop("uid")
     return render_template("logout.html")
 
 
@@ -121,9 +125,9 @@ def add_student_status():
 
 @app.context_processor
 def inject_navbar():
-    navbar = Navbar().markup
+    navbar = Navbar()
 
-    return dict(navbar=navbar)
+    return dict(navbar=navbar.get_markup())
 
 
 if __name__ == "__main__":

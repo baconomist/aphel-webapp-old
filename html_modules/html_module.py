@@ -7,16 +7,13 @@ class HTML_Module(object):
 
     def __init__(self, raw_html):
 
-        self.raw_html = raw_html
-        self.markup = Markup(self.raw_html)
-
         self.bs4Obj = None
         self.children = []
 
-        self.parse_html()
+        self.parse_html(raw_html)
 
-    def parse_html(self):
-        parsed_html = BeautifulSoup(self.raw_html, "html.parser")
+    def parse_html(self, raw_html):
+        parsed_html = BeautifulSoup(raw_html, "html.parser")
 
         self.bs4Obj = parsed_html.find()
 
@@ -27,5 +24,9 @@ class HTML_Module(object):
                 for child in children:
                     self.children.append(HTML_Module(str(child)))
 
+    def get_raw_html(self):
+        return str(self.bs4Obj)
 
+    def get_markup(self):
+        return Markup(str(self.bs4Obj))
 
