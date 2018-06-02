@@ -4,7 +4,9 @@ if(window.location.href.includes("user_")){
     
     login_check();
     
-    server_bridge.sendToServer("/", { "function": "get_announcements_for_user", "data":{ "email": JSON.parse(getCookie("login"))["email"] } }, function(response){ 
+    server_bridge.sendToServer("/", {"function": "get_announcements_for_user"}, function(response){
+        console.log(response)
+        console.log(response["data"])
         response["data"] = response["data"].reverse();
         for(i=0; i < response["data"].length; i++){
             createShowableAnnouncement(JSON.parse(response["data"][i]));
@@ -83,8 +85,7 @@ function createEditableAnnouncement(announcement, showableAnnouncement, num_id)
         content_html = announcement_editor.get_content();
         id = announcement["id"];
         
-        server_bridge.sendToServer("", {"function": "save_announcement", "data": {"login": JSON.parse(getCookie("login")),
-                                                                                         "announcement_data": {"title": title, "info": info,                                          "content_html": content_html, "id": id} } },
+        server_bridge.sendToServer("", {"function": "save_announcement", "data": {"announcement_data": {"title": title, "info": info, "content_html": content_html, "id": id} } },
                function(response){
                     console.log("Edited Announcement!");
         });
@@ -118,7 +119,7 @@ function deleteAnnouncement(announcement)
 {
     console.log("delete");
     server_bridge.sendToServer("", {"function": "delete_announcement", 
-                                    "data": {"login":JSON.parse(getCookie("login")), "announcement_id": announcement["id"]}}, 
+                                    "data": {"announcement_id": announcement["id"]}},
         function(response){
             deleteEditableAnnouncementById(announcement["id"]);
         }

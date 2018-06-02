@@ -1,15 +1,14 @@
-from flask import Flask, render_template, request, redirect
-from flask_cors import cross_origin
+from flask import Flask, render_template, session
 
+from modules.database_handler import DatabaseHandler
 from modules.request_handler import RequestHandler
 
-from html_modules.navbar import navbar_markup
+from html_modules.navbar import Navbar
 
 import config
 
 import os
 import logging
-from flask import jsonify
 
 # Clear server.log
 open(os.path.join(os.path.dirname(__file__), "server.log"), "w").close()
@@ -23,38 +22,20 @@ rootLogger.addHandler(consoleHandler)
 
 app = Flask(__name__)
 
+# Secret key needed for flask-sessions
+app.secret_key = os.urandom(24)
+
 request_handler = RequestHandler()
-
-'''
-    cross origin for testing
-'''
-
-
-def debug_cross_origin(decorator):
-    return decorator if config.DEBUG else lambda x: x
-
-
-#@app.route("/debug", methods=["POST"])
-#@cross_origin(origin="*")
-#def debug():
-    #return jsonify(data=config.DEBUG)
 
 
 @app.route("/", methods=["POST"])
-@debug_cross_origin(cross_origin(origin="*"))
 def catch_all():
     return request_handler.handle_request()
 
 
 @app.route("/file_upload", methods=["POST"])
-@debug_cross_origin(cross_origin(origin="*"))
 def file_upload():
     return request_handler.handle_file_upload()
-
-
-'''
-    cross origin for testing
-'''
 
 
 @app.route("/", methods=["GET"])
@@ -81,6 +62,7 @@ def login():
 @app.route("/logout", methods=["GET"])
 @app.route("/logout.html", methods=["GET"])
 def logout():
+    session.pop("uid")
     return render_template("logout.html")
 
 
@@ -133,7 +115,12 @@ def students():
 @app.route("/add_student", methods=["GET"])
 @app.route("/add_student.html", methods=["GET"])
 def add_student():
-    return render_template("add_student.html")
+    student_uids = []
+    for user in DatabaseHandler.get_instance().get_users():
+        if user.permission_level < user.get_teacher_permisison_level():
+            student_uids.append(user.uid)
+
+    return render_template("add_student.html", student_uids=student_uids)
 
 
 @app.route("/add_student_status", methods=["GET"])
@@ -141,9 +128,11 @@ def add_student():
 def add_student_status():
     return render_template("add_student_status.html")
 
+
 @app.context_processor
 def inject_navbar():
-    return dict(navbar=navbar_markup)
+    navbar = Navbar()
+    return dict(navbar=navbar.get_markup())
 
 
 if __name__ == "__main__":

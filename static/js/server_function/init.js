@@ -58,7 +58,6 @@ function recursive_id_change(element, change)
 }
 
 
-
 /*apply_error_to_input($("#signup_form").find("#email"));
 apply_error_to_input($("#signup_form").find("#password"));
 apply_error_to_input($("#signup_form").find("#password_confirm"));
