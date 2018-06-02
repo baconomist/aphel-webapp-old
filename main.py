@@ -2,7 +2,7 @@ from flask import Flask, render_template
 
 from modules.request_handler import RequestHandler
 
-from html_modules.navbar import navbar_markup
+from html_modules.navbar import Navbar
 
 import config
 
@@ -121,7 +121,9 @@ def add_student_status():
 
 @app.context_processor
 def inject_navbar():
-    return dict(navbar=navbar_markup)
+    navbar = Navbar().markup
+
+    return dict(navbar=navbar)
 
 
 if __name__ == "__main__":
