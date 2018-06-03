@@ -4,11 +4,10 @@ from flask import Markup
 
 
 class HTML_Module(object):
-
     def __init__(self, raw_html):
 
-        self.bs4Obj = None
-        self.children = []
+        self.bs4Obj: BeautifulSoup = None
+        self.children: list = []
 
         self.parse_html(raw_html)
 
@@ -17,7 +16,7 @@ class HTML_Module(object):
 
         self.bs4Obj = parsed_html.find()
 
-        if self.bs4Obj != None:
+        if self.bs4Obj is not None:
             children = self.bs4Obj.find_all(recursive=False)
 
             if len(children) > 0:
@@ -29,4 +28,3 @@ class HTML_Module(object):
 
     def get_markup(self):
         return Markup(str(self.bs4Obj))
-
