@@ -3,3 +3,4 @@ flask-cors
 jsonpickle
 cssutils
 beautifulsoup4
+jinja2
