@@ -1,5 +1,6 @@
 from flask import Flask, render_template, session
 
+from modules.database_handler import DatabaseHandler
 from modules.request_handler import RequestHandler
 
 from html_modules.navbar import Navbar
@@ -115,7 +116,12 @@ def students():
 @app.route("/add_student", methods=["GET"])
 @app.route("/add_student.html", methods=["GET"])
 def add_student():
-    return render_template("add_student.html")
+    student_uids = []
+    for user in DatabaseHandler.get_instance().get_users():
+        if user.permission_level < user.get_teacher_permisison_level():
+            student_uids.append(user.uid)
+
+    return render_template("add_student.html", student_uids=student_uids)
 
 
 @app.route("/add_student_status", methods=["GET"])
@@ -127,7 +133,6 @@ def add_student_status():
 @app.context_processor
 def inject_navbar():
     navbar = Navbar()
-
     return dict(navbar=navbar.get_markup())
 
 

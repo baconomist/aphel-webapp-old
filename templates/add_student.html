@@ -38,15 +38,26 @@
     <div style="height:183px;">
         {{ navbar }}
     </div>
+
     <div style="height:100vh;">
         <div style="height:191px;border:2px solid blue;margin:13px;">
-            <p style="font-size:25px;font-family:'News Cycle', sans-serif;padding:10px;">Add a student</p>
-            <div class="row" style="width:335px;">
-                <div class="col">
-                    <p style="padding:5px;">Student Name:</p>
-                </div>
-                <div class="col" style="padding:10px;"><input type="text" id="student_name" list="student_list"></div>
-            </div><button class="btn btn-primary" type="button" id="add_btn" style="margin:0px 20px;width:102px;">Add</button></div>
+        <p style="font-size:25px;font-family:'News Cycle', sans-serif;padding:10px;">Add a student</p>
+        <div class="row" style="width:335px;">
+            <div class="col">
+                <p style="padding:5px;">Student Name:</p>
+            </div>
+            <div class="col" style="padding:10px;"><input type="text" id="student_name" list="student_list"></div>
+        </div>
+        <button class="btn btn-primary" type="button" id="add_btn" style="margin:0px 20px;width:102px;">Add</button>
+        </div>
+    </div>
+
+    <datalist id="student_list">
+        {% for student_uid in student_uids %}
+            <option value="{{student_uid}}">
+        {% endfor %}
+    </datalist>
+
     </div>
     <div class="footer-basic" style="background-color:#439d4c;">
         <footer>

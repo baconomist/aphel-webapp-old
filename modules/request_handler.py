@@ -1,12 +1,14 @@
+import base64
 import json
 import os
-from functools import wraps
+import re
 
 from modules.database_handler import DatabaseHandler
 from modules.confirmation_manager import ConfirmationManager
 from modules.announcement_review_handler import AnnouncementReviewHandler
 from modules.profanity_filter import ProfanityFilter
 
+from modules.user import User
 from modules.student import Student
 from modules.teacher import Teacher
 
@@ -20,30 +22,14 @@ import traceback
 
 import logging
 import hashlib, uuid
-from flask import jsonify, request, session
+from flask import jsonify, request
+
+from werkzeug.datastructures import ImmutableMultiDict
 
 ''' ATTENTION '''
 ''' ALL METHODS IN REQUEST HANDLER ARE CALLABLE BY CLIENT '''
 ''' MAKE SURE THE METHODS HERE ARE SECURE '''
 ''' ATTENTION '''
-
-
-# https://stackoverflow.com/questions/308999/what-does-functools-wraps-do
-
-def login_required(request_function):
-    @wraps(request_function)
-    def wrapper(*args, **kwargs):
-        database = DatabaseHandler.get_instance()
-        request_data = request.get_json(force=True)["data"]
-
-        # Continue running the function, otherwise return an error
-        return request_function(*args, **kwargs) if database.get_user(request_data["login"]["email"]).confirmed and \
-                                     Helper.check_password(database.get_user(request_data["login"]["email"]).password,
-                                                           request_data["login"]["password"]) else jsonify(
-                                                                                                    data=False,
-                                                                                                    status="Failed to log in.")
-
-    return wrapper
 
 
 class RequestHandler(object):
@@ -61,6 +47,7 @@ class RequestHandler(object):
         self.database = DatabaseHandler.get_instance()
 
     def handle_request(self):
+        print(request.get_json(force=True))
         self.request = request.get_json(force=True)
         try:
             self.request_data = self.request["data"]
@@ -91,18 +78,17 @@ class RequestHandler(object):
         email = self.request_data["login"]["email"]
         password = self.request_data["login"]["password"]
 
+        print(email, password)
+
         for user in self.database.get_users():
             if user.confirmed and user.uid == email and Helper.check_password(user.password, password):
                 logging.info("Logged in as %s" % user.uid)
-                session["uid"] = user.uid
                 return jsonify(data=True, status="Logged in as %s" % user.uid)
 
         logging.info("Failed to log in. The login credentials may be incorrect "
                      "\n or the user does not exist.")
-        return jsonify(data=False,
-                       status="Failed to log in. The login credentials may be incorrect, the user might not be "
-                              "confirmed "
-                              "\n or the user does not exist.")
+        return jsonify(data=False, status="Failed to log in. The login credentials may be incorrect "
+                                          "\n or the user does not exist.")
 
     def signup(self):
         logging.info("Request Handler: Signing up...")
@@ -138,16 +124,16 @@ class RequestHandler(object):
     def get_dashboard(self):
         return jsonify(data=self.database.get_announcements_json())
 
-    @login_required
     def save_announcement(self):
-        if Helper.is_user_auth_for_post(
+        if self.is_user_logged_in() and Helper.is_user_auth_for_post(
                 DatabaseHandler.get_instance().get_user(self.request_data["login"]["email"])):
             title = self.request_data["announcement_data"]["title"]
             info = self.request_data["announcement_data"]["info"]
             content_html = self.request_data["announcement_data"]["content_html"]
             id = self.request_data["announcement_data"]["id"]
             user = self.database.get_user(self.request_data["login"]["email"])
-            if not ProfanityFilter().is_profane(content_html):
+            swearing_filter = ProfanityFilter()
+            if not swearing_filter.is_profane(content_html):
                 user.create_announcement(title=title, info=info, content_html=content_html, id=id)
             else:
                 print("User entered a profane message")
@@ -156,7 +142,7 @@ class RequestHandler(object):
             self.database.store_user(user)
 
             return jsonify(status="Success", data=True)
-        elif Helper.is_user_auth_for_post_review(
+        elif self.is_user_logged_in() and Helper.is_user_auth_for_post_review(
                 DatabaseHandler.get_instance().get_user(self.request_data["login"]["email"])):
             title = self.request_data["announcement_data"]["title"]
             info = self.request_data["announcement_data"]["info"]
@@ -193,15 +179,16 @@ class RequestHandler(object):
             announcements.append(announcement.to_json())
         return jsonify(data=announcements)
 
-    @login_required
     def delete_announcement(self):
         email = self.request_data["login"]["email"]
         announcement_id = self.request_data["announcement_id"]
 
-        user = self.database.get_user(email)
-        user.remove_announcement_by_id(announcement_id)
-        self.database.store_user(user)
-        return "Announcement deleted"
+        if self.is_user_logged_in():
+            user = self.database.get_user(email)
+            user.remove_announcement_by_id(announcement_id)
+            self.database.store_user(user)
+            return "Announcement deleted"
+        return "User not logged in"
 
     def validate_confirmation(self):
         confirmation_id = self.request_data["confirmation_id"]
@@ -227,13 +214,12 @@ class RequestHandler(object):
     def get_user_permission_level(self):
         return jsonify(data=DatabaseHandler.get_instance().get_user(self.request_data["email"]).permission_level)
 
-    @login_required
     def change_user_permission_level(self):
         user = DatabaseHandler.get_instance().get_user(self.request_data["email"])
         permission_level = self.request_data["permission_level"]
         login = self.request_data["login"]
 
-        if Helper.is_user_admin(DatabaseHandler.get_instance().get_user(login["email"])):
+        if self.is_user_logged_in() and Helper.is_user_admin(DatabaseHandler.get_instance().get_user(login["email"])):
             user.permission_level = int(permission_level)
             DatabaseHandler.get_instance().store_user(user)
             return jsonify(data=True, status="Success")
@@ -242,13 +228,12 @@ class RequestHandler(object):
                                           "permission may not have sufficient privileges.")
 
     # email or name?@!?!?!??!?!?!?!?
-    @login_required
     def add_student_to_teacher(self):
         student_name = self.request_data["student_name"]
         login = self.request_data["login"]
         teacher = DatabaseHandler.get_instance().get_user(login["email"])
         # email or name?@!?!?!??!?!?!?!?
-        if Helper.is_user_admin(teacher) and student_name not in teacher.students:
+        if self.is_user_logged_in() and Helper.is_user_admin(teacher) and student_name not in teacher.students:
             teacher.students.append(student_name)
             DatabaseHandler.get_instance().store_user(teacher)
             return jsonify(data=True)
@@ -256,14 +241,13 @@ class RequestHandler(object):
         return jsonify(data=False)
 
     # email or name?@!?!?!??!?!?!?!?
-    @login_required
     def remove_student_from_teacher(self):
         student_name = self.request_data["student_name"]
         login = self.request_data["login"]
         teacher = DatabaseHandler.get_instance().get_user(login["email"])
 
         # email or name?@!?!?!??!?!?!?!?# email or name?@!?!?!??!?!?!?!?# email or name?@!?!?!??!?!?!?!?# email or name?@!?!?!??!?!?!?!?# email or name?@!?!?!??!?!?!?!?
-        if Helper.is_user_admin(teacher) and student_name in teacher.students:
+        if self.is_user_logged_in() and Helper.is_user_admin(teacher) and student_name in teacher.students:
             student = DatabaseHandler.get_instance().get_user(student_name)
             student.permission_level = 0
             DatabaseHandler.get_instance().store_user(student)
@@ -282,7 +266,6 @@ class RequestHandler(object):
 
         return jsonify(data=students)
 
-    @login_required
     def save_profile_data(self):
         firstname = self.request_data["firstname"]
         lastname = self.request_data["lastname"]
@@ -291,13 +274,13 @@ class RequestHandler(object):
 
         user = self.database.get_user(self.request_data["login"]["email"])
 
-        if grade != None:
+        if grade != None and self.is_user_logged_in():
             user: Student
 
             user.firstname = firstname
             user.lastname = lastname
             user.grade = grade
-        else:
+        elif self.is_user_logged_in():
             user: Teacher
 
             user.firstname = firstname
@@ -305,26 +288,33 @@ class RequestHandler(object):
 
         self.database.store_user(user)
 
+        print(self.request_data)
+
         return jsonify(data=True)
 
-    @login_required
     def handle_file_upload(self):
         email = self.request_data["login"]["email"]
 
-        file = open(os.path.join(os.path.dirname(__file__),
-                                 "..", "data", "profile_images", email + ".jpg"), "wb")
-        file.write(request.get_data())
-        file.close()
+        if self.is_user_logged_in():
+            file = open(os.path.join(os.path.dirname(__file__),
+                         "..", "data", "profile_images", email+".jpg"), "wb")
+            file.write(request.get_data())
+            file.close()
         return jsonify(data=True)
 
     def get_profile_data(self):
         email = self.request_data["email"]
 
         profile_dat = json.loads(self.database.get_user(email).get_profile_info_json())
-        # profile_dat["profile_image"] = open(os.path.join(__file__, "..\\..\\data\\profile_images\\"+email+".jpg"), "rb").read()
-        # profile_dat
+        #profile_dat["profile_image"] = open(os.path.join(__file__, "..\\..\\data\\profile_images\\"+email+".jpg"), "rb").read()
+       # profile_dat
         profile_dat = json.dumps(profile_dat)
         return jsonify(data=profile_dat)
+
+    def is_user_logged_in(self):
+        return self.database.get_user(self.request_data["login"]["email"]).confirmed and \
+               Helper.check_password(self.database.get_user(self.request_data["login"]["email"]).password,
+                                     self.request_data["login"]["password"])
 
     def is_user_admin(self):
         return jsonify(data=Helper.is_user_admin(DatabaseHandler.get_instance().get_user(self.request_data["email"])))
