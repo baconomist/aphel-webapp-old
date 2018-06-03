@@ -1,6 +1,6 @@
 ## SETUP ##
 
-	[GO TO BIT BUCKET](https://bitbucket.org/Thetoxickiller/webapp/downloads/) 
+	[GO TO BIT BUCKET](https://bitbucket.org/Thetoxickiller/webapp/downloads/)
 	and download the server code.
 
 ## DEPENDENCIES ##
@@ -9,15 +9,18 @@
 - jsonpickle(python library)
 
 
-	
+
 ## RUNNING THE SERVER ##
 - Navigate to the root directory of the project and, assuming you have
 python installed, just double click main.py
 - Go to your browser and in the address bar put: 127.0.0.1
 
+#### Note: ####
+- When actually running the server also run backup.py which will backup the databases and images every 12 hours
+
 ## BOOTSTRAP STUDIO ##
-When using bootstrap studio go to **export --> 
-export settings --> advanced options --> export script** and choose the export_script.exe located in the "**export__script/dist/**" folder in the root project directory. 
+When using bootstrap studio go to **export -->
+export settings --> advanced options --> export script** and choose the export_script.exe located in the "**export__script/dist/**" folder in the root project directory.
 
 Then click "**save**" to save the export script option.
 
