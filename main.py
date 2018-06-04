@@ -7,7 +7,6 @@ from modules.request_handler import RequestHandler
 from html_modules.navbar import Navbar
 
 import config
-from modules.backup import Backup
 
 import os
 import logging
@@ -143,5 +142,4 @@ def inject_navbar():
 
 
 if __name__ == "__main__":
-
     app.run(config.ip, config.port, debug=config.DEBUG)
