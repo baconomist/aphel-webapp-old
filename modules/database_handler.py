@@ -84,11 +84,17 @@ class DatabaseHandler(object):
         return data["users"]
 
     def get_announcements_json(self):
+        announcements = []
         announcements_json = []
 
         for user in self.get_users():
             for announcement in user._announcements:
-                announcements_json.append(announcement.to_json())
+                announcements.append(announcement)
+
+        announcements.sort(key=lambda x: x.time_stamp)
+
+        for announcement in announcements:
+            announcements_json.append(announcement.to_json())
 
         return announcements_json
 
