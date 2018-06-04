@@ -8,7 +8,7 @@ image: python:3.6
 pipelines:
   default:
     - step:
-        max-time: 10
+        max-time: 5
         caches:
           - pip
         script: # Modify the commands below to build your repository.
