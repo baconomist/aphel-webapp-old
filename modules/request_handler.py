@@ -146,7 +146,8 @@ class RequestHandler(object):
             info = self.request_data["announcement_data"]["info"]
             content_html = self.request_data["announcement_data"]["content_html"]
             id = self.request_data["announcement_data"]["id"]
-            user = self.database.get_user(self.request_data["login"]["email"])
+            user = self.database.get_user(session.get("uid"))
+            print(title, info, content_html, id, user)
             swearing_filter = ProfanityFilter()
             #if not swearing_filter.is_profane(content_html):
             user.create_announcement(title=title, info=info, content_html=content_html, id=int(id))
@@ -200,7 +201,7 @@ class RequestHandler(object):
         announcement_id = self.request_data["announcement_id"]
 
         user = self.database.get_user(email)
-        user.remove_announcement_by_id(announcement_id)
+        user.remove_announcement_by_id(int(announcement_id))
         self.database.store_user(user)
         return "Announcement deleted"
 
