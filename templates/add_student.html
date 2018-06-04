@@ -41,14 +41,22 @@
 
     <div style="height:100vh;">
         <div style="height:191px;border:2px solid blue;margin:13px;">
-        <p style="font-size:25px;font-family:'News Cycle', sans-serif;padding:10px;">Add a student</p>
-        <div class="row" style="width:335px;">
-            <div class="col">
-                <p style="padding:5px;">Student Name:</p>
+            <p style="font-size:25px;font-family:'News Cycle', sans-serif;padding:10px;">
+                Add a student
+            </p>
+
+            <div class="row" style="width:335px;">
+                <div class="col">
+                    <p style="padding:5px;">Student Name:</p>
+                </div>
+                <div class="col" style="padding:10px;">
+                    <input type="text" id="student_name" list="student_list">
+                </div>
             </div>
-            <div class="col" style="padding:10px;"><input type="text" id="student_name" list="student_list"></div>
-        </div>
-        <button class="btn btn-primary" type="button" id="add_btn" style="margin:0px 20px;width:102px;">Add</button>
+
+            <button class="btn btn-primary" type="button" id="add_btn" style="margin:0px 20px;width:102px;">
+                Add
+            </button>
         </div>
     </div>
 
@@ -61,11 +69,20 @@
     </div>
     <div class="footer-basic" style="background-color:#439d4c;">
         <footer>
-            <div class="social"><a href="https://www.instagram.com/pchackingsquad/" style="color:rgb(255,255,255);"><i class="icon ion-social-instagram"></i></a><a href="#" style="color:rgb(255,255,255);"><i class="icon ion-social-twitter" style="color:rgb(255,255,255);"></i></a></div>
-            <ul
-                class="list-inline"></ul>
-                <p class="copyright" style="color:rgb(255,255,255);">Alphel @ 2018</p>
-        </footer><a href="#0" class="cd-top js-cd-top cd-top--fade-out cd-top--show" style="background-image:url('../static/img/cd-top-arrow.svg');width:40px;height:40px;">Top</a></div>
+            <div class="social">
+                <a href="https://www.instagram.com/pchackingsquad/" style="color:rgb(255,255,255);">
+                    <i class="icon ion-social-instagram"></i></a><a href="#" style="color:rgb(255,255,255);">
+                    <i class="icon ion-social-twitter" style="color:rgb(255,255,255);"></i>
+                </a>
+            </div>
+            <ul class="list-inline"></ul>
+            <p class="copyright" style="color:rgb(255,255,255);">Alphel @ 2018</p>
+        </footer>
+
+        <a href="#0" class="cd-top js-cd-top cd-top--fade-out cd-top--show" style="background-image:url('../static/img/cd-top-arrow.svg');width:40px;height:40px;">
+            Top
+        </a>
+    </div>
 
     <script src="../static/js/jquery.min.js"></script>
     <script src="../static/bootstrap/js/bootstrap.min.js"></script>
