@@ -41,35 +41,25 @@
             {{ navbar }}
         </div>
     </div>
-    <div class="row">
-        <div class="col"><div id="dashboard"></div></div>
-    </div>
     <div id="template_area" style="padding-left:10px;padding-right:10px;">
-        <div class="container card-shadow ann-post" style="padding:0px;margin-bottom:21px;height:502px;display:none">
-            <div class="d-block" style="height:211px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;padding-top:20px;">
-                <p class="profile-name-card" style="font-family:'News Cycle', sans-serif;font-size:26px;color:rgb(92,104,116);margin-bottom:20px;">Make Your Announcement!<br></p>
-                <p class="profile-name-card" style="font-family:'News Cycle', sans-serif;font-size:16px;color:rgb(133,140,146);margin-bottom:20px;"><i class="fa fa-check" style="margin-right:5px;"></i>You are Trusted to Make Announcements<br></p><input class="d-block ann-title" type="text" placeholder="Title" style="width:100%;margin-left:0px;margin-bottom:20px;font-family:'News Cycle', sans-serif;padding-left:5px;">
-                <input
-                    class="d-block ann-info" type="text" placeholder="Club/Team" style="width:100%;margin-left:0px;font-family:'News Cycle', sans-serif;padding-left:5px;"></div>
-            <div class="d-block overflow ann-content" id="editor" style="height:189px;background-color:#ffffff;font-family:'News Cycle', sans-serif;padding:10px;padding-right:20px;padding-left:20px;"></div>
-            <div class="d-block" style="height:80px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;padding-top:15px;"><button class="btn btn-primary btn-block btn-lg d-inline-block btn-signin ann-post-btn" type="submit" id="save_button" style="background-color:#439d4c;width:246px;font-size:18px;height:47px;">Post Announcement</button></div>
-        </div>
-        <div class="container card-shadow ann-post-review" style="padding:0px;margin-bottom:21px;height:502px;display:">
-            <div class="d-block" style="height:245px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;padding-top:20px;">
-                <p class="profile-name-card" style="font-family:'News Cycle', sans-serif;font-size:26px;color:rgb(92,104,116);margin-bottom:20px;">Make Your Announcement!<br></p><input class="d-block ann-title" type="default" placeholder="Title" style="width:100%;margin-left:0px;margin-bottom:20px;font-family:'News Cycle', sans-serif;padding-left:5px;"><input class="d-block ann-info"
-                    type="default" placeholder="Club/Team" style="width:100%;margin:0px 0px 20px;margin-left:0px;font-family:'News Cycle', sans-serif;padding-left:5px;"><input class="d-block ann-teacher" type="text" placeholder="Reviewing Teacher" style="width:100%;margin-left:0px;font-family:'News Cycle', sans-serif;padding-left:5px;"
-                    list="teacher_list"></div>
-            <div class="d-block overflow ann-content" id="editor" style="height:199px;background-color:#ffffff;font-family:'News Cycle', sans-serif;padding:10px;padding-right:20px;padding-left:20px;"></div>
-            <div class="d-block" style="height:73px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;padding-top:15px;"><button class="btn btn-primary btn-block btn-lg d-inline-block btn-signin ann-post-btn" type="submit" id="save_button" style="background-color:#439d4c;width:246px;font-size:18px;height:47px;">Post Announcement</button></div>
-        </div>
+        {{ announcement_form }}
     </div>
     <div class="footer-basic" style="background-color:#439d4c;position:absolute;bottom:0;width:100%;">
+
         <footer>
-            <div class="social"><a href="https://www.instagram.com/pchackingsquad/" style="color:rgb(255,255,255);"><i class="icon ion-social-instagram"></i></a><a href="#" style="color:rgb(255,255,255);"><i class="icon ion-social-twitter" style="color:rgb(255,255,255);"></i></a></div>
-            <ul
-                    class="list-inline"></ul>
+            <div class="social">
+                <a href="https://www.instagram.com/pchackingsquad/" style="color:rgb(255,255,255);">
+                    <i class="icon ion-social-instagram"></i>
+                </a><a href="#" style="color:rgb(255,255,255);">
+                    <i class="icon ion-social-twitter" style="color:rgb(255,255,255);"></i>
+                </a>
+            </div>
+            <ul class="list-inline"></ul>
             <p class="copyright" style="color:rgb(255,255,255);">Alphel @ 2018</p>
-        </footer><a href="#0" class="cd-top js-cd-top cd-top--fade-out cd-top--show" style="background-image:url('../static/img/cd-top-arrow.svg');width:40px;height:40px;">Top</a></div>
+        </footer>
+
+        <a href="#0" class="cd-top js-cd-top cd-top--fade-out cd-top--show" style="background-image:url('../static/img/cd-top-arrow.svg');width:40px;height:40px;">Top</a>
+    </div>
 
 
     <script src="../static/js/jquery.min.js"></script>
@@ -78,28 +68,7 @@
 
     <script src="../static/js/server_function/announcement_editor.js"></script>
     <script src="../static/js/server_function/server_bridge.js"></script>
-    <script src="../static/js/server_function/cookie_manager.js"></script>
     <script src="../static/js/init.js"></script>
-
-    <script src="../static/js/website_function/navbar.js"></script>
-    <script src="../static/js/website_function/-Countdown-BS4-.js"></script>
-    <script src="../static/js/website_function/-Fixed-Navbar-start-with-transparency-BS4-.js"></script>
-    <script src="../static/js/website_function/Bold-BS4-Animated-Back-To-Top.js"></script>
-    <script src="../static/js/website_function/Sidebar-Menu.js"></script>
-    <script src="../static/js/website_function/Profile-Edit-Form.js"></script>
-    <script src="../static/js/website_function/Smooth-Scrollto-button-read-Description.js"></script>
-    <script src="../static/js/website_function/failed_login_modal.js"></script>
-    <script src="../static/js/website_function/logout.js"></script>
-
-    <script src="../static/js/server_function/signup_form.js"></script>
-    <script src="../static/js/server_function/login_form.js"></script>
-    <script src="../static/js/server_function/dashboard.js"></script>
-    <script src="../static/js/server_function/post_announcement.js"></script>
-    <script src="../static/js/server_function/user_announcements.js"></script>
-    <script src="../static/js/server_function/confirmation_confirmed.js"></script>
-    <script src="../static/js/server_function/add_student.js"></script>
-    <script src="../static/js/server_function/review_confirmed.js"></script>
-    <script src="../static/js/server_function/students.js"></script>
 
 </body>
 
