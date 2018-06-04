@@ -1,4 +1,6 @@
-from flask import Flask, render_template, session
+from functools import wraps
+
+from flask import Flask, render_template, session, abort
 
 from html_modules.editable_announcement import EditableAnnouncement
 from modules.database_handler import DatabaseHandler
@@ -10,6 +12,7 @@ import config
 
 import os
 import logging
+
 # Clear server.log
 open(os.path.join(os.path.dirname(__file__), "server.log"), "w").close()
 
@@ -25,7 +28,32 @@ app = Flask(__name__)
 # Secret key needed for flask-sessions
 app.secret_key = os.urandom(24)
 
+
+def page_not_found(e):
+    return render_template("errors/404.html"), 404
+
+
+def no_access(e):
+    return render_template("errors/403.html"), 403
+
+
+# 404 page, page not found
+app.register_error_handler(404, page_not_found)
+
+# 403 page, not logged in/can't access resource
+app.register_error_handler(403, no_access)
+
 request_handler = RequestHandler()
+
+
+def login_required(flask_route_function):
+    @wraps(flask_route_function)
+    def wrapper(*args, **kwargs):
+        if session.get("uid") is None:
+            abort(403)
+        return flask_route_function(*args, **kwargs)
+
+    return wrapper
 
 
 @app.route("/", methods=["POST"])
@@ -34,6 +62,7 @@ def catch_all():
 
 
 @app.route("/file_upload", methods=["POST"])
+@login_required
 def file_upload():
     return request_handler.handle_file_upload()
 
@@ -48,6 +77,7 @@ def index():
 
 @app.route("/profile", methods=["GET"])
 @app.route("/profile.html", methods=["GET"])
+@login_required
 def profile():
     return render_template("profile.html")
 
@@ -61,6 +91,7 @@ def login():
 
 @app.route("/logout", methods=["GET"])
 @app.route("/logout.html", methods=["GET"])
+@login_required
 def logout():
     session.pop("uid")
     return render_template("logout.html")
@@ -74,6 +105,7 @@ def signup():
 
 @app.route("/post_announcement", methods=["GET"])
 @app.route("/post_announcement.html", methods=["GET"])
+@login_required
 def announcement():
     return render_template("post_announcement.html")
 
@@ -84,10 +116,12 @@ def dashboard():
     return render_template("dashboard.html")
 
 
-#TODO: add @login_required decorator for appropriate routes
+
 @app.route("/user_announcements", methods=["GET"])
 @app.route("/user_announcements.html", methods=["GET"])
+@login_required
 def user_announcements():
+    print(session.get("uid") is None)
     user_announcements = []
 
     for announcement in DatabaseHandler.get_instance().get_user(session.get("uid"))._announcements:
@@ -114,12 +148,14 @@ def review_confirmed():
 
 @app.route("/students", methods=["GET"])
 @app.route("/students.html", methods=["GET"])
+@login_required
 def students():
     return render_template("students.html")
 
 
 @app.route("/add_student", methods=["GET"])
 @app.route("/add_student.html", methods=["GET"])
+@login_required
 def add_student():
     student_uids = []
     for user in DatabaseHandler.get_instance().get_users():
@@ -131,6 +167,7 @@ def add_student():
 
 @app.route("/add_student_status", methods=["GET"])
 @app.route("/add_student_status.html", methods=["GET"])
+@login_required
 def add_student_status():
     return render_template("add_student_status.html")
 
