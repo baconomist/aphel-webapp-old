@@ -2,9 +2,10 @@ from functools import wraps
 
 from flask import Flask, render_template, session, abort
 
+from html_modules.announcement_form import AnnouncementForm
 from html_modules.editable_announcement import EditableAnnouncement
 from modules.database_handler import DatabaseHandler
-from modules.request_handler import RequestHandler
+from modules.request_handler import RequestHandler, Helper
 
 from html_modules.navbar import Navbar
 
@@ -14,6 +15,9 @@ import os
 import logging
 
 # Clear server.log
+from modules.teacher import Teacher
+from modules.user import User
+
 open(os.path.join(os.path.dirname(__file__), "server.log"), "w").close()
 
 # Comment out these lines to disable logging
@@ -107,14 +111,21 @@ def signup():
 @app.route("/post_announcement.html", methods=["GET"])
 @login_required
 def announcement():
-    return render_template("post_announcement.html")
+    teacher_uids = []
+    for user in DatabaseHandler.get_instance().get_users():
+        if Helper.is_user_admin(user) or type(user) is Teacher:
+            teacher_uids.append(user.uid)
+    trusted_post = DatabaseHandler.get_instance().get_user(session.get("uid")).permission_level >= User.get_trusted_student_permission_level()
+
+    announcement_form = AnnouncementForm(trusted_post, len(DatabaseHandler.get_instance().get_user(session.get("uid"))._announcements) + 1, teacher_uids)
+
+    return render_template("post_announcement.html", announcement_form=announcement_form.get_markup())
 
 
 @app.route("/dashboard", methods=["GET"])
 @app.route("/dashboard.html", methods=["GET"])
 def dashboard():
     return render_template("dashboard.html")
-
 
 
 @app.route("/user_announcements", methods=["GET"])

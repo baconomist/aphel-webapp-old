@@ -91,6 +91,7 @@ class DatabaseHandler(object):
             for announcement in user._announcements:
                 announcements.append(announcement)
 
+        # Sort in chronological order(newest on top, oldest on bottom)
         announcements.sort(key=lambda x: x.time_stamp)
 
         for announcement in announcements:

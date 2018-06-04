@@ -1,5 +1,17 @@
 <div>
-    <div class="container card-shadow ann-post" style="padding:0px;margin-bottom:21px;height:502px;display:none">
+
+    <script src="../static/js/server_function/announcement_editor.js"></script>
+    <script src="../static/js/server_function/server_bridge.js"></script>
+    <script src="../static/js/init.js"></script>
+
+    <datalist id="teacher_list">
+        {% for teacher_uid in teacher_uids %}
+            <option value="{{teacher_uid}}">
+        {% endfor %}
+    </datalist>
+
+    <div class="container card-shadow ann-post" id="announcement_form" style="padding:0px;margin-bottom:21px;height:502px;display:none">
+
         <div class="d-block" style="height:211px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;padding-top:20px;">
 
             <p class="profile-name-card" style="font-family:'News Cycle', sans-serif;font-size:26px;color:rgb(92,104,116);margin-bottom:20px;">
@@ -23,9 +35,11 @@
                 Post Announcement
             </button>
         </div>
+
     </div>
 
-    <div class="container card-shadow ann-post-review" style="padding:0px;margin-bottom:21px;height:502px;display:">
+    <div class="container card-shadow ann-post-review" id="announcement_form" style="padding:0px;margin-bottom:21px;height:502px;display:none">
+
         <div class="d-block" style="height:245px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;padding-top:20px;">
 
             <p class="profile-name-card" style="font-family:'News Cycle', sans-serif;font-size:26px;color:rgb(92,104,116);margin-bottom:20px;">
@@ -35,11 +49,62 @@
             <input class="d-block ann-info" type="default" placeholder="Club/Team" style="width:100%;margin:0px 0px 20px;margin-left:0px;font-family:'News Cycle', sans-serif;padding-left:5px;">
             <input class="d-block ann-teacher" type="text" placeholder="Reviewing Teacher" style="width:100%;margin-left:0px;font-family:'News Cycle', sans-serif;padding-left:5px;" list="teacher_list">
         </div>
+
         <div class="d-block overflow ann-content" id="editor" style="height:199px;background-color:#ffffff;font-family:'News Cycle', sans-serif;padding:10px;padding-right:20px;padding-left:20px;"></div>
+
         <div class="d-block" style="height:73px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;padding-top:15px;">
             <button class="btn btn-primary btn-block btn-lg d-inline-block btn-signin ann-post-btn" type="submit" id="save_button" style="background-color:#439d4c;width:246px;font-size:18px;height:47px;">
                 Post Announcement
             </button>
         </div>
+
     </div>
+
+    <script type="text/javascript">
+
+        //**cool**
+        //let announcement_form = !$(".ann-post").is(":hidden") && $(".ann-post") || !$(".ann-post-review").is(":hidden") && $(".ann-post-review");
+        //**cool**
+
+        // Announcement
+        let id = {{ announcement_id }};
+        let title;
+        let info;
+        let content;
+
+        // Announcement Form
+        let announcement_form = $("#announcement_form")
+        let editor_div = $("#editor")
+        let announcement_editor = new AnnouncementEditor(editor_div, id);
+
+        function save_announcement()
+        {
+            title = $(".ann-title").val();
+            info = $(".ann-info").val();
+            content = announcement_editor.get_content();
+
+            // @null
+            teacher = $(".ann-teacher").val();
+
+            server_bridge.sendToServer("", {"function": "save_announcement",
+                                            "data": {
+                                            "announcement_data":
+                                            {
+                                                "title": title,
+                                                "info": info,
+                                                "content_html": content,
+                                                "teacher": teacher, "id": id
+                                            }
+                                            }},
+            function(response)
+            {
+                window.location.replace(server_bridge.host + "/dashboard");
+                console.log("Posted Announcement!");
+            });
+        }
+
+        $(".ann-post-btn").click(save_announcement);
+
+    </script>
+
 </div>

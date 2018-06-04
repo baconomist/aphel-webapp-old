@@ -183,18 +183,6 @@ class RequestHandler(object):
     def user_exists(self):
         return jsonify(data=self.database.user_exists(self.request_data))
 
-    def get_new_announcement_id(self):
-        return jsonify(data=len(self.database.get_user(self.request_data["email"]).announcements) + 1)
-
-    @login_required
-    def get_announcements_for_user(self):
-        user_name = session.get("uid")
-        announcements = []
-        for announcement in self.database.get_user(user_name).announcements:
-            announcements.append(announcement.to_json())
-        print(announcements)
-        return jsonify(data=announcements)
-
     @login_required
     def delete_announcement(self):
         email = session.get("uid")
@@ -214,13 +202,6 @@ class RequestHandler(object):
         review_id = self.request_data["review_id"]
         logging.info("Validation announcement review...")
         return jsonify(data=AnnouncementReviewHandler.get_instance().validate_review(review_id))
-
-    def get_teachers(self):
-        teachers = []
-        for user in DatabaseHandler.get_instance().get_users():
-            if Helper.is_user_admin(user):
-                teachers.append(user.uid)
-        return jsonify(data=teachers)
 
     @login_required
     def get_teacher_students(self):
@@ -369,15 +350,15 @@ class Helper(object):
 
     @staticmethod
     def is_user_admin(user):
-        return user.get_permission_level() > 2
+        return user.get_permission_level() >= user.get_teacher_permisison_level()
 
     @staticmethod
     def is_user_auth_for_post(user):
-        return user.get_permission_level() > 1
+        return user.get_permission_level() > user.get_trusted_student_permission_level()
 
     @staticmethod
     def is_user_auth_for_post_review(user):
-        return user.get_permission_level() > 0
+        return user.get_permission_level() > user.get_untrusted_student_permission_level()
 
     @staticmethod
     def is_teacher_email(email):
