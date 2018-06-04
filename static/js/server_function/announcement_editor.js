@@ -4,21 +4,38 @@ class AnnouncementEditor
     {
         this.editor_div = editor_div;
         this.announcement_id = announcement_id;
-        
+
         this.quill = this.init_quill(editor_div, announcement_id);
-    }  
-    
+    }
+
     get_content()
     {
         return this.quill.root.innerHTML;
     }
-    
-    
-    
-    init_quill(editor_div, toolbar_div, announcement_id){       
-        
-        var toolbarOptions = [
-            
+
+    enable()
+    {
+        this.quill.enable(true);
+    }
+
+    disable()
+    {
+        this.quill.enable(false);
+    }
+
+    destroy()
+    {
+        // Need to destroy quill on use because after saving, it doesn't edit anymore
+        // Toolbar is the only thing that needs to be destroyed
+        // TODO: Find a better fix for this
+        this.editor_div.parent().find(".ql-toolbar").remove();
+    }
+
+
+    init_quill(editor_div, announcement_id){
+
+        let toolbarOptions = [
+
             ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
             //['blockquote', 'code-block'],
 
@@ -36,11 +53,11 @@ class AnnouncementEditor
             [{ 'align': [] }],
 
             ['clean']                                        // add a remove formatting button,
-            
-            
+
+
         ];
 
-        var quill = new Quill("#" + editor_div.attr('id'), {
+        let quill = new Quill("#" + editor_div.attr('id'), {
                 theme: 'snow',
                 modules: {
                 toolbar: toolbarOptions

@@ -1,29 +1,122 @@
-<div class="container card-shadow announcement-not-editing" style="padding:0px;margin-bottom:21px;display:none">
-    <div class="d-block" style="height:70px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;">
-        <blockquote class="blockquote">
-            <p id="announcement_title" class="mb-0" style="color:rgb(33,37,41);font-family:'News Cycle', sans-serif;">
-                Announcement Title
-            </p>
-            <footer class="blockquote-footer" id="announcement_info" style="color:rgb(33,37,41);font-family:'News Cycle', sans-serif;">
-                Club Name, Name of user that posted this
-            </footer>
-        </blockquote>
-    </div>
-    <div class="d-block overflow" style="height:170px;background-color:#ffffff;font-family:'News Cycle', sans-serif;padding:10px;padding-right:20px;padding-left:20px;">
-        <div style="height:130px;background-color:#ffffff;font-family:'News Cycle', sans-serif;padding:10px;padding-right:20px;padding-left:20px;overflow:auto">
-            <p class="d-block" id="announcement_content">
-                Announcement info goes here.
+
+<div id="{{ announcement_id }}">
+
+    <div class="container card-shadow announcement-not-editing" style="padding:0px;margin-bottom:21px;">
+        <div class="d-block" style="height:70px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;">
+            <blockquote class="blockquote">
+                <p class="mb-0 announcement-title" style="color:rgb(33,37,41);font-family:'News Cycle', sans-serif;">
+                    {{ announcement_title }}
+                </p>
+                <footer class="blockquote-footer announcement-info" style="color:rgb(33,37,41);font-family:'News Cycle', sans-serif;">
+                    {{ announcement_info }}
+                </footer>
+            </blockquote>
+        </div>
+        <div class="d-block overflow" style="height:170px;background-color:#ffffff;font-family:'News Cycle', sans-serif;padding:10px;padding-right:20px;padding-left:20px;">
+            <div style="height:130px;background-color:#ffffff;font-family:'News Cycle', sans-serif;padding:10px;padding-right:20px;padding-left:20px;overflow:auto">
+                <div class="d-block announcement-content">
+                    {{ announcement_content }}
+                </div>
+            </div>
+            <p class="d-block announcement-time-stamp">
+                {{ announcement_timestamp }}
             </p>
         </div>
-        <p class="d-block" id="announcement_time_stamp">
-            VVV Add a footer to each post with the timestamp,
-            and a function to pin the post so that it is always at the top of the students announcements,
-            or in a separate favourites page.
-        </p>
-    </div>
-    <div class="d-block" style="height:80px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;padding-top:15px;">
-        <button class="btn btn-primary btn-lg d-inline btn-signin" type="submit" id="edit_button" style="background-color:#439d4c;width:100px;font-size:16px;height:42px;margin-right:10px;">Edit</button>
-        <button class="btn btn-primary btn-lg d-inline btn-signin" type="submit" id="delete_button" style="background-color:#b8395f;width:100px;font-size:16px;height:42px;">Delete</button>
-    </div>
-</div>
+        <div class="d-block" style="height:80px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;padding-top:15px;">
+            <button class="btn btn-primary btn-lg d-inline btn-signin edit-btn" type="submit" style="background-color:#439d4c;width:100px;font-size:16px;height:42px;margin-right:10px;">Edit</button>
+            <button class="btn btn-primary btn-lg d-inline btn-signin delete-btn" type="submit" style="background-color:#b8395f;width:100px;font-size:16px;height:42px;">Delete</button>
+        </div>
 
+    </div>
+
+    <div class="container card-shadow announcement-editing" style="padding:0px;margin-bottom:21px;display:none">
+
+        <div class="d-block" style="height:120px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;padding-top:20px;">
+            <input class="d-block announcement-title" type="text" value="{{ announcement_title }}" placeholder="Edit Title" style="width:100%;margin-left:0px;margin-bottom:20px;font-family:'News Cycle', sans-serif;padding-left:5px;">
+            <input class="d-block announcement-info" type="text" value="{{ announcement_info }}" placeholder="Edit Club/Team" style="width:100%;margin-left:0px;font-family:'News Cycle', sans-serif;padding-left:5px;">
+        </div>
+
+        <div class="d-block overflow announcement-content" id="announcement_editor{{ announcement_id }}" style="height:170px;background-color:#ffffff;font-family:'News Cycle', sans-serif;padding:10px;padding-right:20px;padding-left:20px;">
+            {{ announcement_content }}
+        </div>
+
+        <div class="d-block" style="height:80px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;padding-top:15px;">
+            <button class="btn btn-primary btn-block btn-lg d-inline-block btn-signin save-button" type="submit" style="background-color:#439d4c;width:100px;font-size:16px;height:42px;">Save</button>
+        </div>
+
+
+    </div>
+
+    <script id="script{{ announcement_id }}" type="text/javascript">
+        // NOTE: NEED THIS FUNCTION in order to keep the scope script-only, put all the code inside this function
+        function run()
+        {
+            let announcement_id = "{{ announcement_id }}";
+            let announcement_title = "{{ announcement_title }}";
+            let announcement_info = "{{ announcement_info }}";
+            let announcement_content = "{{ announcement_content }}";
+            let announcement_timestamp = "{{ announcement_timestamp }}";
+
+            let announcement_not_editing = $("#" + announcement_id).find(".announcement-not-editing");
+            let announcement_editing = $("#" + announcement_id).find(".announcement-editing");
+
+            let edit_btn = announcement_not_editing.find(".edit-btn");
+            let delete_btn = announcement_not_editing.find(".delete-btn");
+
+            // ID is needed for the announcement editor for quill_init
+            let announcement_editor = null;
+            let save_button = announcement_editing.find(".save-button");
+
+            function create_editable_announcement()
+            {
+                console.log("aaaa", announcement_id);
+                announcement_not_editing.hide();
+                announcement_editor = new AnnouncementEditor(announcement_editing.find(".announcement-content"), announcement_id);
+                announcement_editing.show();
+            }
+
+            function delete_announcement()
+            {
+                console.log("Announcement Deleted.");
+                server_bridge.sendToServer("", {"function": "delete_announcement",
+                                                "data": {"announcement_id": announcement_id}},
+                    function(response){
+                        announcement_not_editing.remove();
+                        announcement_editing.remove();
+                    }
+
+                );
+            }
+
+            edit_btn.click(create_editable_announcement);
+
+            delete_btn.click(delete_announcement);
+
+            function save_announcement()
+            {
+                server_bridge.sendToServer("", {"function": "save_announcement", "data": {"announcement_data": {"title": announcement_editing.find(".announcement-title").val(),
+                                                                                            "info": announcement_editing.find(".announcement-info").val(),
+                                                                                            "content_html": announcement_editor.get_content(),
+                                                                                             "id": announcement_id} } },
+                       function(response){
+                            console.log("Edited Announcement!");
+                });
+
+                announcement_editing.hide();
+
+                announcement_not_editing.find(".announcement-title").text(announcement_editing.find(".announcement-title").val());
+                announcement_not_editing.find(".announcement-info").html(announcement_editing.find(".announcement-info").val());
+                announcement_not_editing.find(".announcement-content").html(announcement_editor.get_content());
+
+                announcement_editor.destroy();
+
+                announcement_not_editing.show();
+            }
+
+            save_button.click(save_announcement);
+        }
+        run();
+
+    </script>
+
+</div>
