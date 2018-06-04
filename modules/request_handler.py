@@ -148,10 +148,10 @@ class RequestHandler(object):
             id = self.request_data["announcement_data"]["id"]
             user = self.database.get_user(self.request_data["login"]["email"])
             swearing_filter = ProfanityFilter()
-            if not swearing_filter.is_profane(content_html):
-                user.create_announcement(title=title, info=info, content_html=content_html, id=id)
-            else:
-                print("User entered a profane message")
+            #if not swearing_filter.is_profane(content_html):
+            user.create_announcement(title=title, info=info, content_html=content_html, id=int(id))
+            #else:
+                #print("User entered a profane message")
                 # DO NOT USE PROFANE LANGUAGE alert shows up
 
             self.database.store_user(user)
