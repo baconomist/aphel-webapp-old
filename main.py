@@ -11,7 +11,6 @@ from modules.backup import Backup
 
 import os
 import logging
-
 # Clear server.log
 open(os.path.join(os.path.dirname(__file__), "server.log"), "w").close()
 
@@ -144,5 +143,5 @@ def inject_navbar():
 
 
 if __name__ == "__main__":
+
     app.run(config.ip, config.port, debug=config.DEBUG)
-    b = Backup(['database.json'],['profile_images'],{'hours': 0, 'days': 0})
