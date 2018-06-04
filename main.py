@@ -121,13 +121,20 @@ def dashboard():
 @app.route("/user_announcements.html", methods=["GET"])
 @login_required
 def user_announcements():
-    print(session.get("uid") is None)
-    user_announcements = []
+    user_announcements = DatabaseHandler.get_instance().get_user(session.get("uid"))._announcements
 
-    for announcement in DatabaseHandler.get_instance().get_user(session.get("uid"))._announcements:
-        user_announcements.append(EditableAnnouncement(announcement).get_markup())
+    # Sort in chronological order(newest on top, oldest on bottom)
+    user_announcements.sort(key=lambda x: x.time_stamp)
 
-    return render_template("user_announcements.html", user_announcements=user_announcements)
+    # Have to reverse it for it to work
+    user_announcements.reverse()
+
+    editable_announcements = []
+
+    for announcement in user_announcements:
+        editable_announcements.append(EditableAnnouncement(announcement).get_markup())
+
+    return render_template("user_announcements.html", user_announcements=editable_announcements)
 
 
 @app.route("/confirmation", methods=["GET"])
