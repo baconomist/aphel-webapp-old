@@ -39,6 +39,12 @@
         {{ navbar }}
     </div>
 
+    <datalist id="student_list">
+        {% for student_uid in student_uids %}
+            <option value="{{student_uid}}">
+        {% endfor %}
+    </datalist>
+
     <div style="height:100vh;">
         <div style="height:191px;border:2px solid blue;margin:13px;">
             <p style="font-size:25px;font-family:'News Cycle', sans-serif;padding:10px;">
@@ -59,12 +65,6 @@
             </button>
         </div>
     </div>
-
-    <datalist id="student_list">
-        {% for student_uid in student_uids %}
-            <option value="{{student_uid}}">
-        {% endfor %}
-    </datalist>
 
     </div>
     <div class="footer-basic" style="background-color:#439d4c;">
