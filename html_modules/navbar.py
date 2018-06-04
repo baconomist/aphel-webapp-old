@@ -72,7 +72,10 @@ class Navbar(HTML_Module):
     def navbar_post(self):
         for element in self.bs4Obj.find_all(class_="auth-for-post"):
             element["style"] = parseStyle(element["style"]).removeProperty("display")
-        self.nav_user["style"] = parseStyle(self.nav_user["style"]).removeProperty("display")
+        try:
+            self.nav_user["style"] = parseStyle(self.nav_user["style"]).removeProperty("display")
+        except:
+            pass
 
     @not_logged_in
     def navbar_not_logged_in(self):
