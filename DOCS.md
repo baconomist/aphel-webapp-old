@@ -1,6 +1,6 @@
-#DOCS FOR APHEL WEBAPP
+# DOCS FOR APHEL WEBAPP #
 
-####Author: Lucas Borowiecki
+#### Author(s): Lucas Borowiecki, Aryan Gosalia, The Apheltech Team ####
 
 ## COMMUNICATION SYNTAX ##
 
@@ -13,18 +13,16 @@
 ### SERVER RESPONSE SYNTAX ###
 	{
 	"data": "response data used by client",
-	"status": "status of request(error(detailed error)" or "success(succesfully **completed function**))"
+	"status": "status of request as a text"
+	"status_code": "an integer status code from the list of custom status codes"
 	}
-		
+
 ## REQUEST HANDLING ##
 	#Create request handler instance
 	request_handler = RequestHandler()
     @app.route("/", methods=["POST"])
     def catch_all(path):
 		request_handler.handle_request()
-
-## maybe make the function syntax like {function:"function name", data:"function params named like function params on server"}
-
 
 
 	
