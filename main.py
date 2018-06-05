@@ -1,5 +1,6 @@
 from flask import Flask, render_template, session
 
+from html_modules.editable_announcement import EditableAnnouncement
 from modules.database_handler import DatabaseHandler
 from modules.request_handler import RequestHandler
 
@@ -83,10 +84,16 @@ def dashboard():
     return render_template("dashboard.html")
 
 
+#TODO: add @login_required decorator for appropriate routes
 @app.route("/user_announcements", methods=["GET"])
 @app.route("/user_announcements.html", methods=["GET"])
 def user_announcements():
-    return render_template("user_announcements.html")
+    user_announcements = []
+
+    for announcement in DatabaseHandler.get_instance().get_user(session.get("uid"))._announcements:
+        user_announcements.append(EditableAnnouncement(announcement).get_markup())
+
+    return render_template("user_announcements.html", user_announcements=user_announcements)
 
 
 @app.route("/confirmation", methods=["GET"])

@@ -6,7 +6,7 @@ class User(object):
         self.uid = uid
         self.password = password
         self.permission_level = 0
-        self.announcements = []
+        self._announcements = []
         self.confirmed = False
 
         self.profile_image = None
@@ -21,28 +21,28 @@ class User(object):
             self.get_announcement_by_id(id).info = info
             self.get_announcement_by_id(id).content_html = content_html
         except:
-            self.announcements.append(Announcement(title=title, info=info, content_html=content_html, user_name=self.uid, id=id))
+            self._announcements.append(Announcement(title=title, info=info, content_html=content_html, user_name=self.uid, id=id))
 
     def remove_announcement_by_id(self, id):
         copy = []
-        for announcement in self.announcements:
+        for announcement in self._announcements:
             copy.append(announcement)
 
         index = 0
         for announcement in copy:
             if announcement.id == id:
-                self.announcements.pop(index)
+                self._announcements.pop(index)
                 break
             index += 1
 
     def get_announcement_by_id(self, id):
-        for announcement in self.announcements:
+        for announcement in self._announcements:
             if announcement.id == id:
                 return announcement
         return None
 
     def announcement_exists(self, announcement_e):
-        for announcement in self.announcements:
+        for announcement in self._announcements:
             if announcement.id == announcement_e.id:
                 return True
         return False

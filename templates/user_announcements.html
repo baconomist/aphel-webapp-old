@@ -41,7 +41,6 @@
     <script src="../static/js/server_function/cookie_manager.js"></script>
     <script src="../static/js/init.js"></script>
 
-    <script src="../static/js/website_function/navbar.js"></script>
     <script src="../static/js/website_function/-Countdown-BS4-.js"></script>
     <script src="../static/js/website_function/-Fixed-Navbar-start-with-transparency-BS4-.js"></script>
     <script src="../static/js/website_function/Bold-BS4-Animated-Back-To-Top.js"></script>
@@ -49,17 +48,6 @@
     <script src="../static/js/website_function/Profile-Edit-Form.js"></script>
     <script src="../static/js/website_function/Smooth-Scrollto-button-read-Description.js"></script>
     <script src="../static/js/website_function/failed_login_modal.js"></script>
-    <script src="../static/js/website_function/logout.js"></script>
-
-    <script src="../static/js/server_function/signup_form.js"></script>
-    <script src="../static/js/server_function/login_form.js"></script>
-    <script src="../static/js/server_function/dashboard.js"></script>
-    <script src="../static/js/server_function/post_announcement.js"></script>
-    <script src="../static/js/server_function/user_announcements.js"></script>
-    <script src="../static/js/server_function/confirmation_confirmed.js"></script>
-    <script src="../static/js/server_function/add_student.js"></script>
-    <script src="../static/js/server_function/review_confirmed.js"></script>
-    <script src="../static/js/server_function/students.js"></script>
 
 
 </head>
@@ -73,40 +61,9 @@
     <div class="row">
         <div class="col">
             <div id="announcement_div" style="padding-right:10px;padding-left:10px;padding-top:20px;height:auto;">
-                <div class="container card-shadow" id="announcement_not_editing" style="padding:0px;margin-bottom:21px;display:none">
-                    <div class="d-block" style="height:70px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;">
-                        <blockquote class="blockquote">
-                            <p id="announcement_title" class="mb-0" style="color:rgb(33,37,41);font-family:'News Cycle', sans-serif;">
-                                Announcement Title
-                            </p>
-                            <footer class="blockquote-footer" id="announcement_info" style="color:rgb(33,37,41);font-family:'News Cycle', sans-serif;">
-                                Club Name, Name of user that posted this
-                            </footer>
-                        </blockquote>
-                    </div>
-                    <div class="d-block overflow" style="height:170px;background-color:#ffffff;font-family:'News Cycle', sans-serif;padding:10px;padding-right:20px;padding-left:20px;">
-                        <div style="height:130px;background-color:#ffffff;font-family:'News Cycle', sans-serif;padding:10px;padding-right:20px;padding-left:20px;overflow:auto">
-                            <p class="d-block" id="announcement_content">
-                                Announcement info goes here.
-                            </p>
-                        </div>
-
-                        <p class="d-block" id="announcement_time_stamp">
-                            VVV Add a footer to each post with the timestamp,
-                            and a function to pin the post so that it is always at the top of the students announcements,
-                            or in a separate favourites page.
-                        </p>
-
-                    </div>
-                    <div class="d-block" style="height:80px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;padding-top:15px;"><button class="btn btn-primary btn-lg d-inline btn-signin" type="submit" id="edit_button" style="background-color:#439d4c;width:100px;font-size:16px;height:42px;margin-right:10px;">Edit</button><button class="btn btn-primary btn-lg d-inline btn-signin"
-                            type="submit" id="delete_button" style="background-color:#b8395f;width:100px;font-size:16px;height:42px;">Delete</button></div>
-                </div>
-                <div class="container card-shadow" id="announcement_editing" style="padding:0px;margin-bottom:21px;display:none">
-                    <div class="d-block" style="height:120px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;padding-top:20px;"><input class="d-block" type="text" placeholder="Edit Title" id="announcement_edit_title" style="width:100%;margin-left:0px;margin-bottom:20px;font-family:'News Cycle', sans-serif;padding-left:5px;"><input class="d-block" type="text"
-                            placeholder="Edit Club/Team" id="announcement_edit_info" style="width:100%;margin-left:0px;font-family:'News Cycle', sans-serif;padding-left:5px;"></div>
-                    <div class="d-block overflow" id="announcement_editor_div" style="height:170px;background-color:#ffffff;font-family:'News Cycle', sans-serif;padding:10px;padding-right:20px;padding-left:20px;"></div>
-                    <div class="d-block" style="height:80px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;padding-top:15px;"><button class="btn btn-primary btn-block btn-lg d-inline-block btn-signin" type="submit" id="save_button" style="background-color:#439d4c;width:100px;font-size:16px;height:42px;">Save</button></div>
-                </div>
+                {% for announcement in user_announcements %}
+                    {{ announcement }}
+                {% endfor %}
             </div>
             <div id="empty_space_fix" style="height:280px;"></div>
         </div>
