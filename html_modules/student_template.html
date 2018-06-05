@@ -1,0 +1,131 @@
+<div class="container student-template" id="{{ template_id }}">
+    <div class="d-block" style="height:auto;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:10px;margin-bottom:5px;">
+
+        <div class="d-inline-block" style="font-family:'News Cycle', sans-serif;width:75%;">
+            <p class="student-name" style="font-size:20px;margin-bottom:5px;width:100%;">{{ student_uid }}<br></p>
+
+            <tr>
+                <th>
+                    <h5 class=perm-edit-header>Permission Level: </h5>
+                </th>
+
+                <th>
+                    <select class='student-perm-input' style="display:none">
+                        <option value='0'>View Announcements</option>
+                        <option value='1'>Post Announcements With Review</option>
+                        <option value='2'>Post Announcements Without Review</option>
+                    </select>
+                </th>
+            </tr>
+
+            <p class="student-perm" style="width:100%;color:rgb(132,164,197);">{{ student_perm }}<br></p>
+
+            <button class="btn btn-primary save-button" type="button" style="margin: 10px;display:none">Save</button>
+        </div>
+
+        <div class="dropdown d-inline-block float-right student-options" style="width:25%;margin-top:0px;margin-right:0px;padding-left:0px;margin-left:0px;">
+            <button class="btn btn-primary btn-sm dropdown-toggle d-inline-block float-right" data-toggle="dropdown" aria-expanded="false" type="button" style="color:rgb(33,37,41);font-family:'News Cycle', sans-serif;font-size:16px;width:80px;">
+                Options
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" role="menu">
+                <a class="dropdown-item edit-button" role="presentation" style="font-family:'News Cycle', sans-serif;color:rgb(79,160,102);">
+                    Edit Permissions
+                </a>
+                <a class="dropdown-item delete-button" role="presentation" style="color:rgb(220,20,20);font-family:'News Cycle', sans-serif;">Delete</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function run()
+        {
+            // Student
+            let uid = "{{ student_uid }}";
+            let perm = "{{ student_perm }}";
+
+            // Template
+            let student_template = $("#{{ template_id }}");
+
+            let student_perm = student_template.find(".student-perm");
+            let edit_button = student_template.find(".edit-button");
+            let delete_button = student_template.find(".delete-button");
+
+            let student_perm_input = student_template.find(".student-perm-input");
+            let save_button = student_template.find(".save-button");
+
+            function permToText()
+            {
+                console.log($(".student-perm").text())
+                if($(".student-perm").text() == "0")
+                {
+                    $(".student-perm").text("View Announcements")
+                }
+                else if($(".student-perm").text() == "1")
+                {
+                    $(".student-perm").text("Post Announcements With Review")
+                }
+                else if($(".student-perm").text() == "2")
+                {
+                    $(".student-perm").text("Post Announcements Without Review")
+                }
+            }
+
+            permToText();
+
+            function enableEditing()
+            {
+                console.log("aaaaaaaaaaaaa");
+                student_template.find(".student-perm-input").children().each(function()
+                {
+                    if(this.value.toString() == ""+perm)
+                    {
+                        this.selected = 'selected';
+                    }
+                });
+
+                save_button.show();
+                student_perm_input.show();
+
+                student_perm.hide();
+                edit_button.hide();
+                delete_button.hide();
+            }
+
+            function disableEditing()
+            {
+                server_bridge.sendToServer("", {"function": "change_user_permission_level",
+                                                "data": {"email": uid,
+                                                        "permission_level": student_perm_input.val()} }, function(){});
+
+                student_perm.text(student_perm_input.val());
+
+                student_perm_input.hide();
+                save_button.hide();
+
+                student_perm.show();
+                edit_button.show();
+                delete_button.show();
+
+                permToText();
+
+            }
+
+            function deleteStudent()
+            {
+                server_bridge.sendToServer("", {"function": "remove_student_from_teacher", "data": {"student_name": uid}},
+                function(response){
+                    student_template.remove();
+                });
+            }
+
+            edit_button.click(enableEditing);
+
+            save_button.click(disableEditing);
+
+            delete_button.click(deleteStudent);
+
+        }
+        run();
+    </script>
+
+</div>

@@ -216,9 +216,8 @@ class RequestHandler(object):
     def change_user_permission_level(self):
         user = DatabaseHandler.get_instance().get_user(self.request_data["email"])
         permission_level = self.request_data["permission_level"]
-        login = self.request_data["login"]
 
-        if Helper.is_user_admin(DatabaseHandler.get_instance().get_user(login["email"])):
+        if Helper.is_user_admin(DatabaseHandler.get_instance().get_user(session.get("uid"))):
             user.permission_level = int(permission_level)
             DatabaseHandler.get_instance().store_user(user)
             return jsonify(data=True, status="Success")
@@ -230,8 +229,7 @@ class RequestHandler(object):
     @login_required
     def add_student_to_teacher(self):
         student_name = self.request_data["student_name"]
-        login = self.request_data["login"]
-        teacher = DatabaseHandler.get_instance().get_user(login["email"])
+        teacher = DatabaseHandler.get_instance().get_user(session.get("uid"))
         # email or name?@!?!?!??!?!?!?!?
         if Helper.is_user_admin(teacher) and student_name not in teacher.students:
             teacher.students.append(student_name)
@@ -244,8 +242,7 @@ class RequestHandler(object):
     @login_required
     def remove_student_from_teacher(self):
         student_name = self.request_data["student_name"]
-        login = self.request_data["login"]
-        teacher = DatabaseHandler.get_instance().get_user(login["email"])
+        teacher = DatabaseHandler.get_instance().get_user(session.get("uid"))
 
         # email or name?@!?!?!??!?!?!?!?# email or name?@!?!?!??!?!?!?!?# email or name?@!?!?!??!?!?!?!?# email or name?@!?!?!??!?!?!?!?# email or name?@!?!?!??!?!?!?!?
         if Helper.is_user_admin(teacher) and student_name in teacher.students:

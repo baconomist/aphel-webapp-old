@@ -4,6 +4,7 @@ from flask import Flask, render_template, session, abort
 
 from html_modules.announcement_form import AnnouncementForm
 from html_modules.editable_announcement import EditableAnnouncement
+from html_modules.student_template import StudentTemplate
 from modules.database_handler import DatabaseHandler
 from modules.request_handler import RequestHandler, Helper
 
@@ -168,7 +169,14 @@ def review_confirmed():
 @app.route("/students.html", methods=["GET"])
 @login_required
 def students():
-    return render_template("students.html")
+    students = []
+
+    for student in DatabaseHandler.get_instance().get_user(session.get("uid")).students:
+        student = DatabaseHandler.get_instance().get_user(student)
+        students.append(StudentTemplate(student.uid, student.permission_level,
+                                        student.firstname + " " + student.lastname).get_markup())
+
+    return render_template("students.html", students=students)
 
 
 @app.route("/add_student", methods=["GET"])
