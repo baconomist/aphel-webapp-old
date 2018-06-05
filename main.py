@@ -87,11 +87,10 @@ def index():
 def profile():
     user = DatabaseHandler.get_instance().get_user(session.get("uid"))
 
+
     image_url = ""
-    try:
+    if os.path.isfile(os.path.join(os.path.dirname(__file__), "static", "data", "profile_images", user.uid+".jpg")):
         image_url = url_for("static", filename="data/profile_images/" + user.uid + ".jpg")
-    except:
-        pass
 
     print(image_url)
 

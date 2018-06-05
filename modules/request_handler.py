@@ -272,7 +272,7 @@ class RequestHandler(object):
         grade = self.request_data["grade"]
 
         user = self.database.get_user(session.get("uid"))
-
+        print(grade)
         if grade != None:
             user: Student
 
