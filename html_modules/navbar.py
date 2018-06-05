@@ -32,6 +32,14 @@ def auth_for_post(nav_function):
 
     return wrapper
 
+def logged_in(nav_function):
+    @wraps(nav_function)
+    def wrapper(*args, **kwargs):
+        if session.get("uid") is not None:
+            return nav_function(*args, **kwargs)
+        return None
+
+    return wrapper
 
 def not_logged_in(nav_function):
     @wraps(nav_function)
@@ -60,22 +68,22 @@ class Navbar(HTML_Module):
     def update(self):
         self.navbar_admin()
         self.navbar_post()
+        self.navbar_logged_in()
         self.navbar_not_logged_in()
 
     @admin
     def navbar_admin(self):
         for element in self.bs4Obj.find_all(class_="admin"):
             element["style"] = parseStyle(element["style"]).removeProperty("display")
-        self.bs4Obj.find(id="nav_user")["style"] = parseStyle(self.nav_user["style"]).removeProperty("display")
 
     @auth_for_post
     def navbar_post(self):
         for element in self.bs4Obj.find_all(class_="auth-for-post"):
             element["style"] = parseStyle(element["style"]).removeProperty("display")
-        try:
-            self.nav_user["style"] = parseStyle(self.nav_user["style"]).removeProperty("display")
-        except:
-            pass
+
+    @logged_in
+    def navbar_logged_in(self):
+        self.nav_user["style"] = parseStyle(self.nav_user["style"]).removeProperty("display")
 
     @not_logged_in
     def navbar_not_logged_in(self):
