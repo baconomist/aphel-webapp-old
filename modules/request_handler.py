@@ -271,7 +271,7 @@ class RequestHandler(object):
 
         grade = self.request_data["grade"]
 
-        user = self.database.get_user(self.request_data["login"]["email"])
+        user = self.database.get_user(session.get("uid"))
 
         if grade != None:
             user: Student
@@ -291,10 +291,10 @@ class RequestHandler(object):
 
     @login_required
     def handle_file_upload(self):
-        email = self.request_data["login"]["email"]
+        email = session.get("uid")
 
         file = open(os.path.join(os.path.dirname(__file__),
-                                 "..", "data", "profile_images", email + ".jpg"), "wb")
+                                 "..", "static", "data", "profile_images", email + ".jpg"), "wb")
         file.write(request.get_data())
         file.close()
         return jsonify(data=True)

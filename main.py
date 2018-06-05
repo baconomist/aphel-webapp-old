@@ -1,6 +1,6 @@
 from functools import wraps
 
-from flask import Flask, render_template, session, abort
+from flask import Flask, render_template, session, abort, url_for
 
 from html_modules.announcement_form import AnnouncementForm
 from html_modules.editable_announcement import EditableAnnouncement
@@ -16,6 +16,7 @@ import os
 import logging
 
 # Clear server.log
+from modules.student import Student
 from modules.teacher import Teacher
 from modules.user import User
 
@@ -84,7 +85,20 @@ def index():
 @app.route("/profile.html", methods=["GET"])
 @login_required
 def profile():
-    return render_template("profile.html")
+    user = DatabaseHandler.get_instance().get_user(session.get("uid"))
+
+    image_url = ""
+    try:
+        image_url = url_for("static", filename="data/profile_images/" + user.uid + ".jpg")
+    except:
+        pass
+
+    print(image_url)
+
+    grade = user.grade if isinstance(user, Student) else ""
+    return render_template("profile.html", uid=session.get("uid"),
+                           firstname=user.firstname, lastname=user.lastname,
+                           grade=grade, image_url=image_url)
 
 
 # Then have specific rules for specific html files/links

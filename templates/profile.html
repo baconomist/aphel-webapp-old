@@ -32,6 +32,10 @@
     <link rel="stylesheet" href="../static/css/styles.css">
     <link rel="stylesheet" href="../static/css/quill.css">
 
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
 </head>
 
 <body>
@@ -52,7 +56,7 @@
                             <div class="form-row profile-row" style="font-family:'News Cycle', sans-serif;color:rgb(0,0,0);">
                                 <div class="col-md-4 relative">
                                     <div class="avatar">
-                                        <div class="avatar-bg center"></div>
+                                        <div id="profile_avatar" class="avatar-bg center" style="background-image: url('{{ image_url }}')"></div>
                                     </div>
                                     <input id="profile_image" type="file" class="form-control">
                                 </div>
@@ -62,26 +66,26 @@
                                     <div class="form-row">
                                         <div class="col-sm-12 col-md-6">
                                             <div class="form-group">
-                                                <label>Firstname </label>
-                                                <input id="firstname" class="form-control" type="text">
+                                                <label> First Name </label>
+                                                <input id="firstname" class="form-control" type="text" value="{{ firstname }}">
                                             </div>
                                         </div>
                                         <div class="col-sm-12 col-md-6">
                                             <div class="form-group">
-                                                <label>Lastname </label>
-                                                <input id="lastname" class="form-control" type="text">
+                                                <label> Last Name </label>
+                                                <input id="lastname" class="form-control" type="text" value="{{ lastname }}">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label>Email </label>
-                                        <input id="email" disabled class="form-control">
+                                        <label> Email </label>
+                                        <input id="email" disabled class="form-control" value="{{ uid }}">
                                     </div>
                                     <div class="form-row">
                                         <div class="col-sm-12 col-md-6">
                                             <div class="form-group">
                                                 <label id="grade_label">Grade</label>
-                                                <select id="grade_input">
+                                                <select id="grade">
                                                     <option value="9">9</option>
                                                     <option value="10">10</option>
                                                     <option value="11">11</option>
@@ -106,43 +110,131 @@
     </header>
     </div>
     <section class="d-block"></section>
+
     <div class="footer-basic" style="background-color:#439d4c;">
         <footer>
-            <div class="social"><a href="https://www.instagram.com/pchackingsquad/" style="color:rgb(255,255,255);"><i class="icon ion-social-instagram"></i></a><a href="#" style="color:rgb(255,255,255);"><i class="icon ion-social-twitter" style="color:rgb(255,255,255);"></i></a></div>
-            <ul
-                class="list-inline"></ul>
-                <p class="copyright" style="color:rgb(255,255,255);">Alphel @ 2018</p>
-        </footer><a href="#0" class="cd-top js-cd-top cd-top--fade-out cd-top--show" style="background-image:url('../static/img/cd-top-arrow.svg');width:40px;height:40px;">Top</a></div>
+            <div class="social">
+                <a href="https://www.instagram.com/pchackingsquad/" style="color:rgb(255,255,255);">
+                    <i class="icon ion-social-instagram"></i>
+                </a>
+                <a href="#" style="color:rgb(255,255,255);">
+                    <i class="icon ion-social-twitter" style="color:rgb(255,255,255);"></i>
+                </a>
+            </div>
+            <ulclass="list-inline"></ul>
+            <p class="copyright" style="color:rgb(255,255,255);">Alphel @ 2018</p>
+        </footer>
 
-    <script src="../static/js/jquery.min.js"></script>
-    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+        <a href="#0" class="cd-top js-cd-top cd-top--fade-out cd-top--show" style="background-image:url('../static/img/cd-top-arrow.svg');width:40px;height:40px;">
+            Top
+        </a>
+    </div>
 
     <script src="../static/js/server_function/announcement_editor.js"></script>
     <script src="../static/js/server_function/server_bridge.js"></script>
-    <script src="../static/js/server_function/cookie_manager.js"></script>
     <script src="../static/js/init.js"></script>
 
-    <script src="../static/js/website_function/navbar.js"></script>
-    <script src="../static/js/website_function/-Countdown-BS4-.js"></script>
-    <script src="../static/js/website_function/-Fixed-Navbar-start-with-transparency-BS4-.js"></script>
-    <script src="../static/js/website_function/Bold-BS4-Animated-Back-To-Top.js"></script>
-    <script src="../static/js/website_function/Sidebar-Menu.js"></script>
-    <script src="../static/js/website_function/Profile-Edit-Form.js"></script>
-    <script src="../static/js/website_function/Smooth-Scrollto-button-read-Description.js"></script>
-    <script src="../static/js/website_function/failed_login_modal.js"></script>
-    <script src="../static/js/website_function/logout.js"></script>
+    <script type="text/javascript">
+        // User
+        let uid = "{{ uid }}";
+        let firstname = "{{ firstname }}";
+        let lastname = "{{ lastname }}";
+        let grade = "{{ grade }}";
 
-    <script src="../static/js/server_function/profile.js"></script>
-    <script src="../static/js/server_function/signup_form.js"></script>
-    <script src="../static/js/server_function/login_form.js"></script>
-    <script src="../static/js/server_function/dashboard.js"></script>
-    <script src="../static/js/server_function/post_announcement.js"></script>
-    <script src="../static/js/server_function/user_announcements.js"></script>
-    <script src="../static/js/server_function/confirmation_confirmed.js"></script>
-    <script src="../static/js/server_function/add_student.js"></script>
-    <script src="../static/js/server_function/review_confirmed.js"></script>
-    <script src="../static/js/server_function/students.js"></script>
+        // HTML
+        let firstname_input = $("#firstname");
+        let lastname_input = $("#lastname");
+        let profile_avatar = $("#profile_avatar");
+        let profile_image_input = $("#profile_image");
+
+        let grade_label = $("#grade_label");
+        let grade_input = $("#grade");
+
+
+        if(grade != "")
+        {
+            $("#grade_input").children().each(function()
+            {
+                if(this.value.toString() == grade)
+                {
+                    this.selected = 'selected';
+                }
+            });
+        }
+        else
+        {
+            grade_input.hide();
+            grade_label.hide();
+        }
+
+        profile_image_input.change(function()
+        {
+            // Display Image on Client
+            let profile_image = document.getElementById('profile_image').files[0];
+            let reader = new FileReader();
+            reader.addEventListener('load', function (event)
+            {
+                console.log(event.target.result);
+                profile_avatar.css({"background-image": "url(" + event.target.result + ")"});
+            });
+
+             reader.readAsDataURL(document.getElementById('profile_image').files[0]);
+        });
+
+
+
+        $("#profile_form").on("submit", function ()
+        {
+            let grade = 0;
+            if (grade_input.is(":visible"))
+            {
+                grade = grade_input.val();
+            }
+
+            server_bridge.sendToServer("", {
+                    "function": "save_profile_data",
+                    "data": {
+                        "firstname": firstname_input.val(), "lastname": lastname_input.val(),
+                        "grade": grade
+                    }
+                },
+            function (response)
+            {
+                console.log("Profile Successfully Saved!")
+
+                //location.replace(server_bridge.host + "/profile");
+            });
+
+            let profile_image = document.getElementById('profile_image').files[0];
+            let reader = new FileReader();
+            reader.addEventListener('load', function (event)
+            {
+                $.ajax({
+                    url: server_bridge.host+"/file_upload",
+                    type: "POST",
+                    dataType: "binary",
+                    processData: false,
+                    data: event.target.result,
+                    crossOrigin: true,
+                    success: function(result){
+                        // do something with binary data
+                    }
+                });
+
+            });
+
+            if(profile_image != null)
+            {
+                reader.readAsArrayBuffer(profile_image);
+            }
+
+
+            //location.replace(server_bridge.host + "/profile");
+            return false;
+        });
+
+
+    </script>
 
 </body>
 
