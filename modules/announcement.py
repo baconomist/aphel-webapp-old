@@ -8,7 +8,7 @@ class Announcement(object):
         self.info = info
         self.content_html = content_html
         self.user_name = user_name
-        self.time_stamp = time.time()
+        self.time_stamp = time.ctime()
         self.id = id
 
     def to_json(self):
