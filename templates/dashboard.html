@@ -43,30 +43,9 @@
     <div class="row">
         <div class="col">
             <div id="dashboard_div" style="padding-right:10px;padding-left:10px;height:auto;">
-                <div class="container" id="dashboard_announcement_template" style="padding:0px;margin-bottom:21px;border:2px solid green;display: none;">
-
-                    <div class="d-block" style="height:70px;background-color:#439d4c;padding:10px;padding-left:20px;padding-right:20px;">
-                        <blockquote class="blockquote">
-                            <p id="announcement_title" class="mb-0" style="color:rgb(255,255,255);font-family:'News Cycle', sans-serif;">Announcement Title</p>
-                            <footer class="blockquote-footer" id="announcement_info" style="color:rgb(255,255,255);font-family:'News Cycle', sans-serif;white-space: nowrap;overflow-x: auto;overflow-y: hidden;">
-                                Club Name, Name of user that posted this
-                            </footer>
-                        </blockquote>
-                    </div>
-
-                    <div class="d-block overflow" style="height:170px;background-color:#ffffff;font-family:'News Cycle', sans-serif;padding:10px;padding-right:20px;padding-left:20px;overflow: auto;border: 2px solid #63cb40;margin: 5px 5px;">
-                        <p class="d-block" id="announcement_content">
-                            Announcement info goes here.
-                        </p>
-                    </div>
-
-                    <p class="d-block" id="announcement_time_stamp">
-                        VVV Add a footer to each post with the timestamp,
-                        and a function to pin the post so that it is always at the top of the students announcements,
-                        or in a separate favourites page.
-                    </p>
-
-                </div>
+                {% for announcement in announcements %}
+                    {{ announcement }}
+                {% endfor %}
             </div>
             <div id="empty_space_fixer" style="height:225px;"></div>
         </div>
@@ -86,29 +65,7 @@
 
     <script src="../static/js/server_function/announcement_editor.js"></script>
     <script src="../static/js/server_function/server_bridge.js"></script>
-    <script src="../static/js/server_function/cookie_manager.js"></script>
     <script src="../static/js/init.js"></script>
-
-    <script src="../static/js/website_function/navbar.js"></script>
-    <script src="../static/js/website_function/-Countdown-BS4-.js"></script>
-    <script src="../static/js/website_function/-Fixed-Navbar-start-with-transparency-BS4-.js"></script>
-    <script src="../static/js/website_function/Bold-BS4-Animated-Back-To-Top.js"></script>
-    <script src="../static/js/website_function/Sidebar-Menu.js"></script>
-    <script src="../static/js/website_function/Profile-Edit-Form.js"></script>
-    <script src="../static/js/website_function/Smooth-Scrollto-button-read-Description.js"></script>
-    <script src="../static/js/website_function/failed_login_modal.js"></script>
-    <script src="../static/js/website_function/logout.js"></script>
-
-    <script src="../static/js/server_function/signup_form.js"></script>
-    <script src="../static/js/server_function/login_form.js"></script>
-    <script src="../static/js/server_function/dashboard.js"></script>
-    <script src="../static/js/server_function/post_announcement.js"></script>
-    <script src="../static/js/server_function/user_announcements.js"></script>
-    <script src="../static/js/server_function/confirmation_confirmed.js"></script>
-    <script src="../static/js/server_function/add_student.js"></script>
-    <script src="../static/js/server_function/review_confirmed.js"></script>
-    <script src="../static/js/server_function/students.js"></script>
-
 
 </body>
 

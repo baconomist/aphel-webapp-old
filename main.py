@@ -1,8 +1,10 @@
+import json
 from functools import wraps
 
 from flask import Flask, render_template, session, abort, url_for
 
 from html_modules.announcement_form import AnnouncementForm
+from html_modules.dashboard_announcement import DashboardAnnouncement
 from html_modules.editable_announcement import EditableAnnouncement
 from html_modules.student_template import StudentTemplate
 from modules.database_handler import DatabaseHandler
@@ -139,7 +141,20 @@ def announcement():
 @app.route("/dashboard", methods=["GET"])
 @app.route("/dashboard.html", methods=["GET"])
 def dashboard():
-    return render_template("dashboard.html")
+    announcements = []
+    announcements_json = DatabaseHandler.get_instance().get_announcements_json()
+
+    for announcement in announcements_json:
+        announcement = json.loads(announcement)
+        uid = announcement["user_name"]
+        title = announcement["title"]
+        info = announcement["info"]
+        content = announcement["content_html"]
+        time_stamp = announcement["time_stamp"]
+        announcements.append(DashboardAnnouncement(uid=uid, title=title, info=info,
+                                                   content=content, time_stamp=time_stamp).get_markup())
+
+    return render_template("dashboard.html", announcements=announcements)
 
 
 @app.route("/user_announcements", methods=["GET"])
