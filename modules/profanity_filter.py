@@ -20,7 +20,7 @@ class ProfanityFilter(object):
             result = no_tags.replace(c, "")
 
         for i in self.profane_words:
-            if i in result:
+            if len(i) > 0 and i in result:
                 return True
             else:
                 pass
