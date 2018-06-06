@@ -94,6 +94,8 @@ class DatabaseHandler(object):
         # Sort in chronological order(newest on top, oldest on bottom)
         announcements.sort(key=lambda x: x.time_stamp_epoch)
 
+        announcements.reverse()
+
         for announcement in announcements:
             announcements_json.append(announcement.to_json())
 
