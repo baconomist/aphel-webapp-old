@@ -1,0 +1,6 @@
+{
+    "clubs": [],
+    "users": [
+        "{\"py/object\": \"modules.user.User\", \"_announcements\": [], \"clubs\": [], \"confirmed\": true, \"firstname\": \"\", \"lastname\": \"\", \"password\": \"eca4fca22562b4465f338f297c986a13941afce2c4f0f698d7234dbc3a826d7b:88c9a054cb0a443a9307701dc5c1ef6e\", \"permission_level\": 0, \"profile_image\": null, \"uid\": \"test_user@pdsb.net\"}"
+    ]
+}

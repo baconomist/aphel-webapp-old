@@ -8,7 +8,7 @@ import os
 # Request handler instance is created on import of "main.py"
 from modules.database_handler import DatabaseHandler
 
-DatabaseHandler._databaseLocation = os.path.join(os.path.dirname(__file__), "..", "data", "test_database.json")
+DatabaseHandler._databaseLocation = os.path.join(os.path.dirname(__file__), "test_database.json")
 
 from main import app
 from modules.user import User
