@@ -274,23 +274,19 @@ class RequestHandler(object):
         print(grade)
         if grade != None:
             user: Student
-
-            user.firstname = firstname
-            user.lastname = lastname
             user.grade = grade
         else:
             user: Teacher
 
+        swearing_filter = ProfanityFilter()
+        if not swearing_filter.is_profane(firstname) and not swearing_filter.is_profane(lastname):
             user.firstname = firstname
             user.lastname = lastname
-
-            swearing_filter = ProfanityFilter()
-        if not swearing_filter.is_profane(firstname) and not swearing_filter.is_profane(lastname):
-            self.database.store_user(user)
         else:
             print("User entered a profane name")
             # DO NOT USE PROFANE LANGUAGE alert shows up
 
+        self.database.store_user(user)
         return jsonify(data=True)
 
     @login_required
