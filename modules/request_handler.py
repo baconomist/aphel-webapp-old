@@ -151,11 +151,10 @@ class RequestHandler(object):
             swearing_filter = ProfanityFilter()
             if not swearing_filter.is_profane(content_html):
                 user.create_announcement(title=title, info=info, content_html=content_html, id=int(id))
+                self.database.store_user(user)
             else:
                 print("User entered a profane message")
                 # DO NOT USE PROFANE LANGUAGE alert shows up
-
-            self.database.store_user(user)
 
             return jsonify(status="Success", data=True)
         elif Helper.is_user_auth_for_post_review(user):
@@ -285,7 +284,12 @@ class RequestHandler(object):
             user.firstname = firstname
             user.lastname = lastname
 
-        self.database.store_user(user)
+            swearing_filter = ProfanityFilter()
+        if not swearing_filter.is_profane(firstname) and not swearing_filter.is_profane(lastname):
+            self.database.store_user(user)
+        else:
+            print("User entered a profane name")
+            # DO NOT USE PROFANE LANGUAGE alert shows up
 
         return jsonify(data=True)
 
