@@ -188,7 +188,6 @@ def confirmation_confirmed():
     return render_template("confirmation_confirmed.html")
 
 @app.route("/review_confirmed", methods=["GET"])
-@login_required
 def review_confirmed():
     return render_template("review_confirmed.html")
 

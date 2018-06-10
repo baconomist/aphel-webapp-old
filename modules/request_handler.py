@@ -196,7 +196,6 @@ class RequestHandler(object):
         logging.info("Validating confirmation link...")
         return jsonify(data=ConfirmationManager.get_instance().validate_confirmation(confirmation_id))
 
-    @login_required
     def validate_review(self):
         review_id = self.request_data["review_id"]
         logging.info("Validation announcement review...")
