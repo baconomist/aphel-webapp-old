@@ -5,7 +5,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 def send_email(receivers, subject, body):
-    threading.Thread(target=email_thread, args=(receivers, subject, body)).start()
+    email_thread(receivers, subject, body)
+    # Thread sends email after server closed
+    #threading.Thread(target=email_thread, args=(receivers, subject, body)).start()
 
 
 def email_thread(receivers, subject, body):
