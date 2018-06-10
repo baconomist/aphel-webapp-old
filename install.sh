@@ -8,6 +8,8 @@ sudo apt-get install python3.6-venv
 wget https://bootstrap.pypa.io/get-pip.py
 sudo python3.6 get-pip.py
 
+sudo apt-get install mercurial
+
 virtualenv /home/webapp/webappenv/
 
 source /home/webapp/start.sh
