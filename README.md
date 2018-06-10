@@ -10,5 +10,4 @@
 #Contributors
 
 - **Lucas Borowiecki** --> Lead Programmer, Backend and front-end programming
-- **Asad Khan**..........
 - **Owen  Brake** --> Backend programming
