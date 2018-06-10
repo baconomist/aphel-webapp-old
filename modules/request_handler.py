@@ -166,7 +166,6 @@ class RequestHandler(object):
             id = self.request_data["announcement_data"]["id"]
 
             announcement = Announcement(title, info, content_html, user.uid, id)
-
             send_email(receivers=teacher, subject="APHEL TECH ANNOUNCEMENT REVIEW",
                        body="url: http://{server_ip}/review_confirmed?id={id} <br><br> ***announcement content*** <br> {announcement_content} <br> ***announcement content***"
                        .format(server_ip=config.public_address, announcement_content=announcement.content_html,
@@ -197,6 +196,7 @@ class RequestHandler(object):
         logging.info("Validating confirmation link...")
         return jsonify(data=ConfirmationManager.get_instance().validate_confirmation(confirmation_id))
 
+    @login_required
     def validate_review(self):
         review_id = self.request_data["review_id"]
         logging.info("Validation announcement review...")
@@ -351,11 +351,11 @@ class Helper(object):
 
     @staticmethod
     def is_user_auth_for_post(user):
-        return user.get_permission_level() > user.get_trusted_student_permission_level()
+        return user.get_permission_level() >= user.get_trusted_student_permission_level()
 
     @staticmethod
     def is_user_auth_for_post_review(user):
-        return user.get_permission_level() > user.get_untrusted_student_permission_level()
+        return user.get_permission_level() >= user.get_untrusted_student_permission_level()
 
     @staticmethod
     def is_teacher_email(email):
