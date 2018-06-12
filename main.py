@@ -146,13 +146,7 @@ def dashboard():
 
     for announcement in announcements_json:
         announcement = json.loads(announcement)
-        uid = announcement["user_name"]
-        title = announcement["title"]
-        info = announcement["info"]
-        content = announcement["content_html"]
-        time_stamp = announcement["time_stamp"]
-        announcements.append(DashboardAnnouncement(uid=uid, title=title, info=info,
-                                                   content=content, time_stamp=time_stamp).get_markup())
+        announcements.append(DashboardAnnouncement(announcement).get_markup())
 
     return render_template("dashboard.html", announcements=announcements)
 
