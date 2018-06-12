@@ -169,7 +169,7 @@ class RequestHandler(object):
             announcement = Announcement(title, info, content_html, user.uid, id)
             send_email(receivers=teacher, subject="APHEL TECH ANNOUNCEMENT REVIEW",
                        body="url: http://{server_ip}/review_confirmed?id={id} <br><br> ***announcement content*** <br> {announcement_content} <br> ***announcement content***"
-                       .format(server_ip=config.public_address, announcement_content=announcement.content_html,
+                       .format(server_ip=config.public_address, announcement_content=announcement.get_content_raw(),
                                id=str(AnnouncementReviewHandler.get_instance().new_announcement_review(teacher,
                                                                                                        announcement).id)))
 
