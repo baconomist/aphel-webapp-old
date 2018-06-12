@@ -1,5 +1,6 @@
 import json
 import os
+import urllib
 from functools import wraps
 
 from modules.database_handler import DatabaseHandler
@@ -147,10 +148,10 @@ class RequestHandler(object):
             content_html = self.request_data["announcement_data"]["content_html"]
             id = self.request_data["announcement_data"]["id"]
             user = self.database.get_user(session.get("uid"))
-            print(title, info, content_html, id, user)
             swearing_filter = ProfanityFilter()
-            if not swearing_filter.is_profane(content_html):
+            if not swearing_filter.is_profane(urllib.parse.unquote_plus(content_html)):
                 user.create_announcement(title=title, info=info, content_html=content_html, id=int(id))
+                print(user._announcements[-1].get_content_raw())
                 self.database.store_user(user)
             else:
                 print("User entered a profane message")
