@@ -8,9 +8,14 @@ class AnnouncementEditor
         this.quill = this.init_quill(editor_div, announcement_id);
     }
 
-    get_content()
+    get_content_raw()
     {
         return this.quill.root.innerHTML;
+    }
+
+    get_content()
+    {
+        return encodeURIComponent(this.quill.root.innerHTML);
     }
 
     enable()

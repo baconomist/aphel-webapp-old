@@ -11,8 +11,8 @@ class DashboardAnnouncement(HTML_Module):
         file_data = file.read()
         file.close()
 
-        file_data = Template(file_data).render(uid=announcement.uid, title=announcement.title, info=announcement.info,
-                             content=announcement.content_html, time_stamp=announcement.time_stamp)
+        file_data = Template(file_data).render(uid=announcement.user_name, title=announcement.title, info=announcement.info,
+                             content_raw=announcement.get_content_raw(), time_stamp=announcement.time_stamp)
 
         super(DashboardAnnouncement, self).__init__(file_data)
 

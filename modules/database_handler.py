@@ -83,9 +83,8 @@ class DatabaseHandler(object):
             count += 1
         return data["users"]
 
-    def get_announcements_json(self):
+    def get_dashboard(self):
         announcements = []
-        announcements_json = []
 
         for user in self.get_users():
             for announcement in user._announcements:
@@ -96,10 +95,7 @@ class DatabaseHandler(object):
 
         announcements.reverse()
 
-        for announcement in announcements:
-            announcements_json.append(announcement.to_json())
-
-        return announcements_json
+        return announcements
 
     def store_club(self, club: Club):
         logging.info("Storing club: " + club.name)

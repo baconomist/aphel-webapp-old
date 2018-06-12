@@ -15,7 +15,7 @@
         <div class="d-block overflow" style="height:170px;background-color:#ffffff;font-family:'News Cycle', sans-serif;padding:10px;padding-right:20px;padding-left:20px;">
             <div style="height:130px;background-color:#ffffff;font-family:'News Cycle', sans-serif;padding:10px;padding-right:20px;padding-left:20px;overflow:auto">
                 <div class="d-block announcement-content">
-                    {{ announcement_content }}
+                    {{ announcement_content_raw }}
                 </div>
             </div>
             <p class="d-block announcement-time-stamp">
@@ -41,7 +41,7 @@
         </div>
 
         <div class="d-block overflow announcement-content" id="announcement_editor{{ announcement_id }}" style="height:170px;background-color:#ffffff;font-family:'News Cycle', sans-serif;padding:10px;padding-right:20px;padding-left:20px;">
-            {{ announcement_content }}
+            {{ announcement_content_raw }}
         </div>
 
         <div class="d-block" style="height:80px;background-color:#ffffff;padding:10px;padding-left:20px;padding-right:20px;padding-top:15px;">
@@ -58,9 +58,9 @@
         function run()
         {
             let announcement_id = "{{ announcement_id }}";
-            let announcement_title = '{{ announcement_title }}';
-            let announcement_info = '{{ announcement_info }}';
-            let announcement_content = '{{ announcement_content }}';
+            let announcement_title = "{{ announcement_title }}";
+            let announcement_info = "{{ announcement_info }}";
+            let announcement_content = "{{ announcement_content }}";
             let announcement_timestamp = "{{ announcement_timestamp }}";
 
             let announcement_not_editing = $("#" + announcement_id).find(".announcement-not-editing");
@@ -75,7 +75,6 @@
 
             function create_editable_announcement()
             {
-                console.log("aaaa", announcement_id);
                 announcement_not_editing.hide();
                 announcement_editor = new AnnouncementEditor(announcement_editing.find(".announcement-content"), announcement_id);
                 announcement_editing.show();
@@ -112,7 +111,7 @@
 
                 announcement_not_editing.find(".announcement-title").text(announcement_editing.find(".announcement-title").val());
                 announcement_not_editing.find(".announcement-info").html(announcement_editing.find(".announcement-info").val());
-                announcement_not_editing.find(".announcement-content").html(announcement_editor.get_content());
+                announcement_not_editing.find(".announcement-content").html(announcement_editor.get_content_raw());
 
                 announcement_editor.destroy();
 

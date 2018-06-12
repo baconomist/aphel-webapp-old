@@ -15,6 +15,7 @@ class EditableAnnouncement(HTML_Module):
         file_data = Template(file_data).render(announcement_id=announcement.id, announcement_title=announcement.title,
                                                announcement_info=announcement.info,
                                                announcement_content=announcement.content_html,
+                                               announcement_content_raw=announcement.get_content_raw(),
                                                announcement_timestamp=announcement.time_stamp)
 
         super(EditableAnnouncement, self).__init__(file_data)

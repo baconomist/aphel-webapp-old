@@ -142,10 +142,9 @@ def announcement():
 @app.route("/dashboard.html", methods=["GET"])
 def dashboard():
     announcements = []
-    announcements_json = DatabaseHandler.get_instance().get_announcements_json()
+    db_announcements = DatabaseHandler.get_instance().get_dashboard()
 
-    for announcement in announcements_json:
-        announcement = json.loads(announcement)
+    for announcement in db_announcements:
         announcements.append(DashboardAnnouncement(announcement).get_markup())
 
     return render_template("dashboard.html", announcements=announcements)
