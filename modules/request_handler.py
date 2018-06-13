@@ -230,7 +230,7 @@ class RequestHandler(object):
         student_name = self.request_data["student_name"]
         teacher = DatabaseHandler.get_instance().get_user(session.get("uid"))
         # email or name?@!?!?!??!?!?!?!?
-        if Helper.is_user_admin(teacher) and student_name not in teacher.students:
+        if Helper.is_user_admin(teacher) and student_name not in teacher.students and DatabaseHandler.get_instance().user_exists(student_name):
             teacher.students.append(student_name)
             DatabaseHandler.get_instance().store_user(teacher)
             return jsonify(data=True)
