@@ -42,7 +42,7 @@ def page_not_found(e):
 
 
 def no_access(e):
-    return render_template("errors/403.html"), 403
+    return render_template("login.html"), 403
 
 
 # 404 page, page not found
