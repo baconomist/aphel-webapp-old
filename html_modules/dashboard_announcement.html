@@ -1,0 +1,21 @@
+<div class="container" style="padding:0px;margin-bottom:21px;border:2px solid green;">
+    <div class="d-block" style="height:70px;background-color:#439d4c;padding:10px;padding-left:20px;padding-right:20px;">
+        <blockquote class="blockquote">
+            <p class="mb-0" style="color:rgb(255,255,255);font-family:'News Cycle', sans-serif;">Title: {{ title }}</p>
+            <footer class="blockquote-footer" style="color:rgb(255,255,255);font-family:'News Cycle', sans-serif;white-space: nowrap;overflow-x: auto;overflow-y: hidden;">
+                Club/Team: {{ info }} User: {{ uid }}
+            </footer>
+        </blockquote>
+    </div>
+
+    <div class="d-block overflow ql-editor" style="height:170px;background-color:#ffffff;padding:10px;padding-right:20px;padding-left:20px;overflow: auto;border: 2px solid #63cb40;margin: 5px 5px;">
+        <p class="d-block">
+            {{ content_raw }}
+        </p>
+    </div>
+
+    <p class="d-block" style="text-align:center">
+        {{ time_stamp }}
+    </p>
+
+</div>

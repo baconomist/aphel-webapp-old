@@ -23,8 +23,8 @@
             <button class="btn btn-primary save-button" type="button" style="margin: 10px;display:none">Save</button>
         </div>
 
-        <div class="dropdown d-inline-block float-right student-options" style="width:25%;margin-top:0px;margin-right:0px;padding-left:0px;margin-left:0px;">
-            <button class="btn btn-primary btn-sm dropdown-toggle d-inline-block float-right" data-toggle="dropdown" aria-expanded="false" type="button" style="color:rgb(33,37,41);font-family:'News Cycle', sans-serif;font-size:16px;width:80px;">
+        <div class="dropdown d-inline-block float-right" style="width:25%;margin-top:0px;margin-right:0px;padding-left:0px;margin-left:0px;">
+            <button class="btn btn-primary btn-sm dropdown-toggle float-right student-options" data-toggle="dropdown" aria-expanded="false" type="button" style="color:rgb(33,37,41);font-family:'News Cycle', sans-serif;font-size:16px;width:80px;">
                 Options
             </button>
             <div class="dropdown-menu dropdown-menu-right" role="menu">
@@ -53,20 +53,21 @@
             let student_perm_input = student_template.find(".student-perm-input");
             let save_button = student_template.find(".save-button");
 
+            let student_options = student_template.find(".student-options");
+
             function permToText()
             {
-                console.log($(".student-perm").text())
-                if($(".student-perm").text() == "0")
+                if(student_perm.text() == "0")
                 {
-                    $(".student-perm").text("View Announcements")
+                    student_perm.text("View Announcements")
                 }
-                else if($(".student-perm").text() == "1")
+                else if(student_perm.text() == "1")
                 {
-                    $(".student-perm").text("Post Announcements With Review")
+                    student_perm.text("Post Announcements With Review")
                 }
-                else if($(".student-perm").text() == "2")
+                else if(student_perm.text() == "2")
                 {
-                    $(".student-perm").text("Post Announcements Without Review")
+                    student_perm.text("Post Announcements Without Review")
                 }
             }
 
@@ -74,7 +75,6 @@
 
             function enableEditing()
             {
-                console.log("aaaaaaaaaaaaa");
                 student_template.find(".student-perm-input").children().each(function()
                 {
                     if(this.value.toString() == ""+perm)
@@ -89,6 +89,7 @@
                 student_perm.hide();
                 edit_button.hide();
                 delete_button.hide();
+                student_options.hide();
             }
 
             function disableEditing()
@@ -96,6 +97,8 @@
                 server_bridge.sendToServer("", {"function": "change_user_permission_level",
                                                 "data": {"email": uid,
                                                         "permission_level": student_perm_input.val()} }, function(){});
+
+                perm = student_perm_input.val();
 
                 student_perm.text(student_perm_input.val());
 
@@ -105,6 +108,7 @@
                 student_perm.show();
                 edit_button.show();
                 delete_button.show();
+                student_options.show();
 
                 permToText();
 

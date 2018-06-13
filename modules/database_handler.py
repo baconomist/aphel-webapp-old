@@ -83,21 +83,19 @@ class DatabaseHandler(object):
             count += 1
         return data["users"]
 
-    def get_announcements_json(self):
+    def get_dashboard(self):
         announcements = []
-        announcements_json = []
 
         for user in self.get_users():
             for announcement in user._announcements:
                 announcements.append(announcement)
 
         # Sort in chronological order(newest on top, oldest on bottom)
-        announcements.sort(key=lambda x: x.time_stamp)
+        announcements.sort(key=lambda x: x.time_stamp_epoch)
 
-        for announcement in announcements:
-            announcements_json.append(announcement.to_json())
+        announcements.reverse()
 
-        return announcements_json
+        return announcements
 
     def store_club(self, club: Club):
         logging.info("Storing club: " + club.name)

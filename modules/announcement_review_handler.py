@@ -27,7 +27,7 @@ class AnnouncementReviewHandler(object):
 
         for review in copy:
             if review.id == review_id:
-                review.student.announcements.append(review.announcement)
+                review.student._announcements.append(review.announcement)
                 DatabaseHandler.get_instance().store_user(review.student)
                 return True
 

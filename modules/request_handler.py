@@ -1,5 +1,6 @@
 import json
 import os
+import urllib
 from functools import wraps
 
 from modules.database_handler import DatabaseHandler
@@ -147,15 +148,14 @@ class RequestHandler(object):
             content_html = self.request_data["announcement_data"]["content_html"]
             id = self.request_data["announcement_data"]["id"]
             user = self.database.get_user(session.get("uid"))
-            print(title, info, content_html, id, user)
             swearing_filter = ProfanityFilter()
-            if not swearing_filter.is_profane(content_html):
+            if not swearing_filter.is_profane(urllib.parse.unquote_plus(content_html)):
                 user.create_announcement(title=title, info=info, content_html=content_html, id=int(id))
+                print(user._announcements[-1].get_content_raw())
+                self.database.store_user(user)
             else:
                 print("User entered a profane message")
                 # DO NOT USE PROFANE LANGUAGE alert shows up
-
-            self.database.store_user(user)
 
             return jsonify(status="Success", data=True)
         elif Helper.is_user_auth_for_post_review(user):
@@ -167,10 +167,9 @@ class RequestHandler(object):
             id = self.request_data["announcement_data"]["id"]
 
             announcement = Announcement(title, info, content_html, user.uid, id)
-
             send_email(receivers=teacher, subject="APHEL TECH ANNOUNCEMENT REVIEW",
                        body="url: http://{server_ip}/review_confirmed?id={id} <br><br> ***announcement content*** <br> {announcement_content} <br> ***announcement content***"
-                       .format(server_ip=config.public_address, announcement_content=announcement.content_html,
+                       .format(server_ip=config.public_address, announcement_content=announcement.get_content_raw(),
                                id=str(AnnouncementReviewHandler.get_instance().new_announcement_review(teacher,
                                                                                                        announcement).id)))
 
@@ -275,18 +274,19 @@ class RequestHandler(object):
         print(grade)
         if grade != None:
             user: Student
-
-            user.firstname = firstname
-            user.lastname = lastname
             user.grade = grade
         else:
             user: Teacher
 
+        swearing_filter = ProfanityFilter()
+        if not swearing_filter.is_profane(firstname) and not swearing_filter.is_profane(lastname):
             user.firstname = firstname
             user.lastname = lastname
+        else:
+            print("User entered a profane name")
+            # DO NOT USE PROFANE LANGUAGE alert shows up
 
         self.database.store_user(user)
-
         return jsonify(data=True)
 
     @login_required
@@ -351,11 +351,11 @@ class Helper(object):
 
     @staticmethod
     def is_user_auth_for_post(user):
-        return user.get_permission_level() > user.get_trusted_student_permission_level()
+        return user.get_permission_level() >= user.get_trusted_student_permission_level()
 
     @staticmethod
     def is_user_auth_for_post_review(user):
-        return user.get_permission_level() > user.get_untrusted_student_permission_level()
+        return user.get_permission_level() >= user.get_untrusted_student_permission_level()
 
     @staticmethod
     def is_teacher_email(email):
