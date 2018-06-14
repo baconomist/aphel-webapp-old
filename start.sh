@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 hg pull -u https://thetoxickiller:bItbucket40@bitbucket.org/apheltech/webapp/src/default/ -r release
-hg update
+hg update --clean
 
 sudo kill `sudo lsof -t -i:80`
 
