@@ -44,25 +44,16 @@
             <option value="{{student_uid}}">
         {% endfor %}
     </datalist>
-
-    <div style="height:100vh;">
-        <div style="height:191px;border:2px solid blue;margin:13px;">
-            <p style="font-size:25px;font-family:'News Cycle', sans-serif;padding:10px;">
-                Add a student
-            </p>
-
-            <div class="row" style="width:335px;">
-                <div class="col">
-                    <p style="padding:5px;">Student Name:</p>
-                </div>
-                <div class="col" style="padding:10px;">
-                    <input type="text" id="student_name" list="student_list">
-                </div>
+	<div class="row" style="margin-bottom:50px;">
+        <div class="col">
+            <div class="login-card" style="font-family:'News Cycle', sans-serif;">
+                <p class="profile-name-card" style="font-size:25px;font-family:'News Cycle', sans-serif;padding:10px;margin-bottom: 40px;">Add a student</p>
+				<div style="width:335px;">
+					<p style="padding:5px;display:inline-block;">Student Name:</p>
+					<input type="text" id="student_name" list="student_list" style="height:50%;margin-bottom:40px;">
+					<button class="btn btn-primary btn-success" type="button" id="add_btn" style="margin:0 auto;margin-left:90px;width:102px;display: block;">Add</button>	
+				</div>
             </div>
-
-            <button class="btn btn-primary" type="button" id="add_btn" style="margin:0px 20px;width:102px;">
-                Add
-            </button>
         </div>
     </div>
 
