@@ -109,8 +109,8 @@
 
                 announcement_editing.hide();
 
-                announcement_not_editing.find(".announcement-title").text(announcement_editing.find(".announcement-title").val());
-                announcement_not_editing.find(".announcement-info").html(announcement_editing.find(".announcement-info").val());
+                announcement_not_editing.find(".announcement-title").text("Title: "+announcement_editing.find(".announcement-title").val());
+                announcement_not_editing.find(".announcement-info").html("Club/Team: "+announcement_editing.find(".announcement-info").val());
                 announcement_not_editing.find(".announcement-content").html(announcement_editor.get_content_raw());
 
                 announcement_editor.destroy();
