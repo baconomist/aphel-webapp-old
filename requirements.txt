@@ -5,3 +5,4 @@ cssutils
 beautifulsoup4
 jinja2
 pandas
+config
